@@ -1,4 +1,4 @@
-{ config, pkgs, zenBrowser, kittum, ... }:
+{ pkgs, zenBrowser, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should manage.
@@ -17,14 +17,53 @@
       antidote.enable = true;
 
       initContent = ''
+        autoload -Uz compinit
+        zmodload -i zsh/complist
+        compinit -i
+
+        zstyle ':completion:*' completer \
+          _expand _complete _match _approximate _correct _complete:-fuzzy _ignored
+        zstyle ':completion:*' special-dirs true
+        _comp_options+=(globdots)
+
+        setopt globdots
+        # --- Plugin & Vi-Mode Loading BELOW THIS LINE ---
+        # e.g., znap, starship, direnv, etc.
+
+        # --- After jeffreytse/zsh-vi-mode is sourced: ---
+        zvm_after_init_commands+=('bindkey -M viins "^N" menu-select')
+        zvm_after_init_commands+=('bindkey -M viins "^P" menu-select')
+
+
         # Load Powerlevel10k theme
         source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-            test -f ~/.p10k.zsh && source ~/.p10k.zsh
+        test -f ~/.p10k.zsh && source ~/.p10k.zsh
 
 
-        # aliases
+
+        # Alisases
+        # General
+        alias cls='clear'
+
+        # nautilus
+        alias nau="nohup nautilus -w . > /dev/null &"
+
+        # Better ls
+        alias l="eza --icons=always"
+        alias ls="eza --icons=always -a"
+        alias ll="eza -lg --icons=always"
+        alias la="eza -lag --icons=always"
+        alias lt="eza -lTg --icons=always"
+
+
         alias nv="nvim"
         alias cd="z"
+
+        node() { nix-shell -p nodejs --run "node $@"; }
+        npm()  { nix-shell -p nodejs --run "npm $@"; }
+
+
+        macchina
       '';
 
       antidote.plugins = [
@@ -57,6 +96,7 @@
     vectorcode
     xclip
     python3
+    bat
   ];
 
   home.file = {
