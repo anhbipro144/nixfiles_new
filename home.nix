@@ -10,7 +10,13 @@
     home-manager.enable = true;
     neovim.enable = true;
     zoxide.enable = true;
-    kitty.enable = true;
+    kitty = {
+      enable = true;
+      extraConfig = ''
+        background_opacity 0.8
+        confirm_os_window_close -1
+      '';
+    };
 
     zsh = {
       enable = true;
