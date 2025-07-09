@@ -3,8 +3,8 @@
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "n";
-  home.homeDirectory = "/home/n";
+  home.username = "neo";
+  home.homeDirectory = "/home/neo";
 
 programs.neovim = { enable = true; };
   

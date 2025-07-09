@@ -20,7 +20,7 @@
       zenBrowser = zen.packages.${system}.zen-browser;
     in
     {
-      homeConfigurations."n" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."neo" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
         extraSpecialArgs = { inherit zenBrowser; };
