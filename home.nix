@@ -4,7 +4,7 @@
   # Home Manager needs a bit of information about you and the paths it should manage.
   home.username = "neo";
   home.homeDirectory = "/home/neo";
-  home.stateVersion = "25.05"; 
+  home.stateVersion = "25.05";
 
   programs = {
     home-manager.enable = true;
@@ -42,6 +42,7 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    nodejs
     zsh-powerlevel10k
     delta
     rustc
@@ -55,6 +56,7 @@
     gcc
     vectorcode
     xclip
+    python3
   ];
 
   home.file = {
