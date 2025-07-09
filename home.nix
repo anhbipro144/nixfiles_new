@@ -1,61 +1,48 @@
-{ config, pkgs,zenBrowser, ... }:
+{ config, pkgs, zenBrowser, kittum, ... }:
 
 {
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
+  # Home Manager needs a bit of information about you and the paths it should manage.
   home.username = "neo";
   home.homeDirectory = "/home/neo";
+  home.stateVersion = "25.05"; 
 
-programs.neovim = { enable = true; };
-  
-  home.file.".config/nvim" = {
-    source = ./nvim;
-    recursive = true;
+  programs = {
+    home-manager.enable = true;
+    neovim.enable = true;
+    zoxide.enable = true;
+    kitty.enable = true;
+
+    zsh = {
+      enable = true;
+      antidote.enable = true;
+
+      initContent = ''
+        # Load Powerlevel10k theme
+        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+            test -f ~/.p10k.zsh && source ~/.p10k.zsh
+
+
+        # aliases
+        alias nv="nvim"
+        alias cd="z"
+      '';
+
+      antidote.plugins = [
+        "zsh-users/zsh-syntax-highlighting"
+        "marlonrichert/zsh-autocomplete"
+        "lukechilds/zsh-nvm"
+        "jeffreytse/zsh-vi-mode"
+      ];
+
+      antidote.useFriendlyNames = true;
+    };
+
   };
- #Zoxide
-  programs.zoxide = { enable = true; };
-
-programs.zsh = {
-  enable = true;
-  antidote.enable = true;
-
-initContent = ''
-    # Load Powerlevel10k theme
-    source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-        test -f ~/.p10k.zsh && source ~/.p10k.zsh
-
-    alias nv="nvim"
-  '';
-
-  # Optional: use the default package (pkgs.antidote),
-  # or override:
-  # antidote.package = pkgs.antidote;
-  # Define your plugin list:
-  antidote.plugins = [
-    "zsh-users/zsh-syntax-highlighting"
-    "marlonrichert/zsh-autocomplete"
-    "lukechilds/zsh-nvm"
-    "jeffreytse/zsh-vi-mode"
-  ];
-  # Optional: enable friendly names instead of hash-based directory names:
-  antidote.useFriendlyNames = true;
-};
-
-
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
-  home.stateVersion = "25.05"; # Please read the comment before changing.
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-  kitty
-  zsh-powerlevel10k
+    zsh-powerlevel10k
     delta
     rustc
     cargo
@@ -67,11 +54,15 @@ initContent = ''
     gnumake
     gcc
     vectorcode
+    xclip
   ];
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
   home.file = {
+    ".config/nvim" = {
+      source = ./nvim;
+      recursive = true;
+    };
+
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
@@ -104,6 +95,4 @@ initContent = ''
     # EDITOR = "emacs";
   };
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 }
