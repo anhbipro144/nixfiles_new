@@ -74,10 +74,9 @@
         ll = "eza -lg --icons=always";
         la = "eza -lag --icons=always";
         lt = "eza -lTg --icons=always";
-        nvm="fnm";
+        nvm = "fnm";
 
       };
-
 
       antidote = {
         enable = true;
@@ -110,6 +109,7 @@
     GTK_IM_MODULE = "fcitx";
     QT_IM_MODULE = "fcitx";
     XMODIFIERS = "@im=fcitx";
+    FPATH = "$HOME/.docker/completions:$FPATH";
   };
 
   # The home.packages option allows you to install Nix packages into your
