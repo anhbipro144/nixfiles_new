@@ -22,10 +22,6 @@
       enable = true;
 
       initContent = ''
-        autoload -Uz compinit
-        zmodload -i zsh/complist
-        compinit -i
-
         zstyle ':completion:*' completer \
           _expand _complete _match _approximate _correct _complete:-fuzzy _ignored
         zstyle ':completion:*' special-dirs true
@@ -39,19 +35,21 @@
         zvm_after_init_commands+=('bindkey -M viins "^N" menu-select')
         zvm_after_init_commands+=('bindkey -M viins "^P" menu-select')
 
+        bindkey -M menuselect '\r' .accept-line
 
+        macchina
+      '';
+
+      completionInit = ''
+        autoload -Uz compinit
+        zmodload -i zsh/complist
+        compinit -i
+      '';
+
+      promptInit = ''
         # Load Powerlevel10k theme
         source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
         test -f ~/.p10k.zsh && source ~/.p10k.zsh
-
-        bindkey -M menuselect '\r' .accept-line
-
-
-        node() { nix-shell -p nodejs --run "node $@"; }
-        npm()  { nix-shell -p nodejs --run "npm $@"; }
-
-
-        macchina
       '';
 
       shellAliases = {
