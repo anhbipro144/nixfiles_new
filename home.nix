@@ -35,7 +35,22 @@
         zvm_after_init_commands+=('bindkey -M viins "^N" menu-select')
         zvm_after_init_commands+=('bindkey -M viins "^P" menu-select')
 
+
+        # Load Powerlevel10k theme
+        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+        test -f ~/.p10k.zsh && source ~/.p10k.zsh
+
+
+
         bindkey -M menuselect '\r' .accept-line
+
+        ci() {
+          if [ $# -eq 0 ]; then
+            echo "Usage: zn <pattern>"
+            return 1
+          fi
+          z "$@" && nvim .
+        }
 
         macchina
       '';
@@ -44,12 +59,6 @@
         autoload -Uz compinit
         zmodload -i zsh/complist
         compinit -i
-      '';
-
-      promptInit = ''
-        # Load Powerlevel10k theme
-        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-        test -f ~/.p10k.zsh && source ~/.p10k.zsh
       '';
 
       shellAliases = {
