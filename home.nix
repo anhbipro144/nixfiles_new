@@ -74,21 +74,16 @@
         ll = "eza -lg --icons=always";
         la = "eza -lag --icons=always";
         lt = "eza -lTg --icons=always";
+        nvm="fnm";
 
       };
 
-      sessionVariables = {
-        NVM_LAZY_LOAD = true;
-        NVM_COMPLETION = true;
-        NVM_AUTO_USE = true;
-      };
 
       antidote = {
         enable = true;
         plugins = [
           "zsh-users/zsh-syntax-highlighting"
           "marlonrichert/zsh-autocomplete"
-          "lukechilds/zsh-nvm"
           "jeffreytse/zsh-vi-mode"
         ];
         useFriendlyNames = true;
@@ -137,6 +132,7 @@
     python3
     bat
     flameshot
+    fnm
   ];
 
 }
