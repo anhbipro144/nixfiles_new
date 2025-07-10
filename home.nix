@@ -44,7 +44,8 @@
         # Load Powerlevel10k theme
         source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
         test -f ~/.p10k.zsh && source ~/.p10k.zsh
-
+        
+        bindkey -M menuselect '\r' .accept-line
 
 
         # Alisases
