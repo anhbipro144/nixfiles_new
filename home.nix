@@ -20,7 +20,6 @@
 
     zsh = {
       enable = true;
-      antidote.enable = true;
 
       initContent = ''
         autoload -Uz compinit
@@ -73,14 +72,16 @@
         macchina
       '';
 
-      antidote.plugins = [
-        "zsh-users/zsh-syntax-highlighting"
-        "marlonrichert/zsh-autocomplete"
-        "lukechilds/zsh-nvm"
-        "jeffreytse/zsh-vi-mode"
-      ];
-
-      antidote.useFriendlyNames = true;
+      antidote = {
+        enable = true;
+        plugins = [
+          "zsh-users/zsh-syntax-highlighting"
+          "marlonrichert/zsh-autocomplete"
+          "lukechilds/zsh-nvm"
+          "jeffreytse/zsh-vi-mode"
+        ];
+        useFriendlyNames = true;
+      };
     };
 
   };
