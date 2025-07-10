@@ -47,30 +47,34 @@
         bindkey -M menuselect '\r' .accept-line
 
 
-        # Alisases
-        # General
-        alias cls='clear'
-
-        # nautilus
-        alias nau="nohup nautilus -w . > /dev/null &"
-
-        # Better ls
-        alias l="eza --icons=always"
-        alias ls="eza --icons=always -a"
-        alias ll="eza -lg --icons=always"
-        alias la="eza -lag --icons=always"
-        alias lt="eza -lTg --icons=always"
-
-
-        alias nv="nvim"
-        alias cd="z"
-
         node() { nix-shell -p nodejs --run "node $@"; }
         npm()  { nix-shell -p nodejs --run "npm $@"; }
 
 
         macchina
       '';
+
+      shellAliases = {
+        # General
+        cls = "clear";
+        nau = "nohup nautilus -w . > /dev/null &";
+        nv = "nvim";
+        cd = "z";
+
+        # Better ls
+        l = "eza --icons=always";
+        ls = "eza --icons=always -a";
+        ll = "eza -lg --icons=always";
+        la = "eza -lag --icons=always";
+        lt = "eza -lTg --icons=always";
+
+      };
+
+      sessionVariables = {
+        NVM_LAZY_LOAD = true;
+        NVM_COMPLETION = true;
+        NVM_AUTO_USE = true;
+      };
 
       antidote = {
         enable = true;
@@ -109,7 +113,7 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    nodejs
+    # nodejs
     zsh-powerlevel10k
     delta
     rustc
