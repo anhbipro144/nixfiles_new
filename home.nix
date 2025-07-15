@@ -156,6 +156,9 @@
     bison
     flex
     clang-tools
+    neocmakelsp
+    mycli
+    cmake
   ];
 
 }
