@@ -34,8 +34,7 @@
 
         # Optionally use extraSpecialArgs
         # to pass through arguments to home.nix
-        extraSpecialArgs = { inherit zenBrowser; };
-
+        extraSpecialArgs = { inherit zenBrowser nixgl; };
         modules = [ ./home.nix ];
 
       };
