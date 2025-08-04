@@ -1,22 +1,34 @@
-{ pkgs, zenBrowser, ... }:
+{ pkgs, zenBrowser, config, nixgl, ... }:
 
-{
+let
+  # the wrapper collection for *this* CPU architecture
+  nixglPkgs = nixgl.packages."x86_64-linux";
+in {
   # Home Manager needs a bit of information about you and the paths it should manage.
   home.username = "neo";
   home.homeDirectory = "/home/neo";
   home.stateVersion = "25.05";
 
+  nixGL = {
+    packages = nixglPkgs; # <── correct layout
+    defaultWrapper = "mesa"; # (optional, defaults to nixGLDefault)
+  };
+  # nixglPkgs = nixgl.packages.${pkgs.system};
+
   programs = {
     home-manager.enable = true;
     anki = {
-      package = pkgs.anki;
-      enable = true;
+      # package = pkgs.anki;
+
+      package = (config.lib.nixGL.wrap pkgs.anki);
+      # enable = true;
       language = "en_US";
     };
     neovim.enable = true;
     zoxide.enable = true;
     kitty = {
       enable = true;
+      package = config.lib.nixGL.wrap pkgs.kitty;
       extraConfig = ''
         background_opacity 0.8
         confirm_os_window_close -1
@@ -151,10 +163,11 @@
       sessionVariables = {
         PATH = "$HOME/personal/work/WA:$PATH";
 
-        QT_QUICK_BACKEND = "software";
-        ANKI_DISABLE_HW_ACCEL = "1";
-        QTWEBENGINE_CHROMIUM_FLAGS =
-          "--disable-gpu --disable-software-rasterizer";
+        # QT_XCB_GL_INTEGRATION = "none";
+        # QT_QUICK_BACKEND = "software";
+        # ANKI_DISABLE_HW_ACCEL = "1";
+        # QTWEBENGINE_CHROMIUM_FLAGS =
+        #   "--disable-gpu --disable-software-rasterizer";
       };
 
       antidote = {
@@ -224,6 +237,10 @@
     mycli
     cmake
     pnpm
+    noto-fonts 
+    noto-fonts-cjk-sans 
+    dejavu_fonts
+    (config.lib.nixGL.wrap pkgs.anki-bin)
   ];
 
 }

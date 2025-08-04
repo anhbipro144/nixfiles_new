@@ -17,14 +17,7 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [
-          nixgl.overlay
-          (final: prev: {
-            kitty = prev.writeShellScriptBin "kitty" ''
-              exec ${final.nixgl.nixGLIntel}/bin/nixGLIntel ${prev.kitty}/bin/kitty "$@"
-            '';
-          })
-        ];
+        overlays = [ nixgl.overlays.default ];
       };
 
       zenBrowser = zen.packages.${system}.zen-browser;
