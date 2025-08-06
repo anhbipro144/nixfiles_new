@@ -1,8 +1,6 @@
 { pkgs, zenBrowser, config, nixgl, ... }:
 
-let
-  # the wrapper collection for *this* CPU architecture
-  nixglPkgs = nixgl.packages."x86_64-linux";
+let nixglPkgs = nixgl.packages.${pkgs.system};
 in {
   # Home Manager needs a bit of information about you and the paths it should manage.
   home.username = "neo";
@@ -10,20 +8,12 @@ in {
   home.stateVersion = "25.05";
 
   nixGL = {
-    packages = nixglPkgs; # <── correct layout
-    defaultWrapper = "mesa"; # (optional, defaults to nixGLDefault)
+    packages = nixglPkgs;
+    defaultWrapper = "mesa";
   };
-  # nixglPkgs = nixgl.packages.${pkgs.system};
 
   programs = {
     home-manager.enable = true;
-    anki = {
-      # package = pkgs.anki;
-
-      package = (config.lib.nixGL.wrap pkgs.anki);
-      # enable = true;
-      language = "en_US";
-    };
     neovim.enable = true;
     zoxide.enable = true;
     kitty = {
@@ -237,8 +227,8 @@ in {
     mycli
     cmake
     pnpm
-    noto-fonts 
-    noto-fonts-cjk-sans 
+    noto-fonts
+    noto-fonts-cjk-sans
     dejavu_fonts
     (config.lib.nixGL.wrap pkgs.anki-bin)
   ];
