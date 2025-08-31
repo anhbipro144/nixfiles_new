@@ -106,7 +106,7 @@ in {
           if z "''${dir_args[@]}"; then
             # If the directory change is successful and edit_mode is true, open Neovim.
             if [ "$edit_mode" = true ]; then
-              nvim .
+              nvim
             fi
           else
             # If 'z' fails, return an error status.
@@ -133,6 +133,9 @@ in {
         ll = "eza -lg --icons=always";
         la = "eza -lag --icons=always";
         lt = "eza -lTg --icons=always";
+
+        # docker
+        dc  = "docker compose";
 
         #Nvim
         nvm = "fnm";
@@ -225,6 +228,7 @@ in {
     clang-tools
     neocmakelsp
     mycli
+    pgcli
     cmake
     pnpm
     noto-fonts
