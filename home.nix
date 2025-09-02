@@ -149,7 +149,6 @@
       };
 
       sessionVariables = {
-        TAVILY = "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";
         PATH = "$HOME/personal/work/WA:$PATH";
 
         QT_QUICK_BACKEND = "software";
