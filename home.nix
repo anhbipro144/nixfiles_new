@@ -1,6 +1,8 @@
 { pkgs, zenBrowser, config, nixgl, ... }:
 
-let nixglPkgs = nixgl.packages.${pkgs.system};
+let
+  nixglPkgs = nixgl.packages.${pkgs.system};
+  vm = "x86_64-linux";
 in {
   # Home Manager needs a bit of information about you and the paths it should manage.
   home.username = "neo";
@@ -135,7 +137,7 @@ in {
         lt = "eza -lTg --icons=always";
 
         # docker
-        dc  = "docker compose";
+        dc = "docker compose";
 
         #Nvim
         nvm = "fnm";
@@ -199,42 +201,51 @@ in {
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = with pkgs; [
-    zsh-powerlevel10k
-    delta
-    rustc
-    cargo
-    git
-    ripgrep
-    zenBrowser
-    macchina
-    eza
-    vectorcode
-    xclip
-    python3
-    bat
-    flameshot
-    fnm
-    google-cloud-sdk
+  home.packages = with pkgs;
+    [
+      zsh-powerlevel10k
+      delta
+      git
+      ripgrep
+      eza
+      python3
+      bat
 
-    gnumake
-    gcc
-    pkg-config
-    autoconf
-    automake
-    libtool
-    bison
-    flex
-    clang-tools
-    neocmakelsp
-    mycli
-    pgcli
-    cmake
-    pnpm
-    noto-fonts
-    noto-fonts-cjk-sans
-    dejavu_fonts
-    (config.lib.nixGL.wrap pkgs.anki-bin)
-  ];
+    ] ++ lib.optionals (host == "main") [
+      google-cloud-sdk
+      rustc
+      cargo
+
+      pnpm
+      fnm
+      flameshot
+      vectorcode
+      xclip
+      macchina
+      zenBrowser
+
+      # C++
+      gnumake
+      gcc
+      pkg-config
+      autoconf
+      automake
+      libtool
+      bison
+      flex
+      clang-tools
+      neocmakelsp
+      cmake
+
+      # Db CLIs
+      mycli
+      pgcli
+
+      #Anki
+      noto-fonts
+      noto-fonts-cjk-sans
+      dejavu_fonts
+      (config.lib.nixGL.wrap pkgs.anki-bin)
+    ];
 
 }

@@ -20,15 +20,24 @@
       };
 
       zenBrowser = zen.packages.${system}.zen-browser;
+
+      mkHome = host:
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          extraSpecialArgs = { inherit zenBrowser nixgl host; };
+          modules = [ ./home.nix ];
+        };
     in {
-      homeConfigurations."neo" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
-        extraSpecialArgs = { inherit zenBrowser nixgl; };
-        modules = [ ./home.nix ];
-
-      };
+      # homeConfigurations."neo" = home-manager.lib.homeManagerConfiguration {
+      #   inherit pkgs;
+      #
+      #   # Optionally use extraSpecialArgs
+      #   # to pass through arguments to home.nix
+      #   extraSpecialArgs = { inherit zenBrowser nixgl; };
+      #   modules = [ ./home.nix ];
+      #
+      # };
+      homeConfigurations."neo@main" = mkHome "main";
+      homeConfigurations."neo@vm" = mkHome "vm";
     };
 }
