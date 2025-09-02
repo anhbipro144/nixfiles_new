@@ -1,8 +1,6 @@
 { pkgs, zenBrowser, config, nixgl, ... }:
 
-let
-  nixglPkgs = nixgl.packages.${pkgs.system};
-  vm = "x86_64-linux";
+let nixglPkgs = nixgl.packages.${pkgs.system};
 in {
   # Home Manager needs a bit of information about you and the paths it should manage.
   home.username = "neo";
