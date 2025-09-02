@@ -1,6 +1,8 @@
-{ pkgs, zenBrowser, config, nixgl, ... }:
+{ pkgs, zenBrowser, config, nixgl, host, ... }:
 
-let nixglPkgs = nixgl.packages.${pkgs.system};
+let
+  nixglPkgs = nixgl.packages.${pkgs.system};
+  lib = pkgs.lib;
 in {
   # Home Manager needs a bit of information about you and the paths it should manage.
   home.username = "neo";
@@ -55,6 +57,13 @@ in {
                       fi
                       z "$@" && nvim .
                     }
+
+
+        if [ -f "$HOME/.config/home-manager/secrets/secrets.env" ]; then
+          set -a
+          . "$HOME/.config/home-manager/secrets/secrets.env"
+          set +a
+        fi
 
 
 
@@ -200,50 +209,42 @@ in {
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs;
-    [
-      zsh-powerlevel10k
-      delta
-      git
-      ripgrep
-      eza
-      python3
-      bat
+    ([ zsh-powerlevel10k delta git ripgrep eza python3 bat ]
+      ++ lib.optionals (host == "main") [
+        google-cloud-sdk
+        rustc
+        cargo
 
-    ] ++ lib.optionals (host == "main") [
-      google-cloud-sdk
-      rustc
-      cargo
+        pnpm
+        fnm
+        flameshot
+        vectorcode
+        xclip
+        macchina
+        zenBrowser
 
-      pnpm
-      fnm
-      flameshot
-      vectorcode
-      xclip
-      macchina
-      zenBrowser
+        # C++
+        gnumake
+        gcc
+        pkg-config
+        autoconf
+        automake
+        libtool
+        bison
+        flex
+        clang-tools
+        neocmakelsp
+        cmake
 
-      # C++
-      gnumake
-      gcc
-      pkg-config
-      autoconf
-      automake
-      libtool
-      bison
-      flex
-      clang-tools
-      neocmakelsp
-      cmake
+        # Db CLIs
+        mycli
+        pgcli
 
-      # Db CLIs
-      mycli
-      pgcli
-
-      #Anki
-      noto-fonts
-      noto-fonts-cjk-sans
-      dejavu_fonts
-      (config.lib.nixGL.wrap pkgs.anki-bin)
-    ];
+        #Anki
+        noto-fonts
+        noto-fonts-cjk-sans
+        dejavu_fonts
+        (config.lib.nixGL.wrap pkgs.anki-bin)
+      ]);
 
 }
