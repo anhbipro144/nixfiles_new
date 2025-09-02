@@ -1,0 +1,2 @@
+# Local secrets for Home Manager (do not commit)
+.config/home-manager/secrets.env
