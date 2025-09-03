@@ -1,31 +1,8 @@
-{ pkgs, zenBrowser, config, nixgl, host, ... }:
-
-let
-  nixglPkgs = nixgl.packages.${pkgs.system};
-  lib = pkgs.lib;
-in {
-  # Home Manager needs a bit of information about you and the paths it should manage.
-  home.username = "neo";
-  home.homeDirectory = "/home/neo";
-  home.stateVersion = "25.05";
-
-  nixGL = {
-    packages = nixglPkgs;
-    defaultWrapper = "mesa";
-  };
-
+{ pkgs, ... }: {
   programs = {
     home-manager.enable = true;
     neovim.enable = true;
     zoxide.enable = true;
-    kitty = {
-      enable = true;
-      package = config.lib.nixGL.wrap pkgs.kitty;
-      extraConfig = ''
-        background_opacity 0.8
-        confirm_os_window_close -1
-      '';
-    };
 
     zsh = {
       enable = true;
@@ -182,69 +159,6 @@ in {
         useFriendlyNames = true;
       };
     };
-
   };
-
-  i18n.inputMethod = {
-    type = "fcitx5";
-    enable = true;
-    fcitx5.addons = with pkgs; [ fcitx5-unikey fcitx5-gtk ];
-  };
-
-  home.file = {
-    ".config/nvim" = {
-      source = ./nvim;
-      recursive = true;
-    };
-
-  };
-
-  home.sessionVariables = {
-    GTK_IM_MODULE = "fcitx";
-    QT_IM_MODULE = "fcitx";
-    XMODIFIERS = "@im=fcitx";
-    FPATH = "$HOME/.docker/completions:$FPATH";
-  };
-
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-  home.packages = with pkgs;
-    ([ zsh-powerlevel10k delta git ripgrep eza python3 bat ]
-      ++ lib.optionals (host == "main") [
-        google-cloud-sdk
-        rustc
-        cargo
-
-        pnpm
-        fnm
-        flameshot
-        vectorcode
-        xclip
-        macchina
-        zenBrowser
-
-        # C++
-        gnumake
-        gcc
-        pkg-config
-        autoconf
-        automake
-        libtool
-        bison
-        flex
-        clang-tools
-        neocmakelsp
-        cmake
-
-        # Db CLIs
-        mycli
-        pgcli
-
-        #Anki
-        noto-fonts
-        noto-fonts-cjk-sans
-        dejavu_fonts
-        (config.lib.nixGL.wrap pkgs.anki-bin)
-      ]);
-
 }
+
