@@ -28,11 +28,8 @@
           modules =
             ([ ./base.nix ./files.nix ./packages.nix ./common.nix ./main.nix ]
 
-              ++ (if host == "main" then
-                [ ./modules/programs/main.nix ]
-              else
-                [ ])
-              ++ (if host == "vm" then [ ./modules/programs/vm.nix ] else [ ]));
+              ++ (if host == "main" then [ ./main.nix ] else [ ])
+              ++ (if host == "vm" then [ ./vm.nix ] else [ ]));
         };
     in {
       # homeConfigurations."neo" = home-manager.lib.homeManagerConfiguration {
