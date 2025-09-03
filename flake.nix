@@ -25,11 +25,10 @@
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = { inherit zenBrowser nixgl host; };
-          modules =
-            ([ ./base.nix ./files.nix ./packages.nix ./common.nix ./main.nix ]
+          modules = ([ ./base.nix ./files.nix ./packages.nix ./common.nix ]
 
-              ++ (if host == "main" then [ ./main.nix ] else [ ])
-              ++ (if host == "vm" then [ ./vm.nix ] else [ ]));
+            ++ (if host == "main" then [ ./main.nix ] else [ ])
+            ++ (if host == "vm" then [ ./vm.nix ] else [ ]));
         };
     in {
       # homeConfigurations."neo" = home-manager.lib.homeManagerConfiguration {

@@ -126,7 +126,7 @@
         #Nvim
         nvm = "fnm";
 
-        #Nix
+        #Nixhome-manager switch --flake $HOME/.config/home-manager
         hms = "home-manager switch --flake $HOME/.config/home-manager";
 
         #Shine-wa
