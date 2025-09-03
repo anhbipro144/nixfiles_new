@@ -21,10 +21,10 @@
 
       zenBrowser = zen.packages.${system}.zen-browser;
 
-      mkHome = host:
+      mkHome = { host, user }:
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = { inherit zenBrowser nixgl host; };
+          extraSpecialArgs = { inherit zenBrowser nixgl host user; };
           modules = ([ ./base.nix ./files.nix ./packages.nix ./common.nix ]
 
             ++ (if host == "main" then [ ./main.nix ] else [ ])
@@ -40,7 +40,13 @@
       #   modules = [ ./home.nix ];
       #
       # };
-      homeConfigurations."neo@main" = mkHome "main";
-      homeConfigurations."neo@vm" = mkHome "vm";
+      homeConfigurations."neo@main" = mkHome {
+        host = "main";
+        user = "neo";
+      };
+      homeConfigurations."ubuntu@vm" = mkHome {
+        host = "vm";
+        user = "ubuntu";
+      };
     };
 }
