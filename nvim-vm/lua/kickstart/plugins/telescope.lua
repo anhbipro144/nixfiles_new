@@ -17,8 +17,6 @@ return {
       { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
-      require("git-worktree").setup()
-
       -- See `:help telescope` and `:help telescope.setup()`
       local actions = require("telescope.actions")
       local telescope = require("telescope")
@@ -103,7 +101,6 @@ return {
 
 
 
-      telescope.load_extension("git_worktree")
       pcall(telescope.load_extension, 'fzf')
       pcall(telescope.load_extension, 'ui-select')
 
@@ -121,11 +118,6 @@ return {
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
 
-
-      vim.keymap.set("n", "<Leader>sr", "<CMD>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>",
-        { desc = "Open Git worktree" })
-      vim.keymap.set("n", "<Leader>sR", "<CMD>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>",
-        { desc = "Create git worktree" })
 
       vim.keymap.set('n', '<leader><leader>', builtin.buffers,
         { desc = '[ ] Find existing buffers' })

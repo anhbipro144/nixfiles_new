@@ -22,21 +22,21 @@ require('lazy').setup({
 
   require 'kickstart.plugins.cmp',
 
-  require 'kickstart.plugins.dap',
+  -- require 'kickstart.plugins.dap',
 
   require 'kickstart.plugins.barbar',
 
-  require 'kickstart.plugins.image',
+  -- require 'kickstart.plugins.image',
 
-  require 'kickstart.plugins.auto-save',
+  -- require 'kickstart.plugins.auto-save',
 
-  require 'kickstart.plugins.notify',
+  -- require 'kickstart.plugins.notify',
 
-  require 'kickstart.plugins.img-clip',
+  -- require 'kickstart.plugins.img-clip',
 
-  require 'kickstart.plugins.markdown',
+  -- require 'kickstart.plugins.markdown',
 
-  require 'kickstart.plugins.obsidian',
+  -- require 'kickstart.plugins.obsidian',
 
   require 'kickstart.plugins.persistence',
 
@@ -44,55 +44,55 @@ require('lazy').setup({
 
   require 'kickstart.plugins.incline',
 
-  require 'kickstart.plugins.toggleterm',
+  -- require 'kickstart.plugins.toggleterm',
 
-  require 'kickstart.plugins.git-worktree',
+  -- require 'kickstart.plugins.git-worktree',
 
   require 'kickstart.plugins.todo-comments',
 
-  require 'kickstart.plugins.outline',
+  -- require 'kickstart.plugins.outline',
 
-  require 'kickstart.plugins.neo-test',
+  -- require 'kickstart.plugins.neo-test',
 
   require 'kickstart.plugins.flash',
 
-  require 'kickstart.plugins.codecompanion',
+  -- require 'kickstart.plugins.codecompanion',
 
-  require 'kickstart.plugins.copilotchat',
+  -- require 'kickstart.plugins.copilotchat',
 
-  require 'kickstart.plugins.copilot',
+  -- require 'kickstart.plugins.copilot',
 
   -- require 'lua.kickstart.plugins.codecompanion-history',
 
   -- require 'kickstart/plugins/avante',
 
-  require 'kickstart.plugins.prisma',
+  -- require 'kickstart.plugins.prisma',
 
   require 'kickstart.plugins.lsp',
 
   require 'kickstart.plugins.lsp-preview',
 
-  require 'kickstart.plugins.autotag',
+  -- require 'kickstart.plugins.autotag',
 
-  require 'kickstart.plugins.cursor-animate',
+  -- require 'kickstart.plugins.cursor-animate',
 
   -- require 'kickstart/plugins/blink',
 
   require 'kickstart.plugins.snipe',
 
-  require 'kickstart.plugins.windows',
+  -- require 'kickstart.plugins.windows',
 
-  require 'kickstart.plugins.ts-tool',
+  -- require 'kickstart.plugins.ts-tool',
 
-  require 'kickstart.plugins.noice',
+  -- require 'kickstart.plugins.noice',
 
-  require 'kickstart.plugins.comment',
+  -- require 'kickstart.plugins.comment',
 
   require 'kickstart.plugins.illuminate',
 
-  require 'kickstart.plugins.kulala',
+  -- require 'kickstart.plugins.kulala',
 
-  require 'kickstart.plugins.vectorcode',
+  -- require 'kickstart.plugins.vectorcode',
 
   -- require 'kickstart/plugins/linting',
 
