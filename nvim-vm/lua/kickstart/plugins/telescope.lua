@@ -104,7 +104,6 @@ return {
 
 
       telescope.load_extension("git_worktree")
-      telescope.load_extension("remote-sshfs")
       pcall(telescope.load_extension, 'fzf')
       pcall(telescope.load_extension, 'ui-select')
 

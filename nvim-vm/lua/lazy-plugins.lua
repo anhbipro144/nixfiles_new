@@ -22,8 +22,6 @@ require('lazy').setup({
 
   require 'kickstart.plugins.cmp',
 
-  require 'kickstart.plugins.remote-ssh',
-
   require 'kickstart.plugins.dap',
 
   require 'kickstart.plugins.barbar',
