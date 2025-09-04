@@ -1,6 +1,6 @@
 { pkgs, lib, config, host, zenBrowser, ... }: {
   home.packages = with pkgs;
-    ([ zsh-powerlevel10k delta git ripgrep eza python3 bat ]
+    ([ zsh-powerlevel10k delta git ripgrep eza python3 bat mosh ]
       ++ lib.optionals (host == "main") [
         google-cloud-sdk
         rustc
