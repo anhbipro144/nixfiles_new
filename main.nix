@@ -22,6 +22,7 @@ in {
   };
 
   programs = {
+    neovim.enable = true;
     kitty = {
       enable = true;
       package = config.lib.nixGL.wrap pkgs.kitty;

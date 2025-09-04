@@ -1,7 +1,6 @@
 { pkgs, ... }: {
   programs = {
     home-manager.enable = true;
-    neovim.enable = true;
     zoxide.enable = true;
 
     zsh = {
@@ -127,7 +126,7 @@
         nvm = "fnm";
 
         #Nixhome-manager switch --flake $HOME/.config/home-manager
-        hms = "home-manager switch --flake $HOME/.config/home-manager";
+        hms = "home-manager switch --flake $HOME/.config/home-manager#ubuntu@vm";
 
         #Shine-wa
         wadev =
