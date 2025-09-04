@@ -27,6 +27,8 @@ in {
       enable = true;
       package = config.lib.nixGL.wrap pkgs.kitty;
       extraConfig = ''
+        map ctrl+equal change_font_size all +1.0
+        map ctrl+minus change_font_size all -1.0
         background_opacity 0.8
         confirm_os_window_close -1
       '';
