@@ -13,6 +13,10 @@
         macchina
         zenBrowser
 
+        # Python
+        uv
+
+
         # C++
         gnumake
         gcc
