@@ -1,4 +1,5 @@
 { pkgs, lib, config, host, zenBrowser, ... }: {
+  targets.genericLinux.enable = true; # non-NixOS niceties
   home.packages = with pkgs;
     ([ zsh-powerlevel10k delta git ripgrep eza python3 bat mosh ]
       ++ lib.optionals (host == "main") [
@@ -15,7 +16,6 @@
 
         # Python
         uv
-
 
         # C++
         gnumake
