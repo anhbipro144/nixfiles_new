@@ -34,6 +34,8 @@
         mycli
         pgcli
 
+        yarn
+
         # Anki
         noto-fonts
         noto-fonts-cjk-sans
