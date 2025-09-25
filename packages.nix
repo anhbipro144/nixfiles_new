@@ -1,4 +1,9 @@
 { pkgs, lib, config, host, zenBrowser, ... }: {
+
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "google-chrome"
+  ];
+
   targets.genericLinux.enable = true; # non-NixOS niceties
   home.packages = with pkgs;
     ([ zsh-powerlevel10k delta git ripgrep eza python3 bat mosh ]
@@ -12,7 +17,11 @@
         vectorcode
         xclip
         macchina
+
+
+        # Browser
         zenBrowser
+        google-chrome
 
         # Python
         uv
