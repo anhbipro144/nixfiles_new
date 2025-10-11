@@ -125,15 +125,14 @@
         #nvm
         nvm = "fnm";
 
-
-
         #nvim
         nv = "nvim";
-        nvb="NVIM_APPNAME=nvim-base nvim";
-        nvv="NVIM_APPNAME=nvim-minimal nvim";
+        nvb = "NVIM_APPNAME=nvim-base nvim";
+        nvv = "NVIM_APPNAME=nvim-minimal nvim";
 
         #Nixhome-manager switch --flake $HOME/.config/home-manager
-        hms = "home-manager switch --flake $HOME/.config/home-manager#ubuntu@vm";
+        hms =
+          "home-manager switch --flake $HOME/.config/home-manager#ubuntu@vm";
 
         #Shine-wa
         wadev =
@@ -143,10 +142,19 @@
         watest =
           "cloud-sql-proxy --address 0.0.0.0 --port 3302 one-global-ocps-test:asia-southeast1:ocps-test-db";
 
+        # NPRD db connects
+        ndev =
+          "cloud-sql-proxy --address 0.0.0.0 --port 3306 one-global-mtfaber-dev:asia-southeast1:sea1-dev-mtfaber-db01:one-nprd-dev-db";
+        ntest =
+          "cloud-sql-proxy --address 0.0.0.0 --port 3303 one-global-mtfaber-test:asia-southeast1:sea1-test-mtfaber-db01:one-nprd-test-db";
+        nprod = ''
+          cloud-sql-proxy --address 0.0.0.0 --port 3302 one-global-chorus-nprd-prod:asia-southeast1:sea1-prod-nprd-db01:one-nprd-prd-db
+        '';
+
       };
 
       sessionVariables = {
-        PATH = "$HOME/personal/work/WA:$PATH";
+        PATH = "$HOME/personal/work:$PATH";
 
         # QT_XCB_GL_INTEGRATION = "none";
         # QT_QUICK_BACKEND = "software";
