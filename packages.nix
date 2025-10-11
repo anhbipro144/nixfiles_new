@@ -50,5 +50,9 @@
         noto-fonts-cjk-sans
         dejavu_fonts
         (config.lib.nixGL.wrap pkgs.anki-bin)
+
+
+        # Etc
+        lazysql
       ]);
 }
