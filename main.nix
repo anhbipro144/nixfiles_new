@@ -18,8 +18,10 @@ in {
     GTK_IM_MODULE = "fcitx";
     QT_IM_MODULE = "fcitx";
     XMODIFIERS = "@im=fcitx";
-    FPATH = "$HOME/.docker/completions:$FPATH";
   };
+
+  home.sessionPath =
+    [ "$HOME/personal/work" "$HOME/.volta/bin" "$HOME/.docker/completions" ];
 
   programs = {
     kitty = {

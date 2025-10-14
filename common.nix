@@ -122,9 +122,6 @@
         # docker
         dc = "docker compose";
 
-        #nvm
-        nvm = "fnm";
-
         #nvim
         nv = "nvim";
         nvb = "NVIM_APPNAME=nvim-base nvim";
@@ -153,15 +150,7 @@
 
       };
 
-      sessionVariables = {
-        PATH = "$HOME/personal/work:$PATH";
-
-        # QT_XCB_GL_INTEGRATION = "none";
-        # QT_QUICK_BACKEND = "software";
-        # ANKI_DISABLE_HW_ACCEL = "1";
-        # QTWEBENGINE_CHROMIUM_FLAGS =
-        #   "--disable-gpu --disable-software-rasterizer";
-      };
+      sessionVariables = { };
 
       antidote = {
         enable = true;

@@ -12,7 +12,6 @@
         rustc
         cargo
         pnpm
-        fnm
         flameshot
         vectorcode
         xclip
@@ -43,9 +42,7 @@
         mycli
         pgcli
 
-        yarn
-
-        # Anki
+       # Anki
         noto-fonts
         noto-fonts-cjk-sans
         dejavu_fonts
@@ -54,5 +51,6 @@
 
         # Etc
         lazysql
+        volta
       ]);
 }
