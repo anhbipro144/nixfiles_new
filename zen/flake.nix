@@ -9,18 +9,17 @@
       pkgs = import nixpkgs { inherit system; };
       zen = pkgs.stdenv.mkDerivation {
         pname = "zen-browser";
-        version = "1.13b";
+        version = "1.16.1b";
 
         src = pkgs.fetchurl {
           url =
-            "https://github.com/zen-browser/desktop/releases/download/1.13b/zen.linux-x86_64.tar.xz";
-          # run `nix-prefetch-url <url>` to fill in the sha256
-          sha256 = "14d0icbhb3lgdsjgbv3j0ynmhp62xwllc38rjcf9f37dhsb5yx72";
+            "https://github.com/zen-browser/desktop/releases/download/1.16.1b/zen.linux-x86_64.tar.xz";
+          sha256 = "0vnnd0sgn0nyk2i1vlwjrpfa4wwg9a5n0hksc6j7ni95rfhyfr3r";
         };
 
         nativeBuildInputs = [ pkgs.makeWrapper ];
 
-        unpackPhase = "true"; # we’ll unpack by hand in installPhase
+        unpackPhase = "true";
 
         installPhase = ''
               mkdir -p $out/{bin,share/zen-browser,share/applications,share/icons/hicolor/128x128/apps}
