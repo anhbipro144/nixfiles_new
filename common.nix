@@ -55,8 +55,6 @@
                 }
 
 
-                    eval "$(fnm env --use-on-cd --shell zsh)"
-
                     macchina
 
 
@@ -129,7 +127,9 @@
 
         #Nixhome-manager switch --flake $HOME/.config/home-manager
         hms =
-          "home-manager switch --flake $HOME/.config/home-manager#ubuntu@vm";
+          "home-manager switch --flake $HOME/.config/home-manager#neo@main";
+
+ 
 
         #Shine-wa
         wadev =
