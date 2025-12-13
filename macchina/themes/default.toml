@@ -1,0 +1,58 @@
+hide_ascii      = false
+spacing         = 1
+padding         = 5
+separator       = ""
+key_color       = "LightCyan"
+separator_color = "Yellow"
+prefer_small_ascii = true
+
+[bar]
+glyph           = " "
+symbol_open     = "("
+symbol_close    = ")"
+hide_delimiters = false
+visible         = false
+
+[box]
+title           = " astatine "
+border          = "rounded"
+visible         = false
+
+[box.inner_margin]
+x               = 2
+y               = 1
+
+[custom_ascii]
+color           = "#BB90B7"
+path            = "/home/neo/.config/home-manager/macchina/themes/linux-ascii"
+
+[randomize]
+key_color       = false
+separator_color = false
+
+[palette]
+type            = "Dark"
+visible         = true
+glyph           = "   "
+
+[keys]
+host            = "  host"
+kernel          = "󰌽  kernel"
+battery         = "󰁹  battery"
+os              = "  os"
+de              = "  de"
+wm              = "  wm"
+distro          = "  distro"
+terminal        = "  terminal"
+shell           = "  shell"
+packages        = "  packages"
+uptime          = "󰥔  uptime"
+memory          = "  memory"
+machine         = "󰇅  machine"
+local_ip        = "󰱓  ip"
+backlight       = "󰃞  brightness"
+resolution      = "󰍺  resolution"
+cpu_load        = "󰊚  cpu load"
+cpu             = "  cpu"
+gpu             = "󰈐  gpu"
+disk_space      = "  disk space"

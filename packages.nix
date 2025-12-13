@@ -1,8 +1,7 @@
 { pkgs, lib, config, host, zenBrowser, ... }: {
 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "google-chrome"
-  ];
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [ "google-chrome" ];
 
   targets.genericLinux.enable = true; # non-NixOS niceties
   home.packages = with pkgs;
@@ -16,7 +15,6 @@
         vectorcode
         xclip
         macchina
-
 
         # Browser
         zenBrowser
@@ -42,15 +40,17 @@
         mycli
         pgcli
 
-       # Anki
+        # Anki
         noto-fonts
         noto-fonts-cjk-sans
         dejavu_fonts
         (config.lib.nixGL.wrap pkgs.anki-bin)
 
-
         # Etc
         lazysql
         volta
+        grpcurl
+        webcord
+        qutebrowser
       ]);
 }

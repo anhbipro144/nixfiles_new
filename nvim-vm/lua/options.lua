@@ -26,7 +26,7 @@ opt.ignorecase = true
 
 opt.cursorline = true -- Hight current line
 opt.termguicolors = true
-
+opt.background = "dark"
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 opt.mouse = 'a'

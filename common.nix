@@ -45,7 +45,7 @@
 
 
                 chroma() {
-                  docker run -d \
+                  docker run -d --restart unless-stopped \
                     --name chromadb \
                     -p 8000:8000 \
                     -v ~/.chroma_data:/chroma/chroma \
@@ -126,14 +126,11 @@
         nvv = "NVIM_APPNAME=nvim-minimal nvim";
 
         #Nixhome-manager switch --flake $HOME/.config/home-manager
-        hms =
-          "home-manager switch --flake $HOME/.config/home-manager#neo@main";
-
- 
+        hms = "home-manager switch --flake $HOME/.config/home-manager#neo@main";
 
         #Shine-wa
         wadev =
-          "cloud-sql-proxy --address 0.0.0.0 --port 3306 one-global-ocps-dev:asia-southeast1:ocps-dev-db ";
+          "cloud-sql-proxy --address 0.0.0.0 --port 3306 one-global-ocps-dev:asia-southeast1:ocps-dev-db";
         waprod =
           "cloud-sql-proxy --address 0.0.0.0 --port 3303 one-global-ocps-prod:asia-southeast1:ocps-prod-db2";
         watest =
