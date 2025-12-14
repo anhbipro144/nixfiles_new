@@ -51,6 +51,6 @@
         volta
         grpcurl
         webcord
-        qutebrowser
+        mpd
       ]);
 }
