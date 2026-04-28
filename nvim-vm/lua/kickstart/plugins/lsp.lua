@@ -118,7 +118,7 @@ return {
         -- Jump to the definition of the word under your cursor.
         map('gd', telescope_builtin.lsp_definitions, '[G]oto [D]efinition')
 
-        map('gr', telescope_builtin.lsp_references, '[G]oto [R]eferences')
+        map('<leader>ee', telescope_builtin.lsp_references, '[G]oto [R]eferences')
 
         -- Jump to the implementation of the word under your cursor.
         map('gi', telescope_builtin.lsp_implementations, '[G]oto [I]mplementation')

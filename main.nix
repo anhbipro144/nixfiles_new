@@ -3,7 +3,7 @@
 let nixglPkgs = nixgl.packages.${pkgs.system};
 in {
 
-  nixGL = {
+  targets.genericLinux.nixGL = {
     packages = nixglPkgs;
     defaultWrapper = "mesa";
   };
@@ -11,19 +11,56 @@ in {
   i18n.inputMethod = {
     type = "fcitx5";
     enable = true;
-    fcitx5.addons = with pkgs; [ fcitx5-unikey fcitx5-gtk ];
+    fcitx5.addons = with pkgs; [ qt6Packages.fcitx5-unikey fcitx5-gtk ];
   };
 
+  # This fcitx5 autostart works for GNOME, should check if switch to other desktop 
+  # systemd.user.startServices = "sd-switch";
+  #
+  # systemd.user.services.fcitx5 = {
+  #   Unit = {
+  #     Description = "Fcitx 5 input method";
+  #     PartOf = [ "graphical-session.target" ];
+  #     After = [ "graphical-session.target" ];
+  #   };
+  #
+  #   Service = {
+  #     Type = "simple";
+  #     ExecStart = "${pkgs.fcitx5}/bin/fcitx5"; # <-- NO -d
+  #     Restart = "on-failure";
+  #     RestartSec = 1;
+  #
+  #     # Kitty note: it uses GLFW; fcitx docs recommend this env var for kitty.
+  #     Environment = [ "GLFW_IM_MODULE=ibus" ];
+  #   };
+  #
+  #   Install = { WantedBy = [ "graphical-session.target" ]; };
+  # };
+  #
   home.sessionVariables = {
     GTK_IM_MODULE = "fcitx";
     QT_IM_MODULE = "fcitx";
     XMODIFIERS = "@im=fcitx";
+    JIRA_USER = "lanh.nguyen.tpv@one-line.com";
+    JIRA_WEB = "oneline.atlassian.net";
   };
 
-  home.sessionPath =
-    [ "$HOME/personal/work" "$HOME/.volta/bin" "$HOME/.docker/completions" ];
+  home.sessionPath = [
+    "$HOME/personal/work"
+    "$HOME/.volta/bin"
+    "$HOME/.docker/completions"
+    "$HOME/.local/bin"
+    "$HOME/go/bin"
+  ];
 
   programs = {
+    rmpc = {
+      enable = true;
+
+      # Keep config in your dotfiles repo and inject its contents:
+      config = builtins.readFile ./rmpc/config.ron;
+    };
+
     kitty = {
       enable = true;
       package = config.lib.nixGL.wrap pkgs.kitty;

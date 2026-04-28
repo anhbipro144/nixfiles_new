@@ -1,8 +1,45 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
+
+  # Optional but nice: lets you use config.xdg.userDirs.music
+  xdg.userDirs.enable = true;
+
+  services.mpd = {
+    enable = true;
+
+    # Pick one:
+    musicDirectory = config.xdg.userDirs.music; # if xdg.userDirs.enable = true
+    # musicDirectory = "${config.home.homeDirectory}/Music";
+
+    # MPD listens here by default in HM:
+    network.startWhenNeeded = true;
+    network.listenAddress = "127.0.0.1";
+    network.port = 6600;
+
+    # Optional: start MPD only when a client connects (socket activation)
+    # network.startWhenNeeded = true;  # :contentReference[oaicite:1]{index=1}
+
+    # IMPORTANT: you need at least one audio_output
+    extraConfig = ''
+      # audio_output {
+      #   type "pipewire"
+      #   name "PipeWire Output"
+      # }
+
+      # If you’re not on PipeWire, use PulseAudio instead:
+      audio_output {
+        type "pulse"
+        name "PulseAudio Output"
+      }
+    '';
+  };
+
   programs = {
     home-manager.enable = true;
     zoxide.enable = true;
-    neovim.enable = true;
+    neovim = {
+      enable = true;
+      package = pkgs.neovim-unwrapped;
+    };
 
     zsh = {
       enable = true;
@@ -23,7 +60,8 @@
                     source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
                     test -f ~/.p10k.zsh && source ~/.p10k.zsh
 
-
+                    # Load jira-cli
+                    source <(${pkgs.jira-cli-go}/bin/jira completion zsh)
 
                     bindkey -M menuselect '\r' .accept-line
 
@@ -135,15 +173,6 @@
           "cloud-sql-proxy --address 0.0.0.0 --port 3303 one-global-ocps-prod:asia-southeast1:ocps-prod-db2";
         watest =
           "cloud-sql-proxy --address 0.0.0.0 --port 3302 one-global-ocps-test:asia-southeast1:ocps-test-db";
-
-        # NPRD db connects
-        ndev =
-          "cloud-sql-proxy --address 0.0.0.0 --port 3306 one-global-mtfaber-dev:asia-southeast1:sea1-dev-mtfaber-db01:one-nprd-dev-db";
-        ntest =
-          "cloud-sql-proxy --address 0.0.0.0 --port 3303 one-global-mtfaber-test:asia-southeast1:sea1-test-mtfaber-db01:one-nprd-test-db";
-        nprod = ''
-          cloud-sql-proxy --address 0.0.0.0 --port 3302 one-global-chorus-nprd-prod:asia-southeast1:sea1-prod-nprd-db01:one-nprd-prd-db
-        '';
 
       };
 

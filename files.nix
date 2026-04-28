@@ -14,5 +14,5 @@
   };
 
   home.file.".config/macchina" = { source = ./macchina; };
+  home.file.".config/jiratui" = { source = ./jiratui; };
 }
-
