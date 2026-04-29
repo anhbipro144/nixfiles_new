@@ -73,7 +73,7 @@ in {
         allow_remote_control yes
         listen_on unix:@mykitty
         shell_integration enabled
-        font_size 14.0
+        font_size 16.0
 
         # kitty-scrollback.nvim Kitten alias
         # action_alias kitty_scrollback_nvim kitten /home/neo/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py --nvim-args --clean --noplugin -n
