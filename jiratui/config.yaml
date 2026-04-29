@@ -1,3 +1,3 @@
 jira_api_username: "lanh.nguyen.tpv@one-line.com"
-jira_api_token: ""
+jira_api_token: "${JIRA_API_TOKEN}"
 jira_api_base_url: "https://oneline.atlassian.net"
