@@ -2,6 +2,7 @@
 
   # Optional but nice: lets you use config.xdg.userDirs.music
   xdg.userDirs.enable = true;
+  xdg.userDirs.setSessionVariables = true;
 
   services.mpd = {
     enable = true;
@@ -190,4 +191,3 @@
     };
   };
 }
-

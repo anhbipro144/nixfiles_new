@@ -50,6 +50,8 @@ in {
   home.packages = with pkgs;
     ([ zsh-powerlevel10k delta git ripgrep eza bat mosh nsgclientClean ]
       ++ lib.optionals (host == "main") [
+
+        #Utils
         google-cloud-sdk
         rustc
         cargo
@@ -62,6 +64,8 @@ in {
         # Browser
         zenBrowser
         google-chrome
+
+        #API client
         postman
 
         # Python
