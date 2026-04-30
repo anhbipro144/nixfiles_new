@@ -22,17 +22,7 @@ let
 
     exec /opt/Citrix/NSGClient/bin/NSGClient "$@"
   '';
-
-  overlay = final: prev: {
-    jiratui = prev.jiratui.overrideAttrs (old: {
-      postPatch = (old.postPatch or "") + ''
-        substituteInPlace src/jiratui/widgets/work_item_details/details.py \
-          --replace-fail "Select.BLANK" "Select.NULL"
-      '';
-    });
-  };
 in {
-  nixpkgs.overlays = [ overlay ];
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [ "google-chrome" "postman" ];
 
@@ -116,9 +106,6 @@ in {
 
         #Music 
         mpd
-
-        #Jira
-        jiratui
 
         #Java
         # jdk25_headless
