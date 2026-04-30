@@ -1,6 +1,6 @@
 { pkgs, config, nixgl, ... }:
 
-let nixglPkgs = nixgl.packages.${pkgs.system};
+let nixglPkgs = nixgl.packages.${pkgs.stdenv.hostPlatform.system};
 in {
 
   targets.genericLinux.nixGL = {
