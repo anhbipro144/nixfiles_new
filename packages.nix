@@ -1,16 +1,27 @@
 { pkgs, lib, config, host, zenBrowser, ... }:
 let
-  mkWarpCmd = name: body:
-    pkgs.writeShellScriptBin name ''
-      set -euo pipefail
+  nsgclientClean = pkgs.writeShellScriptBin "nsgclient-clean" ''
+    unset LD_LIBRARY_PATH
+    unset NIX_LD
+    unset NIX_LD_LIBRARY_PATH
+    unset LD_PRELOAD
+    unset LIBGL_DRIVERS_PATH
+    unset __EGL_VENDOR_LIBRARY_DIRS
+    unset __EGL_VENDOR_LIBRARY_FILENAMES
+    unset EGL_VENDOR_LIBRARY_FILENAMES
+    unset VK_ICD_FILENAMES
+    unset VK_LAYER_PATH
+    unset GBM_BACKENDS_PATH
+    unset LIBVA_DRIVERS_PATH
+    unset VDPAU_DRIVER_PATH
+    unset QT_PLUGIN_PATH
+    unset QML2_IMPORT_PATH
+    unset GIO_EXTRA_MODULES
+    unset GTK_PATH
+    unset GI_TYPELIB_PATH
 
-      if ! command -v warp-cli >/dev/null 2>&1; then
-        echo "warp-cli not found. Install Cloudflare WARP (package: cloudflare-warp) first." >&2
-        exit 1
-      fi
-
-      ${body}
-    '';
+    exec /opt/Citrix/NSGClient/bin/NSGClient "$@"
+  '';
 
   overlay = final: prev: {
     jiratui = prev.jiratui.overrideAttrs (old: {
@@ -23,15 +34,31 @@ let
 in {
   nixpkgs.overlays = [ overlay ];
   nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "google-chrome"
-      "cloudflare-warp"
-      "postman"
-    ];
+    builtins.elem (lib.getName pkg) [ "google-chrome" "postman" ];
 
   targets.genericLinux.enable = true; # non-NixOS niceties
+  xdg.desktopEntries.nsgclient = lib.mkIf (host == "main") {
+    name = "Citrix Secure Access";
+    exec = "${nsgclientClean}/bin/nsgclient-clean %u";
+    icon = "citrix-receiver";
+    terminal = false;
+    noDisplay = true;
+    categories = [ "Network" "RemoteAccess" ];
+    mimeType = [ "x-scheme-handler/application" "x-scheme-handler/citrixsso" ];
+  };
+
+  xdg.mimeApps = lib.mkIf (host == "main") {
+    enable = true;
+    defaultApplications = {
+      "text/html" = [ "org.qutebrowser.qutebrowser.desktop" ];
+      "x-scheme-handler/http" = [ "org.qutebrowser.qutebrowser.desktop" ];
+      "x-scheme-handler/https" = [ "org.qutebrowser.qutebrowser.desktop" ];
+      "x-scheme-handler/application" = [ "nsgclient.desktop" ];
+      "x-scheme-handler/citrixsso" = [ "nsgclient.desktop" ];
+    };
+  };
   home.packages = with pkgs;
-    ([ zsh-powerlevel10k delta git ripgrep eza bat mosh ]
+    ([ zsh-powerlevel10k delta git ripgrep eza bat mosh nsgclientClean ]
       ++ lib.optionals (host == "main") [
         google-cloud-sdk
         rustc
@@ -102,7 +129,7 @@ in {
         grpcurl
 
         # Etc
-        qutebrowser
+        (config.lib.nixGL.wrap pkgs.qutebrowser)
         gogcli
         protobuf
         qbittorrent-enhanced
@@ -112,16 +139,5 @@ in {
         yt-dlp # yt downloader
         vlc
         go
-
-
-
-        # Warp
-        (mkWarpCmd "warp-on" ''
-          warp-cli connect
-          ${pkgs.curl}/bin/curl -fsS https://www.cloudflare.com/cdn-cgi/trace/ | ${pkgs.gnugrep}/bin/grep '^warp=' || true
-        '')
-        (mkWarpCmd "warp-off" ''
-          warp-cli disconnect
-        '')
       ]);
 }
