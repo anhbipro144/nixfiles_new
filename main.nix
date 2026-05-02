@@ -54,6 +54,22 @@ in {
   ];
 
   programs = {
+    mise = {
+
+      enable = true;
+      enableZshIntegration = true;
+
+      globalConfig = {
+        tools = {
+          node = "22";
+        };
+
+        settings = {
+          experimental = true;
+          idiomatic_version_file_enable_tools = [ "node" ];
+        };
+      };
+    };
     rmpc = {
       enable = true;
 
