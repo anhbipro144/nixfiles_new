@@ -40,6 +40,9 @@
     neovim = {
       enable = true;
       package = pkgs.neovim-unwrapped;
+      defaultEditor = true;
+      withRuby = false;
+      withPython3 = true;
     };
 
     zsh = {

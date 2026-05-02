@@ -124,7 +124,6 @@ in {
         gogcli
         protobuf
         qbittorrent-enhanced
-        volta
         webcord
         jira-cli-go
         yt-dlp # yt downloader
