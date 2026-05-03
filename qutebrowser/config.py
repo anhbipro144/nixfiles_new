@@ -244,3 +244,49 @@ config.bind("<Ctrl+n>", "completion-item-focus next", mode="command")
 config.bind("<Ctrl+p>", "completion-item-focus prev", mode="command")
 config.bind("<Shift+Tab>", "command-history-prev", mode="command")
 config.bind("<Tab>", "command-history-next", mode="command")
+
+
+# * Helper Functions
+def bind(key, command, mode):  # noqa: E302
+    """Bind key to command in mode."""
+    config.bind(key, command, mode=mode)
+
+
+def nmap(key, command):
+    """Bind key to command in normal mode."""
+    bind(key, command, "normal")
+
+
+def imap(key, command):
+    """Bind key to command in insert mode."""
+    bind(key, command, "insert")
+
+
+def cmap(key, command):
+    """Bind key to command in command mode."""
+    bind(key, command, "command")
+
+
+# UI
+# TABS
+c.tabs.new_position.unrelated = "next"
+
+# GENERAL
+c.keyhint.delay = 250
+
+# * Key Bindings
+# ** Reload Configuration
+nmap("t.", "config-source")
+
+nmap("gn", "navigate prev")
+nmap("gp", "navigate next")
+
+nmap('tn', 'tab-move -')
+nmap('tp', 'tab-move +')
+
+# ** Insert/RL
+imap('<Ctrl-w>', 'fake-key <Ctrl-backspace>')
+
+
+# prevent c-w from closing tab
+del c.bindings.default['normal']['<Ctrl-W>']
