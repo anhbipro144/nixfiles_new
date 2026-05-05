@@ -47,7 +47,6 @@ in {
 
   home.sessionPath = [
     "$HOME/personal/work"
-    "$HOME/.volta/bin"
     "$HOME/.docker/completions"
     "$HOME/.local/bin"
     "$HOME/go/bin"
@@ -60,14 +59,11 @@ in {
       enableZshIntegration = true;
 
       globalConfig = {
-        tools = {
-          node = "22";
-        };
+        tools = { node = [ "22" "24" "18.16.0" ]; };
 
-        settings = {
-          experimental = true;
-          idiomatic_version_file_enable_tools = [ "node" ];
-        };
+        hooks = { postinstall = "corepack enable"; };
+
+        settings = { idiomatic_version_file_enable_tools = [ "node" ]; };
       };
     };
     rmpc = {
