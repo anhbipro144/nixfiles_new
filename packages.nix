@@ -120,6 +120,10 @@ in {
         grpcurl
 
         # Etc
+        (pkgs.pass.withExtensions (exts: [ exts.pass-otp ]))
+        gnupg
+        rofi
+        python3Packages.tldextract
         (config.lib.nixGL.wrap pkgs.qutebrowser)
         gogcli
         protobuf

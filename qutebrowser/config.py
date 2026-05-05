@@ -214,6 +214,7 @@ c.url.searchengines = {
     "DEFAULT": "https://www.google.com/search?q={}",
     "jira": "https://oneline.atlassian.net/browse/CNPRD-{}",
     "y": "https://www.youtube.com/results?search_query={}",
+    "n": "https://search.nixos.org/packages?channel=unstable&query={}",
 }
 # Render all web contents using a dark theme. On QtWebEngine < 6.7, this
 # setting requires a restart and does not support URL patterns, only the
@@ -281,8 +282,19 @@ nmap("t.", "config-source")
 nmap("gn", "navigate prev")
 nmap("gp", "navigate next")
 
-nmap('tn', 'tab-move -')
-nmap('tp', 'tab-move +')
+nmap("tn", "tab-move -")
+nmap("tp", "tab-move +")
+
+# ** Password manager: pass + qute-pass
+imap("<Ctrl-p>", "spawn --userscript qute-pass")
+imap("<Ctrl-Shift-u>", "spawn --userscript qute-pass --username-only")
+imap("<Ctrl-Shift-p>", "spawn --userscript qute-pass --password-only")
+imap("<Ctrl-Shift-o>", "spawn --userscript qute-pass --otp-only")
+
+nmap(",p", "spawn --userscript qute-pass")
+nmap(",pu", "spawn --userscript qute-pass --username-only")
+nmap(",pp", "spawn --userscript qute-pass --password-only")
+nmap(",po", "spawn --userscript qute-pass --otp-only")
 
 # ** Insert/RL
 imap('<Ctrl-w>', 'fake-key <Ctrl-backspace>')
