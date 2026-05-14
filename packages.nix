@@ -1,4 +1,4 @@
-{ pkgs, lib, config, host, zenBrowser, ... }:
+{ pkgs, lib, config, host, zenBrowser, neovimPkgs, ... }:
 let
   nsgclientClean = pkgs.writeShellScriptBin "nsgclient-clean" ''
     unset LD_LIBRARY_PATH
@@ -56,7 +56,9 @@ in {
         rustc
         cargo
         pnpm
-        flameshot
+        # nixos-unstable currently resolves to flameshot 14.0.rc1, which fails
+        # to capture on this regolith-x11 session.
+        neovimPkgs.flameshot
         vectorcode
         xclip
         macchina

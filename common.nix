@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ pkgs, neovimPkgs, config, ... }: {
 
   # Optional but nice: lets you use config.xdg.userDirs.music
   xdg.userDirs.enable = true;
@@ -39,7 +39,7 @@
     zoxide.enable = true;
     neovim = {
       enable = true;
-      package = pkgs.neovim-unwrapped;
+      package = neovimPkgs.neovim-unwrapped;
       defaultEditor = true;
       withRuby = false;
       withPython3 = true;
