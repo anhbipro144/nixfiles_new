@@ -1,5 +1,7 @@
 { pkgs, lib, config, host, zenBrowser, neovimPkgs, ... }:
 let
+  veloxdb = pkgs.callPackage ./veloxdb.nix { };
+
   nsgclientClean = pkgs.writeShellScriptBin "nsgclient-clean" ''
     unset LD_LIBRARY_PATH
     unset NIX_LD
@@ -24,7 +26,12 @@ let
   '';
 in {
   nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [ "google-chrome" "postman" ];
+    builtins.elem (lib.getName pkg) [
+      "google-chrome"
+      "postman"
+      "github-copilot-cli"
+      "veloxdb"
+    ];
 
   targets.genericLinux.enable = true; # non-NixOS niceties
   xdg.desktopEntries.nsgclient = lib.mkIf (host == "main") {
@@ -109,6 +116,7 @@ in {
 
         #Databases
         lazysql
+        (config.lib.nixGL.wrap veloxdb)
 
         #Music 
         mpd
@@ -135,5 +143,6 @@ in {
         yt-dlp # yt downloader
         vlc
         go
+        github-copilot-cli
       ]);
 }
