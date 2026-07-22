@@ -1,4 +1,5 @@
-{ pkgs, lib, config, host, zenBrowser, neovimPkgs, ... }:
+{ pkgs, lib, config, host, zenBrowser, neovimPkgs, nvimMcp, codexAcpPackage
+, codexPackage, ... }:
 let
   veloxdb = pkgs.callPackage ./veloxdb.nix { };
 
@@ -31,6 +32,7 @@ in {
       "postman"
       "github-copilot-cli"
       "veloxdb"
+      "unrar"
     ];
 
   targets.genericLinux.enable = true; # non-NixOS niceties
@@ -72,7 +74,7 @@ in {
 
         # Browser
         zenBrowser
-        google-chrome
+        (config.lib.nixGL.wrap pkgs.google-chrome)
 
         #API client
         postman
@@ -107,8 +109,8 @@ in {
         (config.lib.nixGL.wrap pkgs.anki-bin)
 
         # AI CLIs
-        codex
-        codex-acp
+        codexPackage
+        codexAcpPackage
         gemini-cli
 
         # Search
