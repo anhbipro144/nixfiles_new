@@ -10,10 +10,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zen.url = "path:./zen";
+    uniclipboard = {
+      url = "path:./uniclipboard";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixgl.url = "github:nix-community/nixGL";
+    nvim-mcp.url = "github:linw1995/nvim-mcp";
   };
 
-  outputs = { nixpkgs, nixpkgs-neovim, home-manager, zen, nixgl, ... }:
+  outputs = { nixpkgs, nixpkgs-neovim, home-manager, zen, uniclipboard, nixgl
+    , nvim-mcp, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -23,15 +29,22 @@
       neovimPkgs = import nixpkgs-neovim { inherit system; };
 
       zenBrowser = zen.packages.${system}.zen-browser;
+      nvimMcp = nvim-mcp.packages.${system}.default;
+      uniclipboardPackage = uniclipboard.packages.${system}.default;
 
       mkHome = { host, user }:
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = { inherit neovimPkgs zenBrowser nixgl host user; };
+          extraSpecialArgs = {
+            inherit neovimPkgs zenBrowser nixgl nvimMcp host user;
+          };
           modules = ([ ./base.nix ./files.nix ./packages.nix ./common.nix ]
 
-            ++ (if host == "main" then [ ./main.nix ] else [ ])
-            ++ (if host == "vm" then [ ./vm.nix ] else [ ]));
+            ++ (if host == "main" then [
+              ./main.nix
+              ({ ... }: { home.packages = [ uniclipboardPackage ]; })
+            ] else
+              [ ]) ++ (if host == "vm" then [ ./vm.nix ] else [ ]));
         };
     in {
       # homeConfigurations."neo" = home-manager.lib.homeManagerConfiguration {
