@@ -235,6 +235,7 @@ c.colors.webpage.darkmode.enabled = True
 # image inversion": qutebrowser default settings.
 # Type: Bool
 config.set("colors.webpage.darkmode.enabled", False, "http://localhost:3000/*")
+config.set("colors.webpage.darkmode.enabled", False, "http://localhost:3002/*")
 config.set("colors.webpage.darkmode.enabled", False, "*://*.one-line.com/*")
 
 # Bindings for normal mode
@@ -267,10 +268,13 @@ def cmap(key, command):
     """Bind key to command in command mode."""
     bind(key, command, "command")
 
+c.content.unknown_url_scheme_policy = "allow-all"
+
 
 # UI
 # TABS
 c.tabs.new_position.unrelated = "next"
+c.tabs.select_on_remove = "last-used"
 
 # GENERAL
 c.keyhint.delay = 250
@@ -296,9 +300,15 @@ nmap(",pu", "spawn --userscript qute-pass --username-only")
 nmap(",pp", "spawn --userscript qute-pass --password-only")
 nmap(",po", "spawn --userscript qute-pass --otp-only")
 
+# ** Translation
+nmap(",t", "spawn --userscript translate-popup --target_lang vi")
+nmap(",T", "spawn --userscript translate-popup --url")
+nmap(",i", "spawn --userscript translate-input-popup --target_lang vi")
+
+cmap("T", "spawn --userscript translate-input-popup --target_lang vi")
 # ** Insert/RL
-imap('<Ctrl-w>', 'fake-key <Ctrl-backspace>')
+imap("<Ctrl-w>", "fake-key <Ctrl-backspace>")
 
 
 # prevent c-w from closing tab
-del c.bindings.default['normal']['<Ctrl-W>']
+# del c.bindings.default["normal"]["<Ctrl-W>"]

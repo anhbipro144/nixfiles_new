@@ -1,5 +1,5 @@
-{ pkgs, lib, config, host, zenBrowser, neovimPkgs, nvimMcp, codexAcpPackage
-, codexPackage, ... }:
+{ pkgs, lib, config, zenBrowser, neovimPkgs, codexAcpPackage, codexPackage
+, ... }:
 let
   veloxdb = pkgs.callPackage ./veloxdb.nix { };
 
@@ -36,7 +36,7 @@ in {
     ];
 
   targets.genericLinux.enable = true; # non-NixOS niceties
-  xdg.desktopEntries.nsgclient = lib.mkIf (host == "main") {
+  xdg.desktopEntries.nsgclient = {
     name = "Citrix Secure Access";
     exec = "${nsgclientClean}/bin/nsgclient-clean %u";
     icon = "citrix-receiver";
@@ -46,7 +46,7 @@ in {
     mimeType = [ "x-scheme-handler/application" "x-scheme-handler/citrixsso" ];
   };
 
-  xdg.mimeApps = lib.mkIf (host == "main") {
+  xdg.mimeApps = {
     enable = true;
     defaultApplications = {
       "text/html" = [ "org.qutebrowser.qutebrowser.desktop" ];
@@ -58,7 +58,7 @@ in {
   };
   home.packages = with pkgs;
     ([ zsh-powerlevel10k delta git ripgrep eza bat mosh nsgclientClean ]
-      ++ lib.optionals (host == "main") [
+      ++ [
 
         #Utils
         google-cloud-sdk

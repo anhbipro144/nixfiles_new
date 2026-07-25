@@ -59,11 +59,13 @@ in {
       enableZshIntegration = true;
 
       globalConfig = {
-        tools = { node = [ "22" "24" "18.16.0" ]; };
+        tools = { node = [ "22.14.0" "24" "18.16.0" ]; };
 
         hooks = { postinstall = "corepack enable"; };
 
-        settings = { idiomatic_version_file_enable_tools = [ "node" ]; };
+        settings = {
+          experimental = true;
+        };
       };
     };
     rmpc = {

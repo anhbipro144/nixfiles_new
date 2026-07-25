@@ -165,7 +165,6 @@
         #nvim
         nv = "nvim";
         nvb = "NVIM_APPNAME=nvim-base nvim";
-        nvv = "NVIM_APPNAME=nvim-minimal nvim";
 
         #Nixhome-manager switch --flake $HOME/.config/home-manager
         hms = "home-manager switch --flake $HOME/.config/home-manager#neo@main";

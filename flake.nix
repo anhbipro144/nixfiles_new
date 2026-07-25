@@ -20,11 +20,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixgl.url = "github:nix-community/nixGL";
-    nvim-mcp.url = "github:linw1995/nvim-mcp";
   };
 
   outputs = { nixpkgs, codex-nixpkgs, nixpkgs-neovim, home-manager, zen
-    , uniclipboard, codex-acp, nixgl, nvim-mcp, ... }:
+    , uniclipboard, codex-acp, nixgl, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -35,24 +34,23 @@
       codexPackage = codex-nixpkgs.legacyPackages.${system}.codex;
 
       zenBrowser = zen.packages.${system}.zen-browser;
-      nvimMcp = nvim-mcp.packages.${system}.default;
       uniclipboardPackage = uniclipboard.packages.${system}.default;
       codexAcpPackage = codex-acp.packages.${system}.default;
 
-      mkHome = { host, user }:
+      mkHome =
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
-            inherit neovimPkgs zenBrowser nixgl nvimMcp codexAcpPackage
-              codexPackage host user;
+            inherit neovimPkgs zenBrowser nixgl codexAcpPackage codexPackage;
           };
-          modules = ([ ./base.nix ./files.nix ./packages.nix ./common.nix ]
-
-            ++ (if host == "main" then [
-              ./main.nix
-              ({ ... }: { home.packages = [ uniclipboardPackage ]; })
-            ] else
-              [ ]) ++ (if host == "vm" then [ ./vm.nix ] else [ ]));
+          modules = [
+            ./base.nix
+            ./files.nix
+            ./packages.nix
+            ./common.nix
+            ./main.nix
+            ({ ... }: { home.packages = [ uniclipboardPackage ]; })
+          ];
         };
     in {
       # homeConfigurations."neo" = home-manager.lib.homeManagerConfiguration {
@@ -64,13 +62,6 @@
       #   modules = [ ./home.nix ];
       #
       # };
-      homeConfigurations."neo@main" = mkHome {
-        host = "main";
-        user = "neo";
-      };
-      homeConfigurations."ubuntu@vm" = mkHome {
-        host = "vm";
-        user = "ubuntu";
-      };
+      homeConfigurations."neo@main" = mkHome;
     };
 }
