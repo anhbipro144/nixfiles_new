@@ -167,7 +167,7 @@
         nvb = "NVIM_APPNAME=nvim-base nvim";
 
         #Nixhome-manager switch --flake $HOME/.config/home-manager
-        hms = "home-manager switch --flake $HOME/.config/home-manager#neo@main";
+        hms = "home-manager switch --flake \"git+file://$HOME/.config/home-manager?submodules=1#neo@main\"";
 
         #Shine-wa
         wadev =
