@@ -146,5 +146,8 @@ in {
         vlc
         go
         github-copilot-cli
+        ctx7
+        wine64
+        unrar
       ]);
 }
