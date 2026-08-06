@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "codexAcp": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./codex-acp",
+        "type": "path"
+      },
+      "original": {
+        "path": "./codex-acp",
+        "type": "path"
+      },
+      "parent": []
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -123,6 +139,7 @@
     },
     "root": {
       "inputs": {
+        "codexAcp": "codexAcp",
         "home-manager": "home-manager",
         "nixgl": "nixgl",
         "nixpkgs": "nixpkgs_2",

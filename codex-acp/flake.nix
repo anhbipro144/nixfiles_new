@@ -10,16 +10,16 @@
 
       codex-acp = pkgs.buildNpmPackage rec {
         pname = "codex-acp";
-        version = "1.1.5";
+        version = "1.1.9";
 
         src = pkgs.fetchFromGitHub {
           owner = "agentclientprotocol";
           repo = "codex-acp";
           rev = "v${version}";
-          hash = "sha256-5vB/TxxS25F5OPh39Z+6Ofr8Xqdu4gQpwEhMWE1+DiQ=";
+          hash = "sha256-c8Sgj9XNDAO25UOa+vEy619mSi3tG3NJHbKnV1QzOo8=";
         };
 
-        npmDepsHash = "sha256-AJ76gUBYuxMrSpnTI0ix9SOBRv4Q/pcTUNdPYnIWRIM=";
+        npmDepsHash = "sha256-MsP8g4X4yX/K8nwNieQdgGaJfAf8FOc0D3OCypTx+w0=";
 
         meta = {
           description = "ACP adapter for Codex CLI";

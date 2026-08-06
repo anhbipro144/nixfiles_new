@@ -14,10 +14,14 @@
       url = "path:./uniclipboard";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    codexAcp = {
+      url = "path:./codex-acp";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixgl.url = "github:nix-community/nixGL";
   };
 
-  outputs = { nixpkgs, nixpkgs-neovim, home-manager, zen, uniclipboard, nixgl
+  outputs = { nixpkgs, nixpkgs-neovim, home-manager, zen, uniclipboard, codexAcp, nixgl
     , ... }:
     let
       system = "x86_64-linux";
@@ -28,6 +32,7 @@
       neovimPkgs = import nixpkgs-neovim { inherit system; };
       zenBrowser = zen.packages.${system}.zen-browser;
       uniclipboardPackage = uniclipboard.packages.${system}.default;
+      codexAcpPackage = codexAcp.packages.${system}.default;
 
       mkHome =
         home-manager.lib.homeManagerConfiguration {
@@ -41,7 +46,9 @@
             ./packages.nix
             ./common.nix
             ./main.nix
-            ({ ... }: { home.packages = [ uniclipboardPackage ]; })
+            ({ ... }: {
+              home.packages = [ uniclipboardPackage codexAcpPackage ];
+            })
           ];
         };
     in {

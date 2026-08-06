@@ -107,7 +107,6 @@ in {
 
       # AI CLIs
       codex
-      codex-acp
       gemini-cli
 
       # Search
