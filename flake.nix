@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    codex-nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-neovim.url =
       "github:nixos/nixpkgs/27f6bed89e3b18ad1a53505daf493ce2deaf345a";
     home-manager = {
@@ -15,15 +14,11 @@
       url = "path:./uniclipboard";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    codex-acp = {
-      url = "path:./codex-acp";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixgl.url = "github:nix-community/nixGL";
   };
 
-  outputs = { nixpkgs, codex-nixpkgs, nixpkgs-neovim, home-manager, zen
-    , uniclipboard, codex-acp, nixgl, ... }:
+  outputs = { nixpkgs, nixpkgs-neovim, home-manager, zen, uniclipboard, nixgl
+    , ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -31,17 +26,14 @@
         overlays = [ nixgl.overlays.default ];
       };
       neovimPkgs = import nixpkgs-neovim { inherit system; };
-      codexPackage = codex-nixpkgs.legacyPackages.${system}.codex;
-
       zenBrowser = zen.packages.${system}.zen-browser;
       uniclipboardPackage = uniclipboard.packages.${system}.default;
-      codexAcpPackage = codex-acp.packages.${system}.default;
 
       mkHome =
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
-            inherit neovimPkgs zenBrowser nixgl codexAcpPackage codexPackage;
+            inherit neovimPkgs zenBrowser nixgl;
           };
           modules = [
             ./base.nix

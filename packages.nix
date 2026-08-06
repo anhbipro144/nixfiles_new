@@ -1,5 +1,4 @@
-{ pkgs, lib, config, zenBrowser, neovimPkgs, codexAcpPackage, codexPackage
-, ... }:
+{ pkgs, lib, config, zenBrowser, neovimPkgs, ... }:
 let
   veloxdb = pkgs.callPackage ./veloxdb.nix { };
 
@@ -57,97 +56,96 @@ in {
     };
   };
   home.packages = with pkgs;
-    ([ zsh-powerlevel10k delta git ripgrep eza bat mosh nsgclientClean ]
-      ++ [
+    ([ zsh-powerlevel10k delta git ripgrep eza bat mosh nsgclientClean ] ++ [
 
-        #Utils
-        google-cloud-sdk
-        rustc
-        cargo
-        pnpm
-        # nixos-unstable currently resolves to flameshot 14.0.rc1, which fails
-        # to capture on this regolith-x11 session.
-        neovimPkgs.flameshot
-        vectorcode
-        xclip
-        macchina
+      #Utils
+      google-cloud-sdk
+      rustc
+      cargo
+      pnpm
+      # nixos-unstable currently resolves to flameshot 14.0.rc1, which fails
+      # to capture on this regolith-x11 session.
+      neovimPkgs.flameshot
+      xclip
+      macchina
 
-        # Browser
-        zenBrowser
-        (config.lib.nixGL.wrap pkgs.google-chrome)
+      # Browser
+      zenBrowser
+      (config.lib.nixGL.wrap pkgs.google-chrome)
 
-        #API client
-        postman
+      #API client
+      postman
 
-        # Python
-        uv
+      # Python
+      uv
 
-        # C++
-        gnumake
-        gcc
-        pkg-config
-        autoconf
-        automake
-        libtool
-        bison
-        flex
-        clang-tools
-        neocmakelsp
-        cmake
+      # C++
+      gnumake
+      gcc
+      pkg-config
+      autoconf
+      automake
+      libtool
+      bison
+      flex
+      clang-tools
+      neocmakelsp
+      cmake
 
-        # Db CLIs
-        mycli
-        pgcli
+      # Db CLIs
+      mycli
+      pgcli
 
-        #Github cli
-        # gh
+      #Github cli
+      # gh
 
-        # Anki
-        noto-fonts
-        noto-fonts-cjk-sans
-        dejavu_fonts
-        (config.lib.nixGL.wrap pkgs.anki-bin)
+      # Anki
+      noto-fonts
+      noto-fonts-cjk-sans
+      dejavu_fonts
+      (config.lib.nixGL.wrap pkgs.anki-bin)
 
-        # AI CLIs
-        codexPackage
-        codexAcpPackage
-        gemini-cli
+      # AI CLIs
+      codex
+      codex-acp
+      gemini-cli
 
-        # Search
-        fd
+      # Search
+      fd
 
-        #Databases
-        lazysql
-        (config.lib.nixGL.wrap veloxdb)
+      #Databases
+      lazysql
+      (config.lib.nixGL.wrap veloxdb)
 
-        #Music 
-        mpd
+      #Music 
+      mpd
 
-        #Java
-        # jdk25_headless
-        jdk25
+      #Java
+      # jdk25_headless
+      jdk25
 
-        #Databases
-        postgresql
-        grpcurl
+      #Databases
+      postgresql
+      grpcurl
 
-        # Etc
-        (pkgs.pass.withExtensions (exts: [ exts.pass-otp ]))
-        gnupg
-        rofi
-        python3Packages.tldextract
-        (config.lib.nixGL.wrap pkgs.qutebrowser)
-        gogcli
-        protobuf
-        qbittorrent-enhanced
-        webcord
-        jira-cli-go
-        yt-dlp # yt downloader
-        vlc
-        go
-        github-copilot-cli
-        ctx7
-        wine64
-        unrar
-      ]);
+      # Etc
+      (pkgs.pass.withExtensions (exts: [ exts.pass-otp ]))
+      gnupg
+      rofi
+      python3Packages.tldextract
+      (config.lib.nixGL.wrap pkgs.qutebrowser)
+      gogcli
+      protobuf
+      qbittorrent-enhanced
+      webcord
+      jira-cli-go
+      yt-dlp # yt downloader
+      vlc
+      go
+      github-copilot-cli
+      ctx7
+      wine64
+      unrar
+      google-alloydb-auth-proxy
+    ]);
 }

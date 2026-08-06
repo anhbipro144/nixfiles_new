@@ -1,7 +1,6 @@
 # filepath: .gitignore
 # Local secrets for Home Manager (do not commit)
 /secrets/secrets.env
-.vectorcode
 
 # OS/system files
 .DS_Store
