@@ -146,5 +146,6 @@ in {
       wine64
       unrar
       google-alloydb-auth-proxy
+      (config.lib.nixGL.wrap figma-linux)
     ]);
 }
