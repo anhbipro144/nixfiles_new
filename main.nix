@@ -38,11 +38,18 @@ in {
   # };
   #
   home.sessionVariables = {
+    # Kitty uses GLFW and must select Fcitx's IBus frontend at startup.
+    GLFW_IM_MODULE = "ibus";
     GTK_IM_MODULE = "fcitx";
     QT_IM_MODULE = "fcitx";
     XMODIFIERS = "@im=fcitx";
     JIRA_USER = "lanh.nguyen.tpv@one-line.com";
     JIRA_WEB = "oneline.atlassian.net";
+  };
+
+  # GNOME launches the configured terminal through systemd-run --user.
+  systemd.user.sessionVariables = {
+    GLFW_IM_MODULE = "ibus";
   };
 
   home.sessionPath = [
@@ -88,6 +95,11 @@ in {
         listen_on unix:@mykitty
         shell_integration enabled
         font_size 16.0
+
+        # Native cursor movement trail; replaces smear-cursor.nvim.
+        cursor_trail 3
+        cursor_trail_decay 0.1 0.3
+        cursor_trail_start_threshold 1
 
         # kitty-scrollback.nvim Kitten alias
         # action_alias kitty_scrollback_nvim kitten /home/neo/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py --nvim-args --clean --noplugin -n

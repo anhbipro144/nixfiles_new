@@ -237,6 +237,7 @@ c.colors.webpage.darkmode.enabled = True
 config.set("colors.webpage.darkmode.enabled", False, "http://localhost:3000/*")
 config.set("colors.webpage.darkmode.enabled", False, "http://localhost:3002/*")
 config.set("colors.webpage.darkmode.enabled", False, "*://*.one-line.com/*")
+config.set("colors.webpage.darkmode.enabled", False, "https://id.zalo.me/*")
 
 # Bindings for normal mode
 config.bind("<Escape>", "fake-key <Escape>")

@@ -43,6 +43,7 @@
       defaultEditor = true;
       withRuby = false;
       withPython3 = true;
+      sideloadInitLua = true;
     };
 
     zsh = {

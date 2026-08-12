@@ -1,0 +1,123 @@
+diff --git a/internal/watcher/watcher.go b/internal/watcher/watcher.go
+index 9de4fba..7e50d87 100644
+--- a/internal/watcher/watcher.go
++++ b/internal/watcher/watcher.go
+@@ -111,46 +111,8 @@
+ 		}
+ 	}
+ 
+-	// Find and open all existing files that match the newly registered patterns
+-	// TODO: not all language servers require this, but typescript does. Make this configurable
+-	go func() {
+-		startTime := time.Now()
+-		filesOpened := 0
+-
+-		err := filepath.WalkDir(w.workspacePath, func(path string, d os.DirEntry, err error) error {
+-			if err != nil {
+-				return err
+-			}
+-
+-			// Skip directories that should be excluded
+-			if d.IsDir() {
+-				watcherLogger.Debug("Processing directory: %s", path)
+-				if path != w.workspacePath && w.shouldExcludeDir(path) {
+-					watcherLogger.Debug("Skipping excluded directory: %s", path)
+-					return filepath.SkipDir
+-				}
+-			} else {
+-				// Process files
+-				w.openMatchingFile(ctx, path)
+-				filesOpened++
+-
+-				// Add a small delay after every 100 files to prevent overwhelming the server
+-				if filesOpened%100 == 0 {
+-					time.Sleep(10 * time.Millisecond)
+-				}
+-			}
+-
+-			return nil
+-		})
+-
+-		elapsedTime := time.Since(startTime)
+-		watcherLogger.Info("Workspace scan complete: processed %d files in %.2f seconds",
+-			filesOpened, elapsedTime.Seconds())
+-
+-		if err != nil {
+-			watcherLogger.Error("Error scanning workspace for files to open: %v", err)
+-		}
+-	}()
++	// Files are deliberately opened only by individual MCP tool requests.
++	// Client.OpenFile is idempotent, so repeated requests are inexpensive.
+ }
+ 
+ // WatchWorkspace sets up file watching for a workspace
+diff --git a/internal/lsp/typescript.go b/internal/lsp/typescript.go
+index 54de054..7631060 100644
+--- a/internal/lsp/typescript.go
++++ b/internal/lsp/typescript.go
+@@ -2,64 +2,11 @@ package lsp
+ 
+ import (
+ 	"context"
+-	"fmt"
+-	"os"
+-	"path/filepath"
+-	"strings"
+ )
+ 
+-// initializeTypescriptLanguageServer initializes the TypeScript language server
+-// with specific configurations and opens all TypeScript files in the workspace.
++// initializeTypescriptLanguageServer initializes the TypeScript language server.
+ func initializeTypescriptLanguageServer(ctx context.Context, client *Client, workspaceDir string) error {
+ 	lspLogger.Info("Initializing TypeScript language server with workspace: %s", workspaceDir)
+ 
+-	// First, open all TypeScript files in the workspace
+-	if err := openAllTypeScriptFiles(ctx, client, workspaceDir); err != nil {
+-		return fmt.Errorf("failed to open TypeScript files: %w", err)
+-	}
+-
+-	return nil
+-}
+-
+-// openAllTypeScriptFiles finds and opens all TypeScript files in the workspace
+-func openAllTypeScriptFiles(ctx context.Context, client *Client, workspaceDir string) error {
+-	lspLogger.Info("Opening all TypeScript files in workspace: %s", workspaceDir)
+-
+-	// Track count of opened files for logging
+-	fileCount := 0
+-
+-	// Walk the workspace directory
+-	err := filepath.Walk(workspaceDir, func(path string, info os.FileInfo, err error) error {
+-		if err != nil {
+-			return err
+-		}
+-
+-		// Skip directories
+-		if info.IsDir() {
+-			// Skip node_modules, .git, and other common directories to avoid processing too many files
+-			basename := filepath.Base(path)
+-			if basename == "node_modules" || basename == ".git" || strings.HasPrefix(basename, ".") {
+-				return filepath.SkipDir
+-			}
+-			return nil
+-		}
+-
+-		// Check if file is a TypeScript file
+-		if strings.HasSuffix(path, ".ts") || strings.HasSuffix(path, ".tsx") {
+-			if err := client.OpenFile(ctx, path); err != nil {
+-				lspLogger.Warn("Failed to open TypeScript file %s: %v", path, err)
+-				return nil // Continue with other files even if one fails
+-			}
+-			fileCount++
+-		}
+-
+-		return nil
+-	})
+-
+-	if err != nil {
+-		return fmt.Errorf("error walking workspace directory: %w", err)
+-	}
+-
+-	lspLogger.Info("Opened %d TypeScript files", fileCount)
+ 	return nil
+ }

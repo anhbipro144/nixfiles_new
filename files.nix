@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 let
   passWithOtp = pkgs.pass.withExtensions (exts: [ exts.pass-otp ]);
   qutePassPython = pkgs.python3.withPackages (ps: [ ps.tldextract ]);
@@ -13,10 +13,8 @@ in {
 
   home.file = {
     ".config/kitty/themes".source = ./kitty/themes;
-    ".config/nvim" = {
-      source = ./nvim;
-      recursive = true;
-    };
+    ".config/nvim".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/nvim";
 
     ".config/qutebrowser/config.py".source = ./qutebrowser/config.py;
 

@@ -2,6 +2,8 @@
 let
   veloxdb = pkgs.callPackage ./veloxdb.nix { };
 
+  mcp-language-server-lazy = pkgs.callPackage ./mcp-language-server-lazy.nix { };
+
   nsgclientClean = pkgs.writeShellScriptBin "nsgclient-clean" ''
     unset LD_LIBRARY_PATH
     unset NIX_LD
@@ -55,6 +57,11 @@ in {
       "x-scheme-handler/citrixsso" = [ "nsgclient.desktop" ];
     };
   };
+
+  # Desktop apps may replace this managed symlink when changing associations.
+  # Keep the declarative MIME defaults authoritative on every activation.
+  xdg.configFile."mimeapps.list".force = true;
+
   home.packages = with pkgs;
     ([ zsh-powerlevel10k delta git ripgrep eza bat mosh nsgclientClean ] ++ [
 
@@ -108,6 +115,7 @@ in {
       # AI CLIs
       codex
       gemini-cli
+      mcp-language-server-lazy
 
       # Search
       fd
@@ -147,5 +155,6 @@ in {
       unrar
       google-alloydb-auth-proxy
       (config.lib.nixGL.wrap figma-linux)
+      ast-grep
     ]);
 }
