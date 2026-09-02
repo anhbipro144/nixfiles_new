@@ -122,10 +122,10 @@ in {
 
       #Databases
       lazysql
-      (config.lib.nixGL.wrap veloxdb)
 
       #Music 
       mpd
+      (config.lib.nixGL.wrap pkgs.kid3)
 
       #Java
       # jdk25_headless

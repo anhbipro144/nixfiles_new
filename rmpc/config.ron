@@ -27,6 +27,8 @@
             "<Tab>":   NextTab,
             "<Left>":  PreviousTab,
             "<S-Tab>": PreviousTab,
+            "<S-H>":   PreviousTab,
+            "<S-L>":   NextTab,
             "1":       SwitchToTab("Queue"),
             "2":       SwitchToTab("Directories"),
             "3":       SwitchToTab("Artists"),
@@ -43,8 +45,6 @@
         navigation: {
             "<S-Up>":      PaneUp,
             "<S-Down>":    PaneDown,
-            "<S-H>":       PaneLeft,
-            "<S-L>":       PaneRight,
             "<C-u>":       UpHalf,
             "N":           PreviousResult,
             "a":           Add,
