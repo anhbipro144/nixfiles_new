@@ -1,7 +1,5 @@
 { pkgs, lib, config, zenBrowser, neovimPkgs, ... }:
 let
-  veloxdb = pkgs.callPackage ./veloxdb.nix { };
-
   mcp-language-server-lazy = pkgs.callPackage ./mcp-language-server-lazy.nix { };
 
   nsgclientClean = pkgs.writeShellScriptBin "nsgclient-clean" ''
