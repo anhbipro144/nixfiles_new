@@ -30,7 +30,6 @@ in {
       "google-chrome"
       "postman"
       "github-copilot-cli"
-      "veloxdb"
       "unrar"
     ];
 
