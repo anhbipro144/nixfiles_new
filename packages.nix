@@ -60,7 +60,7 @@ in {
   xdg.configFile."mimeapps.list".force = true;
 
   home.packages = with pkgs;
-    ([ zsh-powerlevel10k delta git ripgrep eza bat mosh nsgclientClean ] ++ [
+    ([ zsh-powerlevel10k git ripgrep eza bat mosh nsgclientClean ] ++ [
 
       #Utils
       google-cloud-sdk
