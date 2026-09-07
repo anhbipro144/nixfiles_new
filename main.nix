@@ -45,11 +45,13 @@ in {
     XMODIFIERS = "@im=fcitx";
     JIRA_USER = "lanh.nguyen.tpv@one-line.com";
     JIRA_WEB = "oneline.atlassian.net";
+    HINDSIGHT_API_LLM_PROVIDER = "github-copilot";
   };
 
   # GNOME launches the configured terminal through systemd-run --user.
   systemd.user.sessionVariables = {
     GLFW_IM_MODULE = "ibus";
+    HINDSIGHT_API_LLM_PROVIDER = "github-copilot";
   };
 
   home.sessionPath = [
