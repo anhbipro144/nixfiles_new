@@ -1,29 +1,7 @@
-{ pkgs, lib, config, zenBrowser, neovimPkgs, ... }:
+{ pkgs, lib, zenBrowser, neovimPkgs, ... }:
 let
-  mcp-language-server-lazy = pkgs.callPackage ./mcp-language-server-lazy.nix { };
-
-  nsgclientClean = pkgs.writeShellScriptBin "nsgclient-clean" ''
-    unset LD_LIBRARY_PATH
-    unset NIX_LD
-    unset NIX_LD_LIBRARY_PATH
-    unset LD_PRELOAD
-    unset LIBGL_DRIVERS_PATH
-    unset __EGL_VENDOR_LIBRARY_DIRS
-    unset __EGL_VENDOR_LIBRARY_FILENAMES
-    unset EGL_VENDOR_LIBRARY_FILENAMES
-    unset VK_ICD_FILENAMES
-    unset VK_LAYER_PATH
-    unset GBM_BACKENDS_PATH
-    unset LIBVA_DRIVERS_PATH
-    unset VDPAU_DRIVER_PATH
-    unset QT_PLUGIN_PATH
-    unset QML2_IMPORT_PATH
-    unset GIO_EXTRA_MODULES
-    unset GTK_PATH
-    unset GI_TYPELIB_PATH
-
-    exec /opt/Citrix/NSGClient/bin/NSGClient "$@"
-  '';
+  mcp-language-server-lazy =
+    pkgs.callPackage ./mcp-language-server-lazy.nix { };
 in {
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
@@ -35,33 +13,8 @@ in {
     ];
 
   targets.genericLinux.enable = true; # non-NixOS niceties
-  xdg.desktopEntries.nsgclient = {
-    name = "Citrix Secure Access";
-    exec = "${nsgclientClean}/bin/nsgclient-clean %u";
-    icon = "citrix-receiver";
-    terminal = false;
-    noDisplay = true;
-    categories = [ "Network" "RemoteAccess" ];
-    mimeType = [ "x-scheme-handler/application" "x-scheme-handler/citrixsso" ];
-  };
-
-  xdg.mimeApps = {
-    enable = true;
-    defaultApplications = {
-      "text/html" = [ "org.qutebrowser.qutebrowser.desktop" ];
-      "x-scheme-handler/http" = [ "org.qutebrowser.qutebrowser.desktop" ];
-      "x-scheme-handler/https" = [ "org.qutebrowser.qutebrowser.desktop" ];
-      "x-scheme-handler/application" = [ "nsgclient.desktop" ];
-      "x-scheme-handler/citrixsso" = [ "nsgclient.desktop" ];
-    };
-  };
-
-  # Desktop apps may replace this managed symlink when changing associations.
-  # Keep the declarative MIME defaults authoritative on every activation.
-  xdg.configFile."mimeapps.list".force = true;
-
   home.packages = with pkgs;
-    ([ zsh-powerlevel10k git ripgrep eza bat mosh nsgclientClean ] ++ [
+    ([ zsh-powerlevel10k git ripgrep eza bat mosh ] ++ [
 
       #Utils
       google-cloud-sdk
@@ -151,7 +104,7 @@ in {
       wine64
       unrar
       google-alloydb-auth-proxy
-      (config.lib.nixGL.wrap figma-linux)
+      tree-sitter
       antigravity-cli
       ast-grep
     ]);

@@ -19,7 +19,7 @@
         };
 
         appimageContents =
-          pkgs.appimageTools.extractType2 { inherit pname version src; };
+          pkgs.appimageTools.extract { inherit pname version src; };
 
         patchedAppimageContents =
           pkgs.runCommand "${pname}-${version}-patched" { } ''

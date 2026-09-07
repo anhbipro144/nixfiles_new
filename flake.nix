@@ -44,6 +44,7 @@
             ./base.nix
             ./files.nix
             ./packages.nix
+            ./desktop.nix
             ./common.nix
             ./main.nix
             ({ ... }: {
