@@ -224,7 +224,9 @@ c.url.searchengines = {
 # `colors.webpage.darkmode.policy.images` to `never`.  - "With selective
 # image inversion": qutebrowser default settings.
 # Type: Bool
-c.colors.webpage.darkmode.enabled = True
+# Prefer a site's native dark theme; forced inversion can corrupt its layout.
+c.colors.webpage.darkmode.enabled = False
+c.colors.webpage.preferred_color_scheme = "dark"
 
 # Render all web contents using a dark theme. On QtWebEngine < 6.7, this
 # setting requires a restart and does not support URL patterns, only the
@@ -238,6 +240,7 @@ config.set("colors.webpage.darkmode.enabled", False, "http://localhost:3000/*")
 config.set("colors.webpage.darkmode.enabled", False, "http://localhost:3002/*")
 config.set("colors.webpage.darkmode.enabled", False, "*://*.one-line.com/*")
 config.set("colors.webpage.darkmode.enabled", False, "https://id.zalo.me/*")
+config.set("colors.webpage.darkmode.enabled", False, "*://roadmap.sh/*")
 
 # Bindings for normal mode
 config.bind("<Escape>", "fake-key <Escape>")
