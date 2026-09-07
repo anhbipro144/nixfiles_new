@@ -1,4 +1,4 @@
-{ pkgs, lib, zenBrowser, neovimPkgs, ... }:
+{ pkgs, lib, config, zenBrowser, neovimPkgs, ... }:
 let
   mcp-language-server-lazy =
     pkgs.callPackage ./mcp-language-server-lazy.nix { };
