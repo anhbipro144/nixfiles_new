@@ -31,6 +31,7 @@ in {
       "postman"
       "github-copilot-cli"
       "unrar"
+      "antigravity-cli"
     ];
 
   targets.genericLinux.enable = true; # non-NixOS niceties
@@ -111,7 +112,6 @@ in {
 
       # AI CLIs
       codex
-      gemini-cli
       mcp-language-server-lazy
 
       # Search
@@ -152,6 +152,7 @@ in {
       unrar
       google-alloydb-auth-proxy
       (config.lib.nixGL.wrap figma-linux)
+      antigravity-cli
       ast-grep
     ]);
 }
