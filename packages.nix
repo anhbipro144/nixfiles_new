@@ -21,9 +21,9 @@ in {
       rustc
       cargo
       pnpm
-      # nixos-unstable currently resolves to flameshot 14.0.rc1, which fails
-      # to capture on this regolith-x11 session.
-      neovimPkgs.flameshot
+      # Flameshot 14 uses a per-monitor capture flow, avoiding the broken
+      # virtual-desktop overlay from 13.x on our offset X11 displays.
+      flameshot
       xclip
       macchina
 
@@ -84,6 +84,9 @@ in {
       #Databases
       postgresql
       grpcurl
+
+      #AI
+      chatgpt
 
       # Etc
       (pkgs.pass.withExtensions (exts: [ exts.pass-otp ]))
