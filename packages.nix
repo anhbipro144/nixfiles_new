@@ -86,7 +86,9 @@ in {
       grpcurl
 
       #AI
-      chatgpt
+      antigravity-cli
+      github-copilot-cli
+      # chatgpt
 
       # Etc
       (pkgs.pass.withExtensions (exts: [ exts.pass-otp ]))
@@ -102,13 +104,11 @@ in {
       yt-dlp # yt downloader
       vlc
       go
-      github-copilot-cli
       ctx7
       wine64
       unrar
       google-alloydb-auth-proxy
       tree-sitter
-      antigravity-cli
       ast-grep
     ]);
 }
