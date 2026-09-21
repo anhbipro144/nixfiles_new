@@ -26,6 +26,21 @@ in {
     mimeType = [ "x-scheme-handler/application" "x-scheme-handler/citrixsso" ];
   };
 
+  # Launch Writer with the profile that contains the LibreOffice MCP extension.
+  # The profile remains user-managed because the extension installer mutates it.
+  xdg.dataFile."applications/libreoffice-mcp.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Version=1.0
+    Name=LibreOffice Writer (MCP)
+    Exec=${config.home.profileDirectory}/bin/libreoffice -env:UserInstallation=file:///home/neo/.local/share/mcp-libre-lo-profile-v3 --writer %U
+    Icon=libreoffice-writer
+    Terminal=false
+    Categories=Office;WordProcessor;
+    MimeType=application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/msword;application/vnd.oasis.opendocument.text;application/rtf;
+    StartupNotify=true
+  '';
+
   xdg.dataFile."applications/figma-linux-next.desktop".text = ''
     [Desktop Entry]
     Type=Application
@@ -45,6 +60,10 @@ in {
       "x-scheme-handler/application" = [ "nsgclient.desktop" ];
       "x-scheme-handler/citrixsso" = [ "nsgclient.desktop" ];
       "x-scheme-handler/figma" = [ "figma-linux-next.desktop" ];
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = [ "libreoffice-mcp.desktop" ];
+      "application/msword" = [ "libreoffice-mcp.desktop" ];
+      "application/vnd.oasis.opendocument.text" = [ "libreoffice-mcp.desktop" ];
+      "application/rtf" = [ "libreoffice-mcp.desktop" ];
     };
   };
 
