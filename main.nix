@@ -64,6 +64,50 @@ in {
     HINDSIGHT_API_CONSOLIDATION_LLM_REASONING_EFFORT = "low";
   };
 
+  systemd.user.services.mcpjungle = {
+    Unit = {
+      Description = "MCPJungle Streamable HTTP gateway";
+      After = [ "network-online.target" ];
+      Wants = [ "network-online.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/.local/share/mcpjungle";
+      ExecStart = "${pkgs.callPackage ./mcpjungle.nix { }}/bin/mcpjungle start --host 127.0.0.1 --port 37373 --sqlite-db-path %h/.local/share/mcpjungle/mcpjungle.db";
+      Environment = [
+        "PATH=%h/.local/bin:${pkgs.nodejs_22}/bin:%h/.nix-profile/bin"
+      ];
+      Restart = "on-failure";
+      RestartSec = 2;
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
+
+  # Codex plugin archives do not include Context Mode's native SQLite addon.
+  # Keep its per-version cache healthy after every Home Manager switch, using
+  # the same mise-managed Node runtime that Codex uses for the plugin.
+  home.activation.contextModeBetterSqlite3 =
+    config.lib.dag.entryAfter [ "writeBoundary" ] ''
+      pluginCacheRoot="${config.home.homeDirectory}/.codex/plugins/cache/context-mode/context-mode"
+      nodeBin="${config.home.homeDirectory}/.local/share/mise/installs/node/22.14.0/bin/node"
+      npmBin="${config.home.homeDirectory}/.local/share/mise/installs/node/22.14.0/bin/npm"
+
+      if [ -d "$pluginCacheRoot" ] && [ -x "$nodeBin" ] && [ -x "$npmBin" ]; then
+        for pluginRoot in "$pluginCacheRoot"/*; do
+          [ -f "$pluginRoot/package.json" ] || continue
+
+          if ! "$nodeBin" -e 'const Database = require("better-sqlite3"); new Database(":memory:").close()' \
+            >/dev/null 2>&1; then
+            betterSqliteVersion="$($nodeBin -p "require(process.argv[1]).dependencies['better-sqlite3']" "$pluginRoot/package.json")"
+            PATH="${config.home.homeDirectory}/.local/share/mise/installs/node/22.14.0/bin:${pkgs.python3}/bin:${pkgs.gcc}/bin:${pkgs.gnumake}/bin:${pkgs.pkg-config}/bin:$PATH" \
+              PYTHON="${pkgs.python3}/bin/python3" \
+              "$npmBin" --prefix "$pluginRoot" install "better-sqlite3@$betterSqliteVersion" \
+                --no-save --no-package-lock --ignore-scripts=false --legacy-peer-deps --no-audit --no-fund
+          fi
+        done
+      fi
+    '';
+
   home.sessionPath = [
     "$HOME/personal/work"
     "$HOME/.docker/completions"

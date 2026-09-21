@@ -1,4 +1,4 @@
-{ pkgs, lib, config, zenBrowser, neovimPkgs, ... }:
+{ pkgs, lib, config, zenBrowser , ... }:
 let
   mcp-language-server-lazy =
     pkgs.callPackage ./mcp-language-server-lazy.nix { };
@@ -112,5 +112,7 @@ in {
       google-alloydb-auth-proxy
       tree-sitter
       ast-grep
+      syncthing
+      zotero
     ]);
 }
