@@ -18,6 +18,9 @@ in {
 
     ".config/qutebrowser/config.py".source = ./qutebrowser/config.py;
 
+    ".local/share/qutebrowser/greasemonkey/hoa-sen-video-arrow-keys.js".source =
+      ./qutebrowser/greasemonkey/hoa-sen-video-arrow-keys.js;
+
     ".local/share/qutebrowser/userscripts/qute-pass" = {
       executable = true;
       text = ''

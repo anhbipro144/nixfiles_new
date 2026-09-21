@@ -2,6 +2,7 @@
 let
   mcp-language-server-lazy =
     pkgs.callPackage ./mcp-language-server-lazy.nix { };
+  mcpjungle = pkgs.callPackage ./mcpjungle.nix { };
 in {
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
@@ -21,6 +22,7 @@ in {
       rustc
       cargo
       pnpm
+      mcpjungle
       # Flameshot 14 uses a per-monitor capture flow, avoiding the broken
       # virtual-desktop overlay from 13.x on our offset X11 displays.
       flameshot
