@@ -51,6 +51,9 @@ in {
     HINDSIGHT_API_RETAIN_LLM_REASONING_EFFORT = "low";
     HINDSIGHT_API_CONSOLIDATION_LLM_MODEL = "gpt-5.6-luna";
     HINDSIGHT_API_CONSOLIDATION_LLM_REASONING_EFFORT = "low";
+    GOG_CONFIG_DIR = "$HOME/.config/gogcli";
+    GOG_DATA_DIR = "$HOME/.config/gogcli";
+    GOG_KEYRING_BACKEND = "file";
   };
 
   # GNOME launches the configured terminal through systemd-run --user.
