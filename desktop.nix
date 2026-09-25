@@ -26,14 +26,16 @@ in {
     mimeType = [ "x-scheme-handler/application" "x-scheme-handler/citrixsso" ];
   };
 
-  # Launch Writer with the profile that contains the LibreOffice MCP extension.
-  # The profile remains user-managed because the extension installer mutates it.
+  # Launch Writer with the known-good LibreOffice MCP runtime/profile.
+  # The Nix LibreOffice 26.2 + profile-v3 combination loads the extension but
+  # never dispatches its menu actions, so it cannot start the MCP HTTP server.
+  # Keep this external runtime until the extension is made compatible with it.
   xdg.dataFile."applications/libreoffice-mcp.desktop".text = ''
     [Desktop Entry]
     Type=Application
     Version=1.0
     Name=LibreOffice Writer (MCP)
-    Exec=${config.home.profileDirectory}/bin/libreoffice -env:UserInstallation=file:///home/neo/.local/share/mcp-libre-lo-profile-v3 --writer %U
+    Exec=/home/neo/.local/opt/libreoffice26.2/opt/libreoffice26.2/program/soffice -env:UserInstallation=file:///home/neo/.local/share/mcp-libre-lo-profile-v2 --writer %U
     Icon=libreoffice-writer
     Terminal=false
     Categories=Office;WordProcessor;
