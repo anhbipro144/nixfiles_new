@@ -78,7 +78,7 @@ in {
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/.local/share/mcpjungle";
       ExecStart = "${pkgs.callPackage ./mcpjungle.nix { }}/bin/mcpjungle start --host 127.0.0.1 --port 37373 --sqlite-db-path %h/.local/share/mcpjungle/mcpjungle.db";
       Environment = [
-        "PATH=%h/.local/bin:${pkgs.nodejs_22}/bin:%h/.nix-profile/bin"
+        "PATH=%h/.local/bin:${pkgs.nodejs_22}/bin:%h/.nix-profile/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       ];
       Restart = "on-failure";
       RestartSec = 2;
