@@ -98,7 +98,6 @@ in {
       postgresql
 
       # AI and MCP tooling
-      codex
       ctx7
       antigravity-cli
       github-copilot-cli

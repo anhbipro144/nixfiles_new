@@ -32,6 +32,7 @@
       zenBrowser = zen.packages.${system}.zen-browser;
       uniclipboardPackage = uniclipboard.packages.${system}.default;
       codexAcpPackage = codexAcp.packages.${system}.default;
+      codexPackage = codexAcp.packages.${system}.codex;
 
       mkHome =
         home-manager.lib.homeManagerConfiguration {
@@ -47,7 +48,7 @@
             ./common.nix
             ./main.nix
             ({ ... }: {
-              home.packages = [ uniclipboardPackage codexAcpPackage ];
+              home.packages = [ uniclipboardPackage codexAcpPackage codexPackage ];
             })
           ];
         };
