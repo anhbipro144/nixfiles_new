@@ -14,6 +14,12 @@ CONTENT_JAVASCRIPT_ENABLED = "content.javascript.enabled"
 # Change the argument to True to still load settings configured via autoconfig.yml
 config.load_autoconfig(False)
 
+config.set("input.mode_override", "normal", "https://dttt.hoasen.edu.vn/*")
+
+# Forward Ctrl+number as a plain number to the LMS userscript.
+for speed in range(1, 10):
+    config.bind(f"<Ctrl-{speed}>", f"fake-key {speed}")
+
 # Aliases for commands. The keys of the given dictionary are the
 # aliases, while the values are the commands they map to.
 # Type: Dict

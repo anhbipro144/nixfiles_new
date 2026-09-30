@@ -2,7 +2,7 @@
 // @name         Hoa Sen Video Arrow Keys
 // @namespace    https://dttt.hoasen.edu.vn/
 // @version      1.0.0
-// @description  Seek Hoa Sen LMS videos with the left and right arrow keys.
+// @description  Control Hoa Sen LMS video playback with keyboard shortcuts.
 // @match        https://dttt.hoasen.edu.vn/*
 // @include      https://dttt.hoasen.edu.vn/*
 // @run-at       document-end
@@ -25,6 +25,7 @@ let timelineHost;
 document.addEventListener("keydown", handleKeydown, true);
 
 function handleKeydown(event) {
+  const speedKey = /^[1-9]$/.test(event.key) ? Number(event.key) : 0;
   const isSeekKey =
     event.key === "ArrowLeft" ||
     event.key === "Left" ||
@@ -45,7 +46,7 @@ function handleKeydown(event) {
     event.ctrlKey ||
     event.metaKey ||
     event.shiftKey ||
-    (!isSeekKey && !isPauseKey) ||
+    (!isSeekKey && !isPauseKey && !speedKey) ||
     isTextEditingTarget(event.target)
   ) {
     return;
@@ -53,6 +54,14 @@ function handleKeydown(event) {
 
   const video = getBestVideo();
   if (!video) return;
+
+  if (speedKey) {
+    video.playbackRate = 1 + (speedKey - 1) * 0.25;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    showStatus(`${video.playbackRate}×`);
+    return;
+  }
 
   if (isPauseKey) {
     const willPause = !video.paused;
@@ -65,7 +74,7 @@ function handleKeydown(event) {
 
     event.preventDefault();
     event.stopImmediatePropagation();
-    showPlaybackStatus(willPause);
+    showStatus(willPause ? "Paused" : "Playing");
     return;
   }
 
@@ -226,39 +235,11 @@ function clamp(value, minimum, maximum) {
 }
 
 function showSeekStatus(direction, currentTime, duration) {
-  clearTimeout(statusTimer);
-
-  if (!statusElement) {
-    statusElement = document.createElement("div");
-    statusElement.setAttribute("aria-live", "polite");
-    statusElement.style.cssText = [
-      "position:fixed",
-      "z-index:2147483647",
-      "top:16px",
-      "left:50%",
-      "transform:translateX(-50%)",
-      "padding:8px 12px",
-      "border-radius:6px",
-      "background:rgba(0, 0, 0, 0.78)",
-      "color:#fff",
-      "font:600 14px/1.2 system-ui, sans-serif",
-      "pointer-events:none",
-      "opacity:0",
-      "transition:opacity 120ms ease",
-    ].join(";");
-    document.documentElement.append(statusElement);
-  }
-
   const sign = direction > 0 ? "+" : "-";
-  statusElement.textContent = `${sign}${SEEK_SECONDS}s  ${formatTime(currentTime)} / ${formatTime(duration)}`;
-  statusElement.style.opacity = "1";
-
-  statusTimer = setTimeout(() => {
-    statusElement.style.opacity = "0";
-  }, 900);
+  showStatus(`${sign}${SEEK_SECONDS}s  ${formatTime(currentTime)} / ${formatTime(duration)}`);
 }
 
-function showPlaybackStatus(isPaused) {
+function showStatus(message) {
   clearTimeout(statusTimer);
 
   if (!statusElement) {
@@ -282,7 +263,7 @@ function showPlaybackStatus(isPaused) {
     document.documentElement.append(statusElement);
   }
 
-  statusElement.textContent = isPaused ? "Paused" : "Playing";
+  statusElement.textContent = message;
   statusElement.style.opacity = "1";
 
   statusTimer = setTimeout(() => {
