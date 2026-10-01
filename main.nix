@@ -142,40 +142,7 @@ in {
     kitty = {
       enable = true;
       package = config.lib.nixGL.wrap pkgs.kitty;
-      extraConfig = ''
-        include themes/Kanagawa_dragon.conf
-        font_family      FiraCode Nerd Font
-
-        background_opacity 0.6
-        confirm_os_window_close -1
-        allow_remote_control yes
-        listen_on unix:@mykitty
-        shell_integration enabled
-        font_size 16.0
-
-        # Native cursor movement trail; replaces smear-cursor.nvim.
-        cursor_trail 3
-        cursor_trail_decay 0.1 0.3
-        cursor_trail_start_threshold 1
-
-        # kitty-scrollback.nvim Kitten alias
-        # action_alias kitty_scrollback_nvim kitten /home/neo/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py --nvim-args --clean --noplugin -n
-
-        action_alias kitty_scrollback_nvim kitten /home/neo/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py --nvim-args -u ~/.config/ksb-nvim/init.lua -n
-
-        # Browse scrollback buffer in nvim
-        map kitty_mod+h kitty_scrollback_nvim
-
-        # Browse output of the last shell command in nvim
-        map kitty_mod+g kitty_scrollback_nvim --config ksb_builtin_last_cmd_output
-
-        # Show clicked command output in nvim
-        mouse_map ctrl+shift+right press ungrabbed combine : mouse_select_command_output : kitty_scrollback_nvim --config ksb_builtin_last_visited_cmd_output
-
-
-        map ctrl+equal change_font_size all +1.0
-        map ctrl+minus change_font_size all -1.0
-      '';
+      extraConfig = builtins.readFile ./kitty/kitty.conf;
     };
 
   };
