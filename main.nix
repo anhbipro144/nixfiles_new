@@ -46,10 +46,10 @@ in {
     JIRA_USER = "lanh.nguyen.tpv@one-line.com";
     JIRA_WEB = "oneline.atlassian.net";
     HINDSIGHT_API_LLM_PROVIDER = "github-copilot";
-    HINDSIGHT_API_LLM_MODEL = "gpt-5.6-luna";
-    HINDSIGHT_API_RETAIN_LLM_MODEL = "gpt-5.6-luna";
+    HINDSIGHT_API_LLM_MODEL = "gpt-6-luna";
+    HINDSIGHT_API_RETAIN_LLM_MODEL = "gpt-6-luna";
     HINDSIGHT_API_RETAIN_LLM_REASONING_EFFORT = "low";
-    HINDSIGHT_API_CONSOLIDATION_LLM_MODEL = "gpt-5.6-luna";
+    HINDSIGHT_API_CONSOLIDATION_LLM_MODEL = "gpt-6-luna";
     HINDSIGHT_API_CONSOLIDATION_LLM_REASONING_EFFORT = "low";
     GOG_CONFIG_DIR = "$HOME/.config/gogcli";
     GOG_DATA_DIR = "$HOME/.config/gogcli";
@@ -60,10 +60,10 @@ in {
   systemd.user.sessionVariables = {
     GLFW_IM_MODULE = "ibus";
     HINDSIGHT_API_LLM_PROVIDER = "github-copilot";
-    HINDSIGHT_API_LLM_MODEL = "gpt-5.6-luna";
-    HINDSIGHT_API_RETAIN_LLM_MODEL = "gpt-5.6-luna";
+    HINDSIGHT_API_LLM_MODEL = "gpt-6-luna";
+    HINDSIGHT_API_RETAIN_LLM_MODEL = "gpt-6-luna";
     HINDSIGHT_API_RETAIN_LLM_REASONING_EFFORT = "low";
-    HINDSIGHT_API_CONSOLIDATION_LLM_MODEL = "gpt-5.6-luna";
+    HINDSIGHT_API_CONSOLIDATION_LLM_MODEL = "gpt-6-luna";
     HINDSIGHT_API_CONSOLIDATION_LLM_REASONING_EFFORT = "low";
   };
 

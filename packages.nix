@@ -1,4 +1,4 @@
-{ pkgs, lib, config, zenBrowser , ... }:
+{ pkgs, lib, config, zenBrowser, ... }:
 let
   mcp-language-server-lazy =
     pkgs.callPackage ./mcp-language-server-lazy.nix { };
@@ -113,5 +113,9 @@ in {
 
       # Python utilities
       python3Packages.tldextract
+
+      #Etc
+      libsecret
+      lazygit
     ]);
 }
