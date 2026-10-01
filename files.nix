@@ -13,6 +13,28 @@ in {
 
   home.file = {
     ".config/kitty/themes".source = ./kitty/themes;
+    ".config/lazygit/config.yml".text = ''
+      gui:
+        sidePanelWidth: 0.30
+
+        sidePanels:
+          - [files, submodules, worktrees, branches, commits]
+
+        showCommandLog: false
+        showPanelJumps: false
+        showListFooter: false
+
+      keybinding:
+        universal:
+          goInto: [<enter>, <tab>]
+          remove: x
+          select: s
+          togglePanel: <ctrl+space>
+          nextBlock-alt2: <disabled>
+        files:
+          confirmDiscard: x
+          stashAllChanges: z
+    '';
     ".config/nvim".source =
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/nvim";
 
