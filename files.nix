@@ -18,7 +18,7 @@ in {
         sidePanelWidth: 0.30
 
         sidePanels:
-          - [files, submodules, worktrees, branches, commits]
+          - [files, commits, submodules, worktrees, branches]
 
         showCommandLog: false
         showPanelJumps: false
@@ -30,6 +30,10 @@ in {
           remove: x
           select: s
           togglePanel: <ctrl+space>
+          nextTab: L
+          prevTab: H
+          scrollLeft: <disabled>
+          scrollRight: <disabled>
           nextBlock-alt2: <disabled>
         files:
           confirmDiscard: x
