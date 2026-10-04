@@ -5,6 +5,7 @@ let
   mcpjungle = pkgs.callPackage ./mcpjungle.nix { };
   libreofficeMcp = config.lib.nixGL.wrap pkgs.libreoffice-qt-stable;
 in {
+  nixpkgs.config.permittedInsecurePackages = [ "olm-3.2.16" ];
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "google-chrome"
