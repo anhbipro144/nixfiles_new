@@ -10,12 +10,12 @@
 
       uniclipboard = let
         pname = "uniclipboard";
-        version = "0.19.1";
+        version = "1.1.0";
 
         src = pkgs.fetchurl {
           url =
             "https://github.com/UniClipboard/UniClipboard/releases/download/v${version}/UniClipboard_${version}_amd64.AppImage";
-          hash = "sha256-S2hV2lJioFssVQwcVFZFcVIRBrz8MyrRuVUdIHh4Hxo=";
+          hash = "sha256-iuoY+8hngSNeZaMSLGFPuqCZBcy3jbrwaNNR8Suq/AU=";
         };
 
         appimageContents =
@@ -25,6 +25,12 @@
           pkgs.runCommand "${pname}-${version}-patched" { } ''
             cp -a ${appimageContents} $out
             chmod -R u+w $out
+            # Use the FHS environment's GTK/WebKit stack consistently. The
+            # linuxdeploy hook mixes bundled libraries/modules with Nix ones.
+            substituteInPlace $out/AppRun \
+              --replace-fail \
+                'source "$this_dir"/apprun-hooks/"linuxdeploy-plugin-gtk.sh"' \
+                ':'
             substituteInPlace $out/AppRun \
               --replace-fail \
                 'exec "$this_dir"/AppRun.wrapped "$@"' \
@@ -38,7 +44,9 @@
             unset __EGL_VENDOR_LIBRARY_FILENAMES
             unset EGL_VENDOR_LIBRARY_FILENAMES
             export PATH="$this_dir/usr/bin:$this_dir/usr/sbin:$PATH"
-            export LD_LIBRARY_PATH="/usr/lib64:/usr/lib:$this_dir/usr/lib:$this_dir/usr/lib/x86_64-linux-gnu"
+            export LD_LIBRARY_PATH="/usr/lib64:/usr/lib"
+            export GIO_MODULE_DIR=${pkgs.glib-networking}/lib/gio/modules
+            unset GIO_EXTRA_MODULES GTK_PATH GTK_EXE_PREFIX GTK_DATA_PREFIX
             export LIBGL_DRIVERS_PATH=/usr/lib64/dri
             export GDK_BACKEND=x11
             export GDK_RENDERING=image
