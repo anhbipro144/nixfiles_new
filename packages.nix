@@ -118,5 +118,6 @@ in {
       #Etc
       libsecret
       lazygit
+      mautrix-meta
     ]);
 }
