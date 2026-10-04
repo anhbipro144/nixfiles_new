@@ -9,12 +9,12 @@
       pkgs = import nixpkgs { inherit system; };
       zen = pkgs.stdenv.mkDerivation {
         pname = "zen-browser";
-        version = "1.16.1b";
+        version = "1.23b";
 
         src = pkgs.fetchurl {
           url =
-            "https://github.com/zen-browser/desktop/releases/download/1.16.1b/zen.linux-x86_64.tar.xz";
-          sha256 = "0vnnd0sgn0nyk2i1vlwjrpfa4wwg9a5n0hksc6j7ni95rfhyfr3r";
+            "https://github.com/zen-browser/desktop/releases/download/1.23b/zen.linux-x86_64.tar.xz";
+          sha256 = "1w7wnf0n107s76vpjkwrpnh4x4rmf8idx1q739gvhq1aym89zmws";
         };
 
         nativeBuildInputs = [ pkgs.makeWrapper ];
