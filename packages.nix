@@ -119,5 +119,6 @@ in {
       libsecret
       lazygit
       mautrix-meta
+      tailscale
     ]);
 }
