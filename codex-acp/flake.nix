@@ -10,10 +10,10 @@
 
       codex = pkgs.stdenvNoCC.mkDerivation {
         pname = "codex";
-        version = "0.159.1";
+        version = "0.161.0";
         src = pkgs.fetchurl {
-          url = "https://github.com/openai/codex/releases/download/rust-v0.159.1/codex-package-x86_64-unknown-linux-musl.tar.gz";
-          hash = "sha256-mi3/jh65utg/Uu22+RF17+tcaKMW+IDJXXdw+Ho0/Fw=";
+          url = "https://github.com/openai/codex/releases/download/rust-v0.161.0/codex-package-x86_64-unknown-linux-musl.tar.gz";
+          hash = "sha256-BNirnby53w7fPGfcpQcqN0ur/fdiqbxK5kmuFAuOLPA=";
         };
         dontUnpack = true;
         installPhase = ''
