@@ -1,18 +1,21 @@
-{ pkgs, neovimPkgs, config, ... }: {
+{ pkgs, lib, neovimPkgs, config, homeTarget, ... }: {
 
   # Optional but nice: lets you use config.xdg.userDirs.music
-  xdg.userDirs.enable = true;
-  xdg.userDirs.setSessionVariables = true;
+  xdg.userDirs.enable = pkgs.stdenv.hostPlatform.isLinux;
+  xdg.userDirs.setSessionVariables = pkgs.stdenv.hostPlatform.isLinux;
 
   services.mpd = {
     enable = true;
 
     # Pick one:
-    musicDirectory = config.xdg.userDirs.music; # if xdg.userDirs.enable = true
+    musicDirectory = if pkgs.stdenv.hostPlatform.isLinux then
+      config.xdg.userDirs.music
+    else
+      "${config.home.homeDirectory}/Music";
     # musicDirectory = "${config.home.homeDirectory}/Music";
 
     # MPD listens here by default in HM:
-    network.startWhenNeeded = true;
+    network.startWhenNeeded = lib.mkIf pkgs.stdenv.hostPlatform.isLinux true;
     network.listenAddress = "127.0.0.1";
     network.port = 6600;
 
@@ -28,8 +31,10 @@
 
       # If you’re not on PipeWire, use PulseAudio instead:
       audio_output {
-        type "pulse"
-        name "PulseAudio Output"
+        type "${if pkgs.stdenv.hostPlatform.isLinux then "pulse" else "osx"}"
+        name "${
+          if pkgs.stdenv.hostPlatform.isLinux then "PulseAudio" else "CoreAudio"
+        } Output"
       }
     '';
   };
@@ -151,7 +156,10 @@
       shellAliases = {
         # General
         cls = "clear";
-        nau = "nohup nautilus -w . > /dev/null &";
+        nau = if pkgs.stdenv.hostPlatform.isLinux then
+          "nohup nautilus -w . > /dev/null &"
+        else
+          "desktop-open .";
 
         # Better ls
         l = "eza --icons=always";
@@ -168,7 +176,8 @@
         nvb = "NVIM_APPNAME=nvim-base nvim";
 
         #Nixhome-manager switch --flake $HOME/.config/home-manager
-        hms = "home-manager switch --flake \"git+file://$HOME/.config/home-manager?submodules=1#neo@main\"";
+        hms = ''
+          home-manager switch --flake "git+file://$HOME/.config/home-manager?submodules=1#${homeTarget}"'';
 
         #Shine-wa
         wadev =

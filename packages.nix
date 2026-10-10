@@ -1,9 +1,8 @@
-{ pkgs, lib, config, zenBrowser, ... }:
+{ pkgs, lib, ... }:
 let
   mcp-language-server-lazy =
     pkgs.callPackage ./mcp-language-server-lazy.nix { };
   mcpjungle = pkgs.callPackage ./mcpjungle.nix { };
-  libreofficeMcp = config.lib.nixGL.wrap pkgs.libreoffice-qt-stable;
 in {
   nixpkgs.config.permittedInsecurePackages = [ "olm-3.2.16" ];
   nixpkgs.config.allowUnfreePredicate = pkg:
@@ -15,7 +14,6 @@ in {
       "antigravity-cli"
     ];
 
-  targets.genericLinux.enable = true; # non-NixOS niceties
   home.packages = with pkgs;
     ([
       # Shell and core command-line tools
@@ -31,42 +29,26 @@ in {
       ast-grep
     ] ++ [
       # Desktop and system utilities
-      # Flameshot 14 uses a per-monitor capture flow, avoiding the broken
-      # virtual-desktop overlay from 13.x on our offset X11 displays.
-      flameshot
-      xclip
-      rofi
       syncthing
-      wine64
 
       # Browsers and web clients
-      zenBrowser
-      (config.lib.nixGL.wrap pkgs.google-chrome)
-      (config.lib.nixGL.wrap pkgs.qutebrowser)
-      webcord
-      qbittorrent-enhanced
       yt-dlp
 
       # Office, documents, and fonts
-      libreofficeMcp
       noto-fonts
       noto-fonts-cjk-sans
       dejavu_fonts
-      (config.lib.nixGL.wrap pkgs.anki-bin)
-      zotero
 
       # Music and video
       mpd
-      (config.lib.nixGL.wrap pkgs.kid3)
-      vlc
 
       # Cloud, API, and service clients
       google-cloud-sdk
-      postman
       # gh
       gogcli
       jira-cli-go
       google-alloydb-auth-proxy
+      google-cloud-sql-proxy
       grpcurl
 
       # General development tools
@@ -77,7 +59,7 @@ in {
       uv
       protobuf
       gnumake
-      gcc
+      stdenv.cc
       pkg-config
       autoconf
       automake
@@ -116,9 +98,7 @@ in {
       python3Packages.tldextract
 
       #Etc
-      libsecret
       lazygit
       mautrix-meta
-      tailscale
     ]);
 }

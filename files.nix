@@ -3,12 +3,8 @@ let
   passWithOtp = pkgs.pass.withExtensions (exts: [ exts.pass-otp ]);
   qutePassPython = pkgs.python3.withPackages (ps: [ ps.tldextract ]);
   quteTranslatePopupPython = pkgs.python3.withPackages (ps: [ ps.requests ]);
-  quteTranslateInputRuntimePath = lib.makeBinPath [ pkgs.rofi ];
-  qutePassRuntimePath = lib.makeBinPath [
-    passWithOtp
-    pkgs.gnupg
-    pkgs.rofi
-  ];
+  quteTranslateInputRuntimePath = "${config.home.profileDirectory}/bin";
+  qutePassRuntimePath = lib.makeBinPath [ passWithOtp pkgs.gnupg ];
 in {
 
   home.file = {
@@ -39,8 +35,8 @@ in {
           confirmDiscard: x
           stashAllChanges: z
     '';
-    ".config/nvim".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/home-manager/nvim";
+    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/.config/home-manager/nvim";
 
     ".config/qutebrowser/config.py".source = ./qutebrowser/config.py;
 
@@ -54,9 +50,12 @@ in {
         import os
         import runpy
 
-        os.environ["PATH"] = "${qutePassRuntimePath}:" + os.environ.get("PATH", "")
+        import sys
+
+        os.environ["PATH"] = "${config.home.profileDirectory}/bin:${qutePassRuntimePath}:" + os.environ.get("PATH", "")
+        sys.argv[1:1] = ["--dmenu-invocation", "qute-menu"]
         runpy.run_path(
-            "${pkgs.qutebrowser}/share/qutebrowser/userscripts/qute-pass",
+            "${pkgs.qutebrowser.src}/misc/userscripts/qute-pass",
             run_name="__main__",
         )
       '';
@@ -296,7 +295,7 @@ in {
 
         def read_input(prompt):
             result = subprocess.run(
-                ["rofi", "-dmenu", "-p", prompt, "-lines", "0"],
+                ["qute-menu", "-p", prompt, "-lines", "0"],
                 input="",
                 text=True,
                 capture_output=True,

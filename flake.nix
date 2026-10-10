@@ -1,5 +1,5 @@
 {
-  description = "Home Manager configuration";
+  description = "Home Manager configuration for Linux and macOS";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -20,48 +20,53 @@
     nixgl.url = "github:nix-community/nixGL";
   };
 
-  outputs = { nixpkgs, nixpkgs-neovim, home-manager, zen, uniclipboard, codexAcp, nixgl
-    , ... }:
+  outputs = { nixpkgs, nixpkgs-neovim, home-manager, zen, uniclipboard, codexAcp
+    , nixgl, ... }:
     let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [ nixgl.overlays.default ];
-      };
-      neovimPkgs = import nixpkgs-neovim { inherit system; };
-      zenBrowser = zen.packages.${system}.zen-browser;
-      uniclipboardPackage = uniclipboard.packages.${system}.default;
-      codexAcpPackage = codexAcp.packages.${system}.default;
-      codexPackage = codexAcp.packages.${system}.codex;
-
-      mkHome =
-        home-manager.lib.homeManagerConfiguration {
+      mkHome = { system, name, username ? "neo" }:
+        let
+          isLinux = nixpkgs.lib.hasSuffix "-linux" system;
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = nixpkgs.lib.optional isLinux nixgl.overlays.default;
+          };
+        in home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
-            inherit neovimPkgs zenBrowser nixgl;
+            neovimPkgs = import nixpkgs-neovim { inherit system; };
+            homeTarget = name;
+          } // nixpkgs.lib.optionalAttrs isLinux {
+            inherit nixgl;
+            zenBrowser = zen.packages.${system}.zen-browser;
           };
           modules = [
             ./base.nix
             ./files.nix
             ./packages.nix
-            ./desktop.nix
             ./common.nix
             ./main.nix
-            ({ ... }: {
-              home.packages = [ uniclipboardPackage codexAcpPackage codexPackage ];
-            })
+            ./platform-tools.nix
+            (if isLinux then ./linux.nix else ./macos.nix)
+            {
+              home.username = username;
+              home.homeDirectory =
+                "${if isLinux then "/home" else "/Users"}/${username}";
+              home.packages = [
+                codexAcp.packages.${system}.default
+                codexAcp.packages.${system}.codex
+              ] ++ nixpkgs.lib.optional isLinux
+                uniclipboard.packages.${system}.default;
+            }
           ];
         };
     in {
-      # homeConfigurations."neo" = home-manager.lib.homeManagerConfiguration {
-      #   inherit pkgs;
-      #
-      #   # Optionally use extraSpecialArgs
-      #   # to pass through arguments to home.nix
-      #   extraSpecialArgs = { inherit zenBrowser nixgl; };
-      #   modules = [ ./home.nix ];
-      #
-      # };
-      homeConfigurations."neo@main" = mkHome;
+      homeConfigurations."neo@main" = mkHome {
+        system = "x86_64-linux";
+        name = "neo@main";
+      };
+      homeConfigurations."neo@mac" = mkHome {
+        system = "aarch64-darwin";
+        name = "neo@mac";
+      };
     };
 }

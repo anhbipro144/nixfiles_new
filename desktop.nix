@@ -35,7 +35,7 @@ in {
     Type=Application
     Version=1.0
     Name=LibreOffice Writer (MCP)
-    Exec=/home/neo/.local/opt/libreoffice26.2/opt/libreoffice26.2/program/soffice -env:UserInstallation=file:///home/neo/.local/share/mcp-libre-lo-profile-v2 --writer %U
+    Exec=${config.home.homeDirectory}/.local/opt/libreoffice26.2/opt/libreoffice26.2/program/soffice -env:UserInstallation=file://${config.home.homeDirectory}/.local/share/mcp-libre-lo-profile-v2 --writer %U
     Icon=libreoffice-writer
     Terminal=false
     Categories=Office;WordProcessor;
@@ -62,7 +62,8 @@ in {
       "x-scheme-handler/application" = [ "nsgclient.desktop" ];
       "x-scheme-handler/citrixsso" = [ "nsgclient.desktop" ];
       "x-scheme-handler/figma" = [ "figma-linux-next.desktop" ];
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = [ "libreoffice-mcp.desktop" ];
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
+        [ "libreoffice-mcp.desktop" ];
       "application/msword" = [ "libreoffice-mcp.desktop" ];
       "application/vnd.oasis.opendocument.text" = [ "libreoffice-mcp.desktop" ];
       "application/rtf" = [ "libreoffice-mcp.desktop" ];

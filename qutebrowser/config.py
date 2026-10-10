@@ -167,7 +167,7 @@ config.set(CONTENT_JAVASCRIPT_ENABLED, True, "qute://*/*")
 config.set(
     "content.local_content_can_access_remote_urls",
     True,
-    "file:///home/neo/.local/share/qutebrowser/userscripts/*",
+    (config.datadir / "userscripts").as_uri() + "/*",
 )
 
 # Allow locally loaded documents to access other local URLs.
@@ -175,7 +175,7 @@ config.set(
 config.set(
     "content.local_content_can_access_file_urls",
     False,
-    "file:///home/neo/.local/share/qutebrowser/userscripts/*",
+    (config.datadir / "userscripts").as_uri() + "/*",
 )
 
 # Open new windows in private browsing mode which does not record
