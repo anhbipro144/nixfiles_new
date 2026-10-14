@@ -73,6 +73,9 @@
                     # Load jira-cli
                     source <(${pkgs.jira-cli-go}/bin/jira completion zsh)
 
+                    # Load Codex CLI completion
+                    source <(codex completion zsh)
+
                     bindkey -M menuselect '\r' .accept-line
 
                     ci() {
