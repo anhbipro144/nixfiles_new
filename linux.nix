@@ -1,5 +1,6 @@
-{ pkgs, config, nixgl, zenBrowser, ... }: {
+{ pkgs, config, lib, nixgl, zenBrowser, zoteroFirefox, ... }: {
   imports = [ ./desktop.nix ];
+
 
   targets.genericLinux = {
     enable = true;
@@ -14,6 +15,23 @@
     enable = true;
     fcitx5.addons = with pkgs; [ qt6Packages.fcitx5-unikey fcitx5-gtk ];
   };
+
+  # Reserve Super+Space and Super+Shift+Space for Regolith's launchers.
+  dconf.settings."org/gnome/desktop/wm/keybindings" = {
+    switch-input-source = [ "XF86Keyboard" ];
+    switch-input-source-backward = [ "<Shift>XF86Keyboard" ];
+  };
+
+  # Keep Fcitx's other user preferences editable.
+  home.activation.clearFcitxLauncherShortcuts = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ -f "${config.xdg.configHome}/fcitx5/config" ]; then
+      run ${pkgs.gnused}/bin/sed -i \
+        -e '/^\[Hotkey\/EnumerateGroupForwardKeys\]$/,/^\[/ { /^0=Super+space$/d; }' \
+        -e '/^\[Hotkey\/EnumerateGroupBackwardKeys\]$/,/^\[/ { /^0=Shift+Super+space$/d; }' \
+        "${config.xdg.configHome}/fcitx5/config"
+    fi
+  '';
+
   home.sessionVariables = {
     GLFW_IM_MODULE = "ibus";
     GTK_IM_MODULE = "fcitx";
@@ -65,11 +83,10 @@
     qbittorrent-enhanced
     (config.lib.nixGL.wrap libreoffice-qt-stable)
     (config.lib.nixGL.wrap anki-bin)
-    # zotero temporarily removed: current nixpkgs pin's firefox-esr-153-unwrapped
-    # source no longer matches what Zotero 10.0.4's build script expects when it
-    # patches modules/ActorManagerParent.sys.mjs ("AboutTranslations: \{ and ^  },
-    # not found ... -- aborting"). Upstream nixpkgs/Zotero packaging incompatibility,
-    # re-add once fixed upstream.
+    # shortcut: use ESR 140 until nixpkgs fixes Zotero's runtime dependency.
+    (config.lib.nixGL.wrap (zotero.override {
+      firefox-esr-153-unwrapped = zoteroFirefox;
+    }))
     (config.lib.nixGL.wrap kid3)
     vlc
     postman

@@ -1,0 +1,15 @@
+{
+  "name": "filesystem",
+  "transport": "stdio",
+  "description": "Filesystem access to /home/neo and /tmp",
+  "command": "/home/neo/.local/share/mise/installs/node/22.14.0/bin/npx",
+  "args": [
+    "-y",
+    "@modelcontextprotocol/server-filesystem",
+    "/home/neo",
+    "/tmp"
+  ],
+  "env": {
+    "PATH": "/home/neo/.local/share/mise/installs/node/22.14.0/bin:/home/neo/.local/bin:/home/neo/.nix-profile/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+  }
+}

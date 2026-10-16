@@ -230,8 +230,7 @@ c.url.searchengines = {
 # `colors.webpage.darkmode.policy.images` to `never`.  - "With selective
 # image inversion": qutebrowser default settings.
 # Type: Bool
-# Prefer a site's native dark theme; forced inversion can corrupt its layout.
-c.colors.webpage.darkmode.enabled = False
+c.colors.webpage.darkmode.enabled = True
 c.colors.webpage.preferred_color_scheme = "dark"
 
 # Render all web contents using a dark theme. On QtWebEngine < 6.7, this
