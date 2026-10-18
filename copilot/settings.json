@@ -1,0 +1,17 @@
+{
+  "renderMarkdown": true,
+  "screenReader": false,
+  "theme": "auto",
+  "allowedUrls": [
+    "https://github.com",
+    "http://127.0.0.1:37373",
+    "https://raw.githubusercontent.com",
+    "https://oneline.atlassian.net",
+    "http://127.0.0.1:9222",
+    "https://api.github.com"
+  ],
+  "model": "claude-haiku-5.5",
+  "effortLevel": "high",
+  "enabledPlugins": {},
+  "editorMode": "vim"
+}

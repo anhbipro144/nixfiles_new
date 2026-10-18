@@ -49,6 +49,7 @@
             ./common.nix
             ./main.nix
             ./codex.nix
+            ./copilot.nix
             ./platform-tools.nix
             (if isLinux then ./linux.nix else ./macos.nix)
             {

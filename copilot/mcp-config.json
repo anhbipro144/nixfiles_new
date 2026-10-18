@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "mcpjungle": {
+      "type": "http",
+      "url": "http://127.0.0.1:37373/mcp",
+      "tools": ["*"]
+    },
+    "codegraph": {
+      "type": "stdio",
+      "command": "codegraph",
+      "args": ["serve", "--mcp"],
+      "tools": ["*"]
+    }
+  }
+}

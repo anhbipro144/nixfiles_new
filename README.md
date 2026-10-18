@@ -101,6 +101,16 @@ are managed by Homebrew and are not pinned by `flake.lock`.
 
 ## MCPJungle server configuration
 
+Home Manager writes GitHub Copilot CLI's user MCP configuration to
+`~/.copilot/mcp-config.json`, retaining the existing MCPJungle and CodeGraph
+servers. Their JSON lives in `copilot/mcp-config.json`; `copilot.nix` installs it.
+The user settings, including the existing default model and reasoning effort,
+live in `copilot/settings.json`. Add plugin enablement under `enabledPlugins`;
+installed plugin state remains managed by Copilot CLI.
+
+Home Manager owns both files, so edit their source files instead of changing
+settings with Copilot CLI commands that write back to disk.
+
 `mcpjungle-config.nix` defines the six managed servers for both platforms. Home
 Manager generates their JSON files under `~/.config/mcpjungle/servers/`, including
 native Nix Node paths and the configured home directory. Existing standalone JSON
