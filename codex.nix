@@ -1,8 +1,15 @@
-{ ... }: {
+{ pkgs, ... }:
+let codegraph = pkgs.callPackage ./packages/codegraph.nix { };
+in {
   programs.codex = {
     enable = true;
     mutableSettings = true;
     package = null;
+    # The MCP server supplies its own exploration and indexing guidance.
+    context = ''
+      Use CodeGraph impact analysis before significant refactors in indexed repositories.
+      Verify consequential CodeGraph findings against current source; use native search when the graph is missing, stale, or incomplete.
+    '';
     settings = {
       model = "gpt-6-luna";
       model_reasoning_effort = "high";
@@ -49,6 +56,16 @@
       };
 
       mcp_servers = {
+        codegraph = {
+          command = "${codegraph}/bin/codegraph";
+          args = [ "serve" "--mcp" ];
+          env = {
+            CODEGRAPH_TELEMETRY = "0";
+            CODEGRAPH_NO_UPDATE_CHECK = "1";
+          };
+          startup_timeout_sec = 60;
+          tool_timeout_sec = 120;
+        };
         mcpjungle.url = "http://127.0.0.1:37373/mcp";
         chrome-devtools = {
           command = "npx";

@@ -141,6 +141,11 @@ For the Apple Silicon Docker runtime and `tiemdosime-bot` workflow, see
 [Docker with Colima](docs/docker-colima.md). Home Manager installs the CLI and
 plugins and starts Colima at login; no Docker Desktop or Homebrew service is needed.
 
+## CodeGraph
+
+[CodeGraph setup and validation](docs/codegraph.md) covers the pinned standalone
+runtime, Codex MCP integration, index backups, upgrades and rollback on both targets.
+
 ## MCPJungle server configuration
 
 Home Manager writes GitHub Copilot CLI's user MCP configuration to

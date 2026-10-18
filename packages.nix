@@ -1,9 +1,18 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 let
   mcp-language-server-lazy =
     pkgs.callPackage ./mcp-language-server-lazy.nix { };
   mcpjungle = pkgs.callPackage ./mcpjungle.nix { };
+  codegraph = pkgs.callPackage ./packages/codegraph.nix { };
 in {
+  # Prefer this runtime over an existing ~/.local/bin/codegraph launcher.
+  home.sessionPath = lib.mkBefore [ "${codegraph}/bin" ];
+
+  home.activation.codegraphTelemetry =
+    config.lib.dag.entryAfter [ "writeBoundary" ] ''
+      run ${codegraph}/bin/codegraph telemetry off
+    '';
+
   nixpkgs.config.permittedInsecurePackages = [ "olm-3.2.16" ];
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
@@ -85,6 +94,7 @@ in {
       postgresql
 
       # AI and MCP tooling
+      codegraph
       ctx7
       antigravity-cli
       github-copilot-cli
