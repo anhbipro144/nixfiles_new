@@ -10,6 +10,10 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     zen.url = "path:./zen";
     uniclipboard = {
       url = "path:./uniclipboard";
@@ -22,7 +26,7 @@
     nixgl.url = "github:nix-community/nixGL";
   };
 
-  outputs = { nixpkgs, nixpkgs-neovim, nixpkgs-zotero, home-manager, zen, uniclipboard, codexAcp
+  outputs = { nixpkgs, nixpkgs-neovim, nixpkgs-zotero, home-manager, agenix, zen, uniclipboard, codexAcp
     , nixgl, ... }:
     let
       mkHome = { system, name, username ? "neo" }:
@@ -47,6 +51,8 @@
             ./files.nix
             ./packages.nix
             ./common.nix
+            agenix.homeManagerModules.default
+            ./ssh.nix
             ./main.nix
             ./codex.nix
             ./copilot.nix
@@ -57,6 +63,7 @@
               home.homeDirectory =
                 "${if isLinux then "/home" else "/Users"}/${username}";
               home.packages = [
+                agenix.packages.${system}.default
                 codexAcp.packages.${system}.default
                 codexAcp.packages.${system}.codex
               ] ++ nixpkgs.lib.optional isLinux

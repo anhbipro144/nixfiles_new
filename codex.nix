@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ ... }: {
   programs.codex = {
     enable = true;
     mutableSettings = true;
