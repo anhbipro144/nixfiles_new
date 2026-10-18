@@ -99,6 +99,41 @@ are managed by Homebrew and are not pinned by `flake.lock`.
   from the Mac setup, as requested; no Mac torrent client or Windows runtime is installed.
 - Tailscale uses its native Mac app. Sign in and enable it after installation.
 
+## MCPJungle server configuration
+
+`mcpjungle-config.nix` defines the six managed servers for both platforms. Home
+Manager generates their JSON files under `~/.config/mcpjungle/servers/`, including
+native Nix Node paths and the configured home directory. Existing standalone JSON
+files are left in place; the sync command only reads the `servers/` directory.
+
+For the initial activation, make the two new files visible to the Git-backed
+flake with `git add mcpjungle-config.nix scripts/mcpjungle-sync.py` (no commit is
+required). After your usual `hms` activation, start the gateway if necessary and run
+`mcpjungle-sync`. To update only selected servers, pass their names, for example
+`mcpjungle-sync anki filesystem`. This is an explicit operation: activation and
+gateway restarts do not automatically replace registrations.
+
+For Figma, supply `FIGMA_API_KEY` in the sync command's environment, or put the raw
+key in `~/.config/mcpjungle/figma-api-key` and set its permissions to `600`. Keep
+this file outside the repository. Use a newly rotated key; the previous setup
+embedded it in command arguments. The generated JSON contains no key; syncing
+passes it to Figma through its server environment. MCPJungle still stores the
+resolved credential in its runtime SQLite database.
+
+Sync checks all selected configurations and required credentials before making
+changes, then backs up the existing SQLite database under
+`~/.local/share/mcpjungle/backups/` with private file permissions. It uses
+`register --force`, which removes and recreates each selected registration and
+can interrupt active sessions or reset per-tool enable/disable settings. It stops
+on the first failure, so earlier servers may already have changed. Keep backups
+private; they contain credentials. To restore one, stop the gateway before
+replacing its database with the backup, then restart it.
+
+Servers removed from the definitions are not automatically deregistered. Remove
+them deliberately with `mcpjungle --registry http://127.0.0.1:37373 deregister NAME`.
+Atlassian OAuth login state stays in its existing runtime location. On a new Mac,
+authenticate there and provide local Anki/Chrome services separately.
+
 ## Setup that needs the actual Mac
 
 Citrix Secure Access must be installed from your company's approved Mac installer;

@@ -1,4 +1,6 @@
 { pkgs, lib, config, ... }: {
+  imports = [ ./mcpjungle-config.nix ];
+
   home.sessionVariables = {
     JIRA_USER = "lanh.nguyen.tpv@one-line.com";
     JIRA_WEB = "oneline.atlassian.net";
