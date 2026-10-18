@@ -48,6 +48,7 @@
             ./packages.nix
             ./common.nix
             ./main.nix
+            ./codex.nix
             ./platform-tools.nix
             (if isLinux then ./linux.nix else ./macos.nix)
             {
