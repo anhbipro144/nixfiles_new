@@ -59,8 +59,12 @@ compatible pin to support Intel Darwin.
 
 ## macOS applications
 
-The Brewfile contains 14 enabled casks: Kitty, Chrome, Zen, Discord, LibreOffice,
-Anki, Zotero, Kid3, VLC, Postman, Figma, Tailscale, UniClipboard and Fira Code Nerd Font.
+Home Manager installs ChatGPT, Kitty, Chrome, Discord, Anki, Zotero and Fira Code
+Nerd Font and the Tailscale CLI from Nixpkgs. The Brewfile retains six apps
+without a suitable Apple Silicon Nix package: Zen, Kid3, VLC, Figma, UniClipboard
+and Hammerspoon.
+The Nixpkgs Tailscale package does not include the native menu bar app or manage
+its privileged VPN service.
 
 Homebrew has disabled its qutebrowser, qBittorrent and Wine casks. qutebrowser is
 installed through the supported ARM64 Nix package instead; it provides both the
@@ -79,9 +83,10 @@ Zotero 10.0.4 requires Firefox ESR 140.15.0 in its `app/config.sh`, but the
 main Nixpkgs pin supplies ESR 153, causing its runtime patching step to fail.
 `flake.nix` now has a separate `nixpkgs-zotero` input pinned to
 `eaad089433ca2bb662274377d33df3d0e51ef28b`, providing the matching ESR 140.15.0.
-`linux.nix` overrides only Zotero's Firefox runtime and restores the NixGL-wrapped
-package. This compatibility pin is independent of the Neovim pin; revisit it when
-upstream Nixpkgs fixes Zotero's runtime dependency. macOS retains its Brewfile cask.
+`linux.nix` and `macos.nix` use the pinned Firefox ESR 140.15.0 runtime with
+Zotero 10.0.4. This compatibility pin is independent of the Neovim pin; revisit
+it when upstream Nixpkgs fixes Zotero's runtime dependency. Home Manager installs
+the app on both platforms.
 
 The targeted Zotero build, including its NixGL wrapper, passed. Its executable
 responds to `--version`. Full graphical startup and Home Manager activation have
@@ -111,11 +116,10 @@ An obsolete commented Kitty example still contains `/home/neo` and is inactive.
   two builtin fetchers. No Linux or Intel build recipes were found.
 - All explicitly installed Mac Nix packages advertise support for the platform;
   none was marked broken at review time.
-- All 14 remaining Homebrew casks were checked for disabled/deprecated status and
+- All five remaining Homebrew casks were checked for disabled/deprecated status and
   declared ARM restrictions; none failed those checks.
-- Node 22.14.0, Node 24 and Node 18.16.0 upstream releases provide native
-  `darwin-arm64` binaries. Node 18 is retained for existing projects, with runtime
-  behavior on current macOS still unverified.
+- Mise uses the installed Node 24 release globally. Older Node versions should
+  be pinned per project; Context Mode's native addon activation uses Nix's Node 24.
 - Four Linux helper derivations built successfully.
 - Three native-menu tests passed; changed Lua files parsed in headless Neovim;
   changed Python files compiled; Nix formatting and scoped diff checks passed.
