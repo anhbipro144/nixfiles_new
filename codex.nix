@@ -1,6 +1,7 @@
 { config, ... }: {
   programs.codex = {
     enable = true;
+    mutableSettings = true;
     package = null;
     settings = {
       model = "gpt-6-luna";
@@ -36,8 +37,6 @@
         "context-mode" = {
           source_type = "git";
           source = "https://github.com/mksglu/context-mode.git";
-          last_revision = "5a92b7caaf0086d04b87cc03a82505c891aa8254";
-          last_updated = "2026-09-23T12:31:55Z";
         };
         "open-code-review" = {
           source_type = "git";
@@ -46,8 +45,6 @@
         ponytail = {
           source_type = "git";
           source = "https://github.com/DietrichGebert/ponytail.git";
-          last_revision = "e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156";
-          last_updated = "2026-09-22T04:07:28Z";
         };
       };
 
@@ -89,6 +86,10 @@
       };
 
       plugins = {
+        "context-mode@context-mode".enabled = true;
+        "open-code-review-codex@open-code-review".enabled = true;
+        "ponytail@ponytail".enabled = true;
+
         "browser@openai-bundled".enabled = false;
         "chrome@openai-bundled".enabled = false;
         "code-review@openai-bundled".enabled = true;
