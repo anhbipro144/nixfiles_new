@@ -85,7 +85,7 @@ let
     '';
   });
 in {
-  imports = [ ./aerospace.nix ];
+  imports = [ ./aerospace.nix ./colima.nix ];
 
   # Real app bundles let Spotlight discover Nix applications through macOS indexing.
   targets.darwin.linkApps.enable = false;

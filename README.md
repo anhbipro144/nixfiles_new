@@ -135,6 +135,12 @@ Brewfile.
 - Home Manager installs the Tailscale CLI and daemon from Nixpkgs. The native
   menu bar app and its managed VPN service are not included.
 
+## Docker on macOS
+
+For the Apple Silicon Docker runtime and `tiemdosime-bot` workflow, see
+[Docker with Colima](docs/docker-colima.md). Home Manager installs the CLI and
+plugins and starts Colima at login; no Docker Desktop or Homebrew service is needed.
+
 ## MCPJungle server configuration
 
 Home Manager writes GitHub Copilot CLI's user MCP configuration to
