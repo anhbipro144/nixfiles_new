@@ -1,6 +1,7 @@
 { pkgs, ... }:
 let codegraph = pkgs.callPackage ./packages/codegraph.nix { };
 in {
+  imports = [ ./hindsight.nix ];
   programs.codex = {
     enable = true;
     mutableSettings = true;

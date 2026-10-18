@@ -146,6 +146,13 @@ plugins and starts Colima at login; no Docker Desktop or Homebrew service is nee
 [CodeGraph setup and validation](docs/codegraph.md) covers the pinned standalone
 runtime, Codex MCP integration, index backups, upgrades and rollback on both targets.
 
+## Hindsight
+
+[Hindsight setup and validation](docs/hindsight.md) covers the pinned Coding Agents
+runtime, native Codex hooks, MCP and companion skill. Live memory requires the
+existing private backend configuration and Codex hook trust; no backend is selected
+automatically on an unconfigured machine.
+
 ## MCPJungle server configuration
 
 Home Manager writes GitHub Copilot CLI's user MCP configuration to
