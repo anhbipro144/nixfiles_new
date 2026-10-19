@@ -90,6 +90,8 @@
             # Use Globe+D/U for Neovim's half-page scrolling keys.
             map super+d send_key ctrl+d
             map super+u send_key ctrl+u
+            # Toggle Neovim's floating terminal with Globe+0.
+            map super+0 send_key ctrl+0
           ''
         else
           kittyConfig;

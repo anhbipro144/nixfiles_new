@@ -122,6 +122,7 @@ in {
     pkgs.discord
     pkgs.flameshot
     pkgs.google-chrome
+    pkgs.pngpaste
     pkgs.raycast
     pkgs.stats
     pkgs.tailscale
