@@ -8,7 +8,10 @@ in {
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "google-chrome"
+      "chatgpt"
+      "discord"
       "postman"
+      "raycast"
       "github-copilot-cli"
       "unrar"
       "antigravity-cli"
@@ -38,13 +41,14 @@ in {
       noto-fonts
       noto-fonts-cjk-sans
       dejavu_fonts
+      nerd-fonts.fira-code
 
       # Music and video
       mpd
 
       # Cloud, API, and service clients
       google-cloud-sdk
-      # gh
+      gh
       gogcli
       jira-cli-go
       google-alloydb-auth-proxy
@@ -91,8 +95,6 @@ in {
       (pkgs.pass.withExtensions (exts: [ exts.pass-otp ]))
       gnupg
       unrar
-
-      # chatgpt
 
       # Python utilities
       python3Packages.tldextract

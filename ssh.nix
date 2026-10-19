@@ -34,7 +34,6 @@ in {
         ServerAliveCountMax = 3;
       };
     } // lib.optionalAttrs isLinux {
-      # The Mac's identities and host aliases are unverified; do not reuse Linux mappings.
       homelab = {
         HostName = "100.106.118.50";
         User = "neo";
@@ -52,6 +51,25 @@ in {
         User = "git";
         IdentityFile = "${homeSsh}/neo_personal_key";
         IdentitiesOnly = true;
+      };
+    } // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+      "github.com-personal" = {
+        HostName = "github.com";
+        User = "git";
+        IdentityFile = "${homeSsh}/neo_mac";
+        IdentitiesOnly = true;
+        AddKeysToAgent = "yes";
+        IgnoreUnknown = "UseKeychain";
+        UseKeychain = true;
+      };
+      "github.com" = {
+        HostName = "github.com";
+        User = "git";
+        IdentityFile = "${homeSsh}/neo_mac_one";
+        IdentitiesOnly = true;
+        AddKeysToAgent = "yes";
+        IgnoreUnknown = "UseKeychain";
+        UseKeychain = true;
       };
     };
   };

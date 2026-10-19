@@ -52,8 +52,8 @@ This is a reference workflow, not a requirement to replicate Linux screen resolu
 
 ## Window behavior
 
-- Use tiles by default with orientation determined by display aspect ratio.
-- Set inner horizontal and vertical gaps to 6 and all outer gaps to 0. These are macOS logical units; visually check the result rather than treating them as physical Retina pixels.
+- Use tiles by default with initial root orientation determined by display aspect ratio. Existing workspace trees need not automatically reorient when moved between displays.
+- Set inner horizontal and vertical gaps and all outer gaps to 12, following the later request for space around windows and screen edges. These are macOS logical units; visually check the result rather than treating them as physical Retina pixels.
 - Keep focus-follows-mouse off. Preserve native Command shortcuts for editing and normal app behavior.
 - Use the installed version's documented i3-style split configuration. If its i3 example disables tree normalization to make pending splits work, follow that example; verify horizontal/vertical splitting with a newly opened window.
 - Provide floating mode for windows that need it. Retain built-in dialog heuristics; add app exceptions only for problems observed during verification.
@@ -84,7 +84,9 @@ Use Option (`alt` in AeroSpace) as the primary modifier. This preserves Command 
 | Option+Return | Open a new terminal window |
 | Option+Ctrl+Shift+directions, both Vim and arrows | Move current workspace to the monitor in that direction |
 
-Use documented commands supported by the installed version. Prefer native command sequences over scripts. Keep next/previous workspace order numerical across 1–19; explicitly enumerate the order if the installed version would otherwise sort names lexically. Persist these numbered workspaces if supported by the installed version.
+Use documented commands supported by the installed version. Prefer native command sequences over scripts. Next/previous must traverse all workspaces 1–19 globally, including empty workspaces, in numerical order, wrapping from 19 to 1 and from 1 to 19. Explicitly enumerate the order; do not use the default alphabetical, focused-monitor order. Persist these numbered workspaces if supported by the installed version.
+
+Implement the three-layout cycle with conditional native commands. A list such as `layout h_accordion h_tiles v_tiles` does not implement a three-state cycle. If the pinned version lacks native conditionals, a small stateless helper is permitted.
 
 For resize mode, preserve the Linux controls:
 
@@ -109,9 +111,9 @@ Check shortcut conflicts with macOS, existing keyboard tools, keyboard layout an
 
 Make laptop-only operation work first. Then inspect connected displays using the installed AeroSpace CLI.
 
-- If the portrait external display is present, assign workspace 3 to its actual stable identity and workspaces 1–2 to the built-in display. Use documented monitor matching and a built-in/available-display fallback when the external display is absent.
+- If the portrait external display is present, force-assign workspace 3 using its observed display-name pattern and workspaces 1–2 to the built-in display. Use documented monitor matching and a built-in/available-display fallback when the external display is absent. Names are not guaranteed unique hardware identities; document ambiguity with identical displays.
 - If the external display is absent, do not invent a monitor name or force all workspaces to one monitor. Leave assignment to AeroSpace and document the optional follow-up once the monitor is connected.
-- Other workspaces should remain movable; do not force-pin all 19 workspaces.
+- When these assignments are configured, workspaces 1–3 are pinned and their move-to-monitor shortcuts are expected to fail. Workspaces 4–19 remain movable. With no assignments configured, all 19 remain movable.
 - Verify docking/undocking and that windows on disconnected displays remain reachable. Do not promise automatic restoration of manual layouts unless tested.
 - Keep display arrangement compatible with AeroSpace's off-screen workspace hiding. Inspect for hidden windows appearing on the neighboring display.
 - Explain that AeroSpace workspaces are independent of native macOS Spaces. Use one native Space per display for this workflow; preserve pre-existing Spaces rather than deleting them.
@@ -138,7 +140,7 @@ Use targeted checks and existing repository tooling; no new testing framework.
 5. Verify exactly one AeroSpace process and one owning login service; inspect launchd status and errors. Confirm executable/config ownership comes from Nix/Home Manager.
 6. With disposable windows, test focus, movement, both split directions, layout cycling, float/fullscreen toggles, resize mode exit, and normal close. Do not close existing work or force-quit apps for testing.
 7. Verify workspace 10 via 0, workspace 11 and 19 via Ctrl combinations, send-without-follow, and next/previous numerical order. Confirm a newly opened terminal lands on the current workspace.
-8. Verify 6-unit gaps, zero configured outer gaps, keyboard focus, native Command shortcuts, and dialogs.
+8. Verify 12-unit inner and outer gaps, keyboard focus, native Command shortcuts, and dialogs.
 9. If attached, test landscape/portrait placement and moving a workspace between monitors. Test disconnect/reconnect only with my participation; do not claim this passed from config inspection.
 10. Apply again to confirm idempotence. Check login persistence at the next user-assisted logout/login; do not log me out automatically.
 
@@ -151,7 +153,7 @@ Deliver the minimal Nix diff plus a short README section containing:
 - Exact build, switch, reload, and service-inspection commands for this machine.
 - A compact keybinding reference and known i3 differences.
 - Permission steps, monitor follow-up, and acceptance results.
-- An emergency procedure that stops the owning launchd service before quitting AeroSpace, so KeepAlive does not restart it. Verify the installed version's normal exit restores hidden windows; otherwise document recovery without killing other apps.
+- An emergency procedure that first runs `aerospace enable off` to restore hidden windows, then stops the owning launchd service so KeepAlive cannot restart it. Verify recovery with a disposable hidden window. Do not assume unloading the service alone restores windows; document restarting the service and disabling tiling as recovery without killing other apps.
 - Exact restoration steps using the recorded previous Home Manager generation and unmanaged config backups. Restore changed macOS settings from recorded prior values. Do not remove Home Manager or Nix to undo one window manager.
 
 Do not commit, push, install SketchyBar/Raycast/Karabiner/yabai, change Night Shift/screenshots, or migrate the entire desktop theme as part of this task.

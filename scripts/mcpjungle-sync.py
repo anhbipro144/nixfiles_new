@@ -59,7 +59,7 @@ def main():
         # The resolved secret is written only to a private temporary file.
         with tempfile.TemporaryDirectory(prefix="mcpjungle-sync-") as directory:
             path = Path(directory) / "server.json"
-            with path.open("w", opener=lambda p, flags: os.open(p, flags, 0o600)) as stream:
+            with open(path, "w", opener=lambda p, flags: os.open(p, flags, 0o600)) as stream:
                 json.dump(settings, stream)
             result = subprocess.run(cli + ["register", "--force", "--conf", str(path)],
                                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

@@ -350,7 +350,13 @@ in {
       '';
     };
 
-    ".config/macchina" = { source = ./macchina; };
+    ".config/macchina/macchina.toml".source = ./macchina/macchina.toml;
+    ".config/macchina/themes/default.toml".text = lib.replaceStrings
+      [ "/home/neo/.config/home-manager/macchina/themes/linux-ascii" ]
+      [ "${./macchina/themes/linux-ascii}" ]
+      (builtins.readFile ./macchina/themes/default.toml);
+    ".config/macchina/themes/linux-ascii".source = ./macchina/themes/linux-ascii;
+    ".config/macchina/themes/ascii".source = ./macchina/themes/ascii;
     ".config/jiratui" = { source = ./jiratui; };
   };
 

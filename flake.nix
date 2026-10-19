@@ -41,9 +41,9 @@
           extraSpecialArgs = {
             neovimPkgs = import nixpkgs-neovim { inherit system; };
             homeTarget = name;
+            zoteroFirefox = (import nixpkgs-zotero { inherit system; }).firefox-esr-140-unwrapped;
           } // nixpkgs.lib.optionalAttrs isLinux {
             inherit nixgl;
-            zoteroFirefox = (import nixpkgs-zotero { inherit system; }).firefox-esr-140-unwrapped;
             zenBrowser = zen.packages.${system}.zen-browser;
           };
           modules = [
@@ -79,6 +79,7 @@
       homeConfigurations."neo@mac" = mkHome {
         system = "aarch64-darwin";
         name = "neo@mac";
+        username = "admin";
       };
     };
 }

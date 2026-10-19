@@ -1,15 +1,7 @@
-# Native macOS applications; shared command-line tools are managed by Nix.
-cask "kitty"
-cask "google-chrome"
+# Native macOS applications without a suitable aarch64-darwin Nix package.
 cask "zen"
-cask "discord"
-cask "libreoffice"
-cask "anki"
-cask "zotero"
 cask "kid3"
 cask "vlc"
-cask "postman"
 cask "figma"
-cask "tailscale-app"
 cask "uniclipboard"
-cask "font-fira-code-nerd-font"
+cask "hammerspoon"

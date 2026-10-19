@@ -53,6 +53,7 @@
 
     zsh = {
       enable = true;
+      enableCompletion = false;
 
       initContent = ''
                     zstyle ':completion:*' completer \
@@ -64,6 +65,8 @@
 
                     zvm_after_init_commands+=('bindkey -M viins "^N" menu-select')
                     zvm_after_init_commands+=('bindkey -M viins "^P" menu-select')
+                    zvm_after_init_commands+=('zle -C history-search-backward menu-select .autocomplete__history-search__completion-widget')
+                    zvm_after_init_commands+=('bindkey -M viins "^R" history-search-backward')
 
 
                     # Load Powerlevel10k theme
@@ -148,12 +151,6 @@
             return 1
           fi
         }
-      '';
-
-      completionInit = ''
-        autoload -Uz compinit
-        zmodload -i zsh/complist
-        compinit -i
       '';
 
       shellAliases = {

@@ -19,8 +19,8 @@
   home.activation.contextModeBetterSqlite3 =
     config.lib.dag.entryAfter [ "writeBoundary" ] ''
       pluginCacheRoot="${config.home.homeDirectory}/.codex/plugins/cache/context-mode/context-mode"
-      nodeBin="${config.home.homeDirectory}/.local/share/mise/installs/node/22.14.0/bin/node"
-      npmBin="${config.home.homeDirectory}/.local/share/mise/installs/node/22.14.0/bin/npm"
+      nodeBin="${pkgs.nodejs_24}/bin/node"
+      npmBin="${pkgs.nodejs_24}/bin/npm"
 
       if [ -d "$pluginCacheRoot" ] && [ -x "$nodeBin" ] && [ -x "$npmBin" ]; then
         for pluginRoot in "$pluginCacheRoot"/*; do
@@ -29,10 +29,15 @@
           if ! (cd "$pluginRoot" && "$nodeBin" -e 'const Database = require("better-sqlite3"); new Database(":memory:").close()') \
             >/dev/null 2>&1; then
             betterSqliteVersion="$($nodeBin -p "require(process.argv[1]).dependencies['better-sqlite3']" "$pluginRoot/package.json")"
-            PATH="${config.home.homeDirectory}/.local/share/mise/installs/node/22.14.0/bin:${pkgs.python3}/bin:${pkgs.stdenv.cc}/bin:${pkgs.gnumake}/bin:${pkgs.pkg-config}/bin:$PATH" \
-              PYTHON="${pkgs.python3}/bin/python3" \
+            (
+              export PATH="${pkgs.nodejs_24}/bin:${pkgs.python3}/bin:${pkgs.stdenv.cc}/bin:${pkgs.gnumake}/bin:${pkgs.pkg-config}/bin:$PATH"
+              export PYTHON="${pkgs.python3}/bin/python3"
               "$npmBin" --prefix "$pluginRoot" install "better-sqlite3@$betterSqliteVersion" \
                 --no-save --no-package-lock --ignore-scripts=false --legacy-peer-deps --no-audit --no-fund
+              "$npmBin" --prefix "$pluginRoot" rebuild better-sqlite3 --ignore-scripts=false
+              cd "$pluginRoot"
+              "$nodeBin" -e 'const Database = require("better-sqlite3"); new Database(":memory:").close()'
+            )
           fi
         done
       fi
@@ -50,7 +55,7 @@
       enable = true;
       enableZshIntegration = true;
       globalConfig = {
-        tools = { node = [ "22.14.0" "24" "18.16.0" ]; };
+        tools = { node = "24"; };
         hooks = { postinstall = "corepack enable"; };
         settings = { experimental = true; };
       };
@@ -61,12 +66,33 @@
     };
     kitty = {
       enable = true;
-      extraConfig = if pkgs.stdenv.hostPlatform.isDarwin then
-        lib.replaceStrings [ "listen_on unix:@mykitty" ]
-        [ "listen_on unix:${config.home.homeDirectory}/.kitty-remote-control" ]
-        (builtins.readFile ./kitty/kitty.conf)
-      else
-        builtins.readFile ./kitty/kitty.conf;
+      extraConfig =
+        let
+          kittyConfig = builtins.readFile ./kitty/kitty.conf;
+        in
+        if pkgs.stdenv.hostPlatform.isDarwin then
+          lib.replaceStrings [ "listen_on unix:@mykitty" ]
+            [ "listen_on unix:${config.home.homeDirectory}/.kitty-remote-control" ]
+            kittyConfig
+          + "\n"
+          + ''
+            # Globe is mapped to Command on macOS. Send these shortcuts to the shell.
+            # Keep Ctrl+R for the zsh history list instead of Kitty's resize mode.
+            map super+r send_key ctrl+r
+            # Navigate history and completion menus with Globe+N/P.
+            map super+n send_key ctrl+n
+            map super+p send_key ctrl+p
+            # Navigate Neovim splits with Globe+H/J/K/L.
+            map super+h send_key ctrl+h
+            map super+j send_key ctrl+j
+            map super+k send_key ctrl+k
+            map super+l send_key ctrl+l
+            # Use Globe+D/U for Neovim's half-page scrolling keys.
+            map super+d send_key ctrl+d
+            map super+u send_key ctrl+u
+          ''
+        else
+          kittyConfig;
     };
   };
 }
