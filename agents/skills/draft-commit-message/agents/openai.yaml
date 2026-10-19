@@ -1,0 +1,4 @@
+interface:
+  display_name: "Draft Commit Message"
+  short_description: "Draft a commit message from staged changes"
+  default_prompt: "Use $draft-commit-message to write a commit message for the staged diff."

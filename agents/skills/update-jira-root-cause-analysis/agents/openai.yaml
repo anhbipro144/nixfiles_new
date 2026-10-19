@@ -1,0 +1,4 @@
+interface:
+  display_name: "Update Jira RCA"
+  short_description: "Update Jira root cause fields"
+  default_prompt: "Use $update-jira-root-cause-analysis to update a Jira ticket with a concise root cause analysis."

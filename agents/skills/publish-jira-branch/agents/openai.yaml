@@ -1,0 +1,4 @@
+interface:
+  display_name: "Publish Jira Branch"
+  short_description: "Publish a Jira branch and create its PR"
+  default_prompt: "Use $publish-jira-branch to publish the current Jira branch and create a pull request."

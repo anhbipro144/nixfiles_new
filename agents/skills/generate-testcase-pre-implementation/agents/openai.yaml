@@ -1,0 +1,10 @@
+interface:
+  display_name: "Generate Pre-implementation Test Cases"
+  short_description: "Create and enter parent-ticket test tabs"
+  default_prompt: "Use $generate-testcase-pre-implementation to create a pre-implementation test-case baseline from the parent Jira ticket I provide and enter it in a new tab cloned from the designated template."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "sheets"
+      description: "Read and write the pre-implementation test-case Google Sheet."

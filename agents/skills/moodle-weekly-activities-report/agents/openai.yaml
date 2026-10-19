@@ -1,0 +1,4 @@
+interface:
+  display_name: "Moodle Weekly Activities"
+  short_description: "Report weekly Moodle activity completion states"
+  default_prompt: "Use $moodle-weekly-activities-report to report Week 3 for the semester in the current AGENTS.md."
