@@ -1,0 +1,4 @@
+interface:
+  display_name: "Jira Weekly Worklog"
+  short_description: "Show Jira context before logging time"
+  default_prompt: "Use $jira-weekly-worklog to first show my current-week report and In Progress tickets, then ask what to log."

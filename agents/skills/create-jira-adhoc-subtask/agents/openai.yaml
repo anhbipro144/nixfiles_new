@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Jira Ad-hoc Subtask"
+  short_description: "Create a subtask for the active Ad-hoc sprint ticket"
+  default_prompt: "Use $create-jira-adhoc-subtask to create a Sub-Bug named Fix Cabotage Rule bugs."

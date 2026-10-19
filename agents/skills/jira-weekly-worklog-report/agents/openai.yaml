@@ -1,0 +1,4 @@
+interface:
+  display_name: "Jira Weekly Worklog Report"
+  short_description: "Summarize worklogs and active tickets"
+  default_prompt: "Use $jira-weekly-worklog-report to show my weekly worklogs and In Progress ticket summary."

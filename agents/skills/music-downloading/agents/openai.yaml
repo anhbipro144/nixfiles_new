@@ -1,0 +1,4 @@
+interface:
+  display_name: "Music Downloading"
+  short_description: "Download and tag YouTube music for rmpc"
+  default_prompt: "Use $music-downloading to download this YouTube track into my MPD library: <YouTube URL>"

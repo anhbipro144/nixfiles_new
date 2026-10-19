@@ -1,0 +1,4 @@
+interface:
+  display_name: "Update Jira RCA from Ticket"
+  short_description: "Find a PR and update a ticket RCA"
+  default_prompt: "Use $update-jira-root-cause-analysis-from-ticket to find the PR for CNPRD-12345 and update its RCA."

@@ -8,6 +8,7 @@ let
 in {
 
   home.file = {
+    ".agents".source = builtins.path { path = ./agents; name = "agents"; };
     ".config/kitty/themes".source = ./kitty/themes;
     ".config/lazygit/config.yml".text = ''
       gui:
