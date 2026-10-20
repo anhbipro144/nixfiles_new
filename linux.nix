@@ -70,6 +70,21 @@
     Install.WantedBy = [ "default.target" ];
   };
 
+  systemd.user.services.tunnel-client = {
+    Unit = {
+      Description = "OpenAI MCP tunnel-client";
+      After = [ "network-online.target" "mcpjungle.service" ];
+      Wants = [ "network-online.target" "mcpjungle.service" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'set -a; . %h/.config/home-manager/secrets/secrets.env; exec %h/.local/bin/tunnel-client run --profile mcpjungle'";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
+
   programs.kitty.package = config.lib.nixGL.wrap pkgs.kitty;
   home.packages = with pkgs; [
     flameshot

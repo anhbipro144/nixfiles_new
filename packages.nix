@@ -24,6 +24,7 @@ in {
       "github-copilot-cli"
       "unrar"
       "antigravity-cli"
+      "ngrok"
     ];
 
   home.packages = with pkgs;

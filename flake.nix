@@ -53,6 +53,8 @@
             ./common.nix
             agenix.homeManagerModules.default
             ./ssh.nix
+            ./tunnel-client.nix
+            ./ngrok.nix
             ./main.nix
             ./codex.nix
             ./copilot.nix
