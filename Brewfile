@@ -1,4 +1,6 @@
-# Native macOS applications without a suitable aarch64-darwin Nix package.
+# Native macOS applications managed outside Nix.
+# Raycast self-updates its database; hms must not restore an older app bundle.
+cask "raycast"
 cask "zen"
 cask "kid3"
 cask "vlc"

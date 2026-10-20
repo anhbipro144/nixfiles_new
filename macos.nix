@@ -35,6 +35,11 @@ let
     hs.menuIcon(false)
     require("hs.ipc")
 
+    -- Globe is mapped to Command; use the native input-source shortcut.
+    inputSourceShortcut = hs.hotkey.bind({ "cmd" }, "space", function()
+      hs.eventtap.keyStroke({ "ctrl" }, "space", 0)
+    end)
+
     local raycast = "com.raycast.macos"
     local keys = { [hs.keycodes.map["n"]] = "down", [hs.keycodes.map["p"]] = "up" }
 
@@ -55,6 +60,23 @@ let
         hs.eventtap.keyStroke({}, arrow, 0)
         return true
       end
+      return false
+    end):start()
+
+    -- Globe is Command everywhere else; inside the League game client it is Control.
+    local leagueGame = "com.riotgames.LeagueofLegends.GameClient"
+    globeAsControlInLeague = hs.eventtap.new({
+      hs.eventtap.event.types.keyDown,
+      hs.eventtap.event.types.keyUp,
+      hs.eventtap.event.types.flagsChanged,
+    }, function(event)
+      local app = hs.application.frontmostApplication()
+      if not (app and app:bundleID() == leagueGame) then return false end
+      local flags = event:getFlags()
+      if not flags.cmd then return false end
+      flags.cmd = nil
+      flags.ctrl = true
+      event:setFlags(flags)
       return false
     end):start()
 
@@ -123,7 +145,6 @@ in {
     pkgs.flameshot
     pkgs.google-chrome
     pkgs.pngpaste
-    pkgs.raycast
     pkgs.stats
     pkgs.tailscale
     zotero

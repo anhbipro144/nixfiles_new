@@ -195,6 +195,8 @@
         enable = true;
         plugins = [
           "zsh-users/zsh-syntax-highlighting"
+          # Avoid zsh-autocomplete's broken fallback autoload of zasync.
+          "marlonrichert/zasync kind:fpath"
           "marlonrichert/zsh-autocomplete"
           "jeffreytse/zsh-vi-mode"
         ];

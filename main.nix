@@ -12,7 +12,7 @@
     HINDSIGHT_API_CONSOLIDATION_LLM_REASONING_EFFORT = "low";
     GOG_CONFIG_DIR = "${config.home.homeDirectory}/.config/gogcli";
     GOG_DATA_DIR = "${config.home.homeDirectory}/.config/gogcli";
-    GOG_KEYRING_BACKEND = "file";
+    GOG_KEYRING_BACKEND = if pkgs.stdenv.hostPlatform.isDarwin then "keychain" else "file";
   };
 
   # Codex plugin archives do not include Context Mode's native SQLite addon.

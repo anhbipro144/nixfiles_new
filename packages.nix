@@ -4,6 +4,7 @@ let
     pkgs.callPackage ./mcp-language-server-lazy.nix { };
   mcpjungle = pkgs.callPackage ./mcpjungle.nix { };
   codegraph = pkgs.callPackage ./packages/codegraph.nix { };
+  open-code-review = pkgs.callPackage ./packages/open-code-review.nix { };
 in {
   # Prefer this runtime over an existing ~/.local/bin/codegraph launcher.
   home.sessionPath = lib.mkBefore [ "${codegraph}/bin" ];
@@ -20,7 +21,6 @@ in {
       "chatgpt"
       "discord"
       "postman"
-      "raycast"
       "github-copilot-cli"
       "unrar"
       "antigravity-cli"
@@ -61,6 +61,7 @@ in {
       gh
       gogcli
       jira-cli-go
+      open-code-review
       google-alloydb-auth-proxy
       google-cloud-sql-proxy
       grpcurl
