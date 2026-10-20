@@ -1,6 +1,6 @@
 # SSH and agenix
 
-Linux is provisioned first. The Mac's existing SSH keys and hosts have not been inspected, so `neo@mac` currently receives only the shared SSH defaults and no Linux key secrets or host aliases.
+Linux is provisioned first. macOS has the `homelab` and GitHub host aliases, using local keys under `~/.ssh`; it receives no Linux key secrets. The Mac's key files and remote access still need validation on the actual Mac.
 
 ## Recovery identity
 
