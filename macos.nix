@@ -225,4 +225,19 @@ in {
       StandardErrorPath = "${gatewayDir}/stderr.log";
     };
   };
+  launchd.agents.tunnel-client = {
+    enable = true;
+    config = {
+      ProgramArguments = [
+        "/bin/bash"
+        "-c"
+        "set -a; . ${config.home.homeDirectory}/.config/home-manager/secrets/secrets.env; exec ${config.home.homeDirectory}/.local/bin/tunnel-client run --profile mcpjungle"
+      ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      ThrottleInterval = 5;
+      StandardOutPath = "${gatewayDir}/tunnel-client.stdout.log";
+      StandardErrorPath = "${gatewayDir}/tunnel-client.stderr.log";
+    };
+  };
 }

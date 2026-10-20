@@ -1,0 +1,17 @@
+{ config, lib, pkgs, ... }:
+let
+  yaml = pkgs.formats.yaml { };
+in {
+  xdg.configFile."tunnel-client/mcpjungle.yaml".source = yaml.generate "mcpjungle.yaml" {
+    config_version = 1;
+    control_plane = {
+      base_url = "https://api.openai.com";
+      tunnel_id = "tunnel_6ab1279028948191ba3d2d718edae2fa";
+      api_key = "env:CONTROL_PLANE_API_KEY";
+    };
+    health.listen_addr = "127.0.0.1:8080";
+    admin_ui.open_browser = false;
+    log = { level = "info"; format = "json"; };
+    mcp.server_urls = [{ channel = "main"; url = "http://127.0.0.1:37373/mcp"; }];
+  };
+}
