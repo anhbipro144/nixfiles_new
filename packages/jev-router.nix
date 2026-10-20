@@ -12,6 +12,7 @@ buildNpmPackage {
   };
 
   nodejs = nodejs_24;
+  patches = [ ./jev-router-shared-proxy.patch ];
   npmDepsHash = "sha256-swwrAAD/9AyfzOgHRZuIPoOwXEXjg8K1YaVtCKMP+xc=";
   dontNpmBuild = true;
   doCheck = true;

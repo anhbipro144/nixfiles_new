@@ -7,12 +7,14 @@
     let
       releases = {
         x86_64-linux = {
+          version = "0.161.0";
           target = "x86_64-unknown-linux-musl";
           hash = "sha256-BNirnby53w7fPGfcpQcqN0ur/fdiqbxK5kmuFAuOLPA=";
         };
         aarch64-darwin = {
+          version = "0.163.0";
           target = "aarch64-apple-darwin";
-          hash = "sha256-8P7uhTfa+N1rTgo252RUmtFK/btBnYd1rquf6yAYIxM=";
+          hash = "sha256-sDRPwuQfFeAHEUflhpAIBHuP9L8sSoiXl107rj8QOzQ=";
         };
       };
       packages = nixpkgs.lib.genAttrs (builtins.attrNames releases) (system:
@@ -22,10 +24,10 @@
 
           codex = pkgs.stdenvNoCC.mkDerivation {
             pname = "codex";
-            version = "0.161.0";
+            inherit (release) version;
             src = pkgs.fetchurl {
               url =
-                "https://github.com/openai/codex/releases/download/rust-v0.161.0/codex-package-${release.target}.tar.gz";
+                "https://github.com/openai/codex/releases/download/rust-v${release.version}/codex-package-${release.target}.tar.gz";
               inherit (release) hash;
             };
             dontUnpack = true;
@@ -43,16 +45,16 @@
 
           codex-acp = pkgs.buildNpmPackage rec {
             pname = "codex-acp";
-            version = "2.0.1";
+            version = "2.2.2";
 
             src = pkgs.fetchFromGitHub {
               owner = "agentclientprotocol";
               repo = "codex-acp";
               rev = "v${version}";
-              hash = "sha256-nwBRPKofGb0MysC+3pTL6iGidTkabc2foJzucot6FGE=";
+              hash = "sha256-9qIKaDZJ80PVO7/qBfbOE7un2Ukk92bZVrIaHG/K8P8=";
             };
 
-            npmDepsHash = "sha256-5w4CVDA6zu33e6f1OssboxwHvpmp+BoEDjJJxXlsKVk=";
+            npmDepsHash = "sha256-4wXnQnPEUp0DtNphXBS5/WQkgErRD631xOB0KqDXf4U=";
 
             meta = {
               description = "ACP adapter for Codex CLI";
