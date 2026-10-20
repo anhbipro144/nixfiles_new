@@ -53,6 +53,15 @@ in {
         IdentitiesOnly = true;
       };
     } // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+      homelab = {
+        HostName = "100.106.118.50";
+        User = "neo";
+        IdentityFile = "${homeSsh}/neo_mac_one";
+        IdentitiesOnly = true;
+        AddKeysToAgent = "yes";
+        IgnoreUnknown = "UseKeychain";
+        UseKeychain = true;
+      };
       "github.com-personal" = {
         HostName = "github.com";
         User = "git";
