@@ -56,7 +56,7 @@ in {
       homelab = {
         HostName = "100.106.118.50";
         User = "neo";
-        IdentityFile = "${homeSsh}/neo_mac_one";
+        IdentityFile = "${homeSsh}/neo_mac";
         IdentitiesOnly = true;
         AddKeysToAgent = "yes";
         IgnoreUnknown = "UseKeychain";
