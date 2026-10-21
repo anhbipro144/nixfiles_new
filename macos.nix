@@ -217,7 +217,7 @@ in {
         "${gatewayDir}/mcpjungle.db"
       ];
       EnvironmentVariables.PATH =
-        "${config.home.homeDirectory}/.local/bin:${pkgs.nodejs_22}/bin:${config.home.profileDirectory}/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin";
+        "${config.home.profileDirectory}/bin:${config.home.homeDirectory}/.local/bin:${pkgs.nodejs_22}/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin";
       RunAtLoad = true;
       KeepAlive = true;
       ThrottleInterval = 2;
