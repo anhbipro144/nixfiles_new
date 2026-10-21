@@ -5,6 +5,40 @@ let
   mcpjungle = pkgs.callPackage ./mcpjungle.nix { };
   codegraph = pkgs.callPackage ./packages/codegraph.nix { };
   open-code-review = pkgs.callPackage ./packages/open-code-review.nix { };
+  sonarqube-cli =
+    let
+      version = "1.8.0.5274";
+      artifacts = {
+        x86_64-linux = {
+          platform = "linux-x86-64";
+          os = "linux";
+          hash = "sha256-+/05s3mNfBGhxcgTdzUfgrqK5r5lM1JD8Ls8keepIdE=";
+        };
+        aarch64-darwin = {
+          platform = "macos-arm64";
+          os = "macos";
+          hash = "sha256-uk+y6o6YdC2zYRYuyEVCOdXWLIy6imxBMEytt/IVFWA=";
+        };
+      };
+      artifact = artifacts.${pkgs.stdenvNoCC.hostPlatform.system}
+        or (throw "sonarqube-cli is unsupported on ${pkgs.stdenvNoCC.hostPlatform.system}");
+    in pkgs.stdenvNoCC.mkDerivation {
+      pname = "sonarqube-cli";
+      inherit version;
+      src = pkgs.fetchurl {
+        url = "https://binaries.sonarsource.com/Distribution/sonarqube-cli/${version}/${artifact.os}/sonarqube-cli-${version}-${artifact.platform}.bin";
+        inherit (artifact) hash;
+      };
+      dontUnpack = true;
+      installPhase = ''
+        install -Dm755 "$src" "$out/bin/sonar"
+      '';
+      meta = {
+        description = "Command-line interface for SonarQube";
+        mainProgram = "sonar";
+        platforms = builtins.attrNames artifacts;
+      };
+    };
 in {
   # Prefer this runtime over an existing ~/.local/bin/codegraph launcher.
   home.sessionPath = lib.mkBefore [ "${codegraph}/bin" ];
@@ -60,6 +94,7 @@ in {
       google-cloud-sdk
       gh
       gogcli
+      sonarqube-cli
       jira-cli-go
       open-code-review
       google-alloydb-auth-proxy
