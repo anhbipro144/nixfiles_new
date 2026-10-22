@@ -12,7 +12,6 @@ in {
       Verify consequential CodeGraph findings against current source; use native search when the graph is missing, stale, or incomplete.
     '';
     settings = {
-      model_provider = "openai";
       model = "gpt-6-luna";
       model_reasoning_effort = "high";
       approval_policy = "on-request";
