@@ -68,20 +68,6 @@ in {
           tool_timeout_sec = 120;
         };
         mcpjungle.url = "http://127.0.0.1:37373/mcp";
-        chrome-devtools = {
-          command = "npx";
-          args = [
-            "-y"
-            "chrome-devtools-mcp@latest"
-            "--autoConnect"
-            "--no-usage-statistics"
-            "--no-performance-crux"
-          ];
-          env_vars = [ "PATH" ];
-          startup_timeout_sec = 60;
-          tool_timeout_sec = 120;
-
-        };
         # hindsight = {
         #   command = "npx";
         #   args = [

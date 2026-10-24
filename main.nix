@@ -39,6 +39,11 @@
               "$nodeBin" -e 'const Database = require("better-sqlite3"); new Database(":memory:").close()'
             )
           fi
+
+          # shortcut: remove npm bin links until Codex hook fingerprinting supports them.
+          if [ -d "$pluginRoot/node_modules" ]; then
+            "${pkgs.findutils}/bin/find" "$pluginRoot/node_modules" -type l -path '*/.bin/*' -delete
+          fi
         done
       fi
     '';

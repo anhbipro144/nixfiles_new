@@ -150,14 +150,12 @@ in {
     zotero
   ];
 
-  # Show CPU utilization and RAM usage with memory pressure in the menu bar.
+  # Show RAM usage and memory pressure in the menu bar.
   home.activation.statsMenuBar =
     config.lib.dag.entryAfter [ "writeBoundary" ] ''
-      run /usr/bin/defaults write eu.exelban.Stats CPU_state -bool true
-      run /usr/bin/defaults write eu.exelban.Stats CPU_widget -string mini
+      run /usr/bin/defaults write eu.exelban.Stats CPU_state -bool false
       run /usr/bin/defaults write eu.exelban.Stats RAM_state -bool true
-      run /usr/bin/defaults write eu.exelban.Stats RAM_widget -string text
-      run /usr/bin/defaults write eu.exelban.Stats RAM_textWidgetValue -string '$mem.used/$mem.total ($pressure.value)'
+      run /usr/bin/defaults write eu.exelban.Stats RAM_widget -string mini
       # The Nix-managed app cannot use Stats' DMG self-updater. Update it via Nix.
       run /usr/bin/defaults write eu.exelban.Stats update-interval -string Never
     '' // { before = [ "setupLaunchAgents" ]; };

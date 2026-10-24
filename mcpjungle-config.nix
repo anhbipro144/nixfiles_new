@@ -31,6 +31,11 @@ let
       description = "Playwright MCP connected to the running Chrome channel";
       session_mode = "stateful";
     };
+    chrome-devtools = (stdio [ "-y" "chrome-devtools-mcp@latest"
+      "--autoConnect" "--no-usage-statistics" "--no-performance-crux" ]) // {
+      description = "Chrome DevTools MCP connected to the running Chrome browser";
+      session_mode = "stateful";
+    };
     figma_framelink = (stdio [ "-y" "figma-developer-mcp" "--stdio" ]) // {
       description = "Framelink MCP for Figma";
     };
