@@ -1,7 +1,10 @@
 { config, lib, pkgs, ... }:
 let
   yaml = pkgs.formats.yaml { };
+  tunnelClient = pkgs.callPackage ./tunnel-client-package.nix { };
 in {
+  home.packages = [ tunnelClient ];
+
   xdg.configFile."tunnel-client/mcpjungle.yaml".source = yaml.generate "mcpjungle.yaml" {
     config_version = 1;
     control_plane = {

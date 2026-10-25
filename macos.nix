@@ -1,6 +1,7 @@
 { pkgs, lib, config, zoteroFirefox, ... }:
 let
   mcpjungle = pkgs.callPackage ./mcpjungle.nix { };
+  tunnelClient = pkgs.callPackage ./tunnel-client-package.nix { };
   # Match Zotero 10.0.4's Gecko runtime; ESR 153 changed actor modules expected by its patch script.
   zotero = pkgs.zotero.override {
     firefox-esr-153-unwrapped = zoteroFirefox;
@@ -252,7 +253,7 @@ in {
       ProgramArguments = [
         "/bin/bash"
         "-c"
-        "set -a; . ${config.home.homeDirectory}/.config/home-manager/secrets/secrets.env; exec ${config.home.homeDirectory}/.local/bin/tunnel-client run --profile mcpjungle"
+        "set -a; . ${config.home.homeDirectory}/.config/home-manager/secrets/secrets.env; exec ${tunnelClient}/bin/tunnel-client run --profile mcpjungle"
       ];
       RunAtLoad = true;
       KeepAlive = true;

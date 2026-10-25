@@ -1,4 +1,7 @@
-{ pkgs, config, lib, nixgl, zenBrowser, zoteroFirefox, ... }: {
+{ pkgs, config, lib, nixgl, zenBrowser, zoteroFirefox, ... }:
+let
+  tunnelClient = pkgs.callPackage ./tunnel-client-package.nix { };
+in {
   imports = [ ./desktop.nix ];
 
 
@@ -78,7 +81,7 @@
     };
     Service = {
       Type = "simple";
-      ExecStart = "${pkgs.bash}/bin/bash -c 'set -a; . %h/.config/home-manager/secrets/secrets.env; exec %h/.local/bin/tunnel-client run --profile mcpjungle'";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'set -a; . %h/.config/home-manager/secrets/secrets.env; exec ${tunnelClient}/bin/tunnel-client run --profile mcpjungle'";
       Restart = "on-failure";
       RestartSec = 5;
     };
