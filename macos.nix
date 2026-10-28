@@ -225,6 +225,44 @@ in {
       KeepAlive = false;
     };
   };
+  home.activation.hindsightBackend =
+    config.lib.dag.entryAfter [ "writeBoundary" ] ''
+      run mkdir -p "${config.xdg.stateHome}/hindsight" "${config.home.homeDirectory}/.hindsight"
+      if [ ! -e "${config.home.homeDirectory}/.hindsight/coding-agent.json" ]; then
+        run install -m 600 ${pkgs.writeText "hindsight-local.json" (builtins.toJSON {
+          serverMode = "daemon";
+          autoUpdate = false;
+        })} "${config.home.homeDirectory}/.hindsight/coding-agent.json"
+      fi
+    '' // { before = [ "setupLaunchAgents" ]; };
+
+  launchd.agents.hindsight = {
+    enable = true;
+    config = {
+      ProgramArguments = [
+        "${pkgs.uv}/bin/uvx" "--python" "3.13"
+        "--from" "hindsight-api==1.1.0" "hindsight-api"
+        "--host" "127.0.0.1" "--port" "9077" "--idle-timeout" "0"
+      ];
+      EnvironmentVariables = {
+        HOME = config.home.homeDirectory;
+        HINDSIGHT_API_DATABASE_URL = "pg0://hindsight-embed-coding-agent";
+        PATH = "${lib.makeBinPath [ pkgs.nodejs_24 pkgs.git pkgs.coreutils pkgs.rustc pkgs.cargo pkgs.clang pkgs.pkg-config ]}:${config.home.profileDirectory}/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin";
+        inherit (config.home.sessionVariables)
+          HINDSIGHT_API_LLM_PROVIDER HINDSIGHT_API_LLM_MODEL
+          HINDSIGHT_API_RETAIN_LLM_MODEL HINDSIGHT_API_RETAIN_LLM_REASONING_EFFORT
+          HINDSIGHT_API_CONSOLIDATION_LLM_MODEL
+          HINDSIGHT_API_CONSOLIDATION_LLM_REASONING_EFFORT;
+      };
+      WorkingDirectory = config.home.homeDirectory;
+      RunAtLoad = true;
+      KeepAlive = true;
+      ThrottleInterval = 10;
+      ExitTimeOut = 120;
+      StandardOutPath = "${config.xdg.stateHome}/hindsight/stdout.log";
+      StandardErrorPath = "${config.xdg.stateHome}/hindsight/stderr.log";
+    };
+  };
   launchd.agents.mcpjungle = {
     enable = true;
     config = {

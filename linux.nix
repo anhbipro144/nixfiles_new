@@ -52,6 +52,28 @@ in {
       HINDSIGHT_API_CONSOLIDATION_LLM_REASONING_EFFORT;
   };
 
+  systemd.user.services.hindsight = {
+    Unit = {
+      Description = "Hindsight memory backend";
+      After = [ "network-online.target" ];
+      Wants = [ "network-online.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.uv}/bin/uvx --from hindsight-api==1.1.0 hindsight-api --host 127.0.0.1 --idle-timeout 0 --port 9077";
+      EnvironmentFile = "%h/.hindsight/profiles/coding-agent.env";
+      Environment = [
+        "HF_HUB_OFFLINE=1"
+        "HINDSIGHT_API_DATABASE_URL=pg0://hindsight-embed-coding-agent"
+        "PATH=${lib.makeBinPath [ pkgs.nodejs_24 pkgs.git pkgs.coreutils ]}:%h/.local/bin:%h/.nix-profile/bin:/usr/bin:/bin"
+      ];
+      Restart = "always";
+      RestartSec = 5;
+      TimeoutStopSec = 120;
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
+
   systemd.user.services.mcpjungle = {
     Unit = {
       Description = "MCPJungle Streamable HTTP gateway";

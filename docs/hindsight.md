@@ -203,3 +203,50 @@ or remove session history and recovery backups as part of this migration.
 Sources: [official distribution](https://www.npmjs.com/package/@vectorize-io/hindsight-coding-agents/v/0.8.1),
 [release source at the published gitHead](https://github.com/vectorize-io/hindsight/tree/23c7d701c46e793361a4853fc5e190d0e195db7c/hindsight-integrations/coding-agents),
 [Codex hook lifecycle and trust](https://learn.chatgpt.com/docs/hooks).
+
+## Linux backend lifecycle
+
+`linux.nix` owns `hindsight.service`, enabled at user login and restarted on
+failure or process exit. It runs the pinned `hindsight-api==1.1.0` through Nix's
+uv, rather than the disabled plugin daemon installer. Home Manager switches keep
+this service registered. The existing profile at
+`~/.hindsight/profiles/coding-agent.env` supplies provider settings; credentials
+stay outside the Nix store. The database remains
+`pg0://hindsight-embed-coding-agent` under `~/.pg0`.
+
+`HF_HUB_OFFLINE=1` uses the existing cached embedding/reranking models and avoids
+this machine's HuggingFace certificate failure. The first installation requires
+those model caches and the profile; uv can download the pinned Python backend
+when its cache is absent. No legacy runtime under `~/.hindsight/coding-agents`
+is needed by the service.
+
+Check `systemctl --user status hindsight` and
+`journalctl --user -u hindsight` for backend failures. Restart with
+`systemctl --user restart hindsight`. The service applies only to Linux;
+macOS uses the launch agent described below.
+
+## macOS backend lifecycle
+
+`macos.nix` declares `org.nix-community.home.hindsight`, a launch agent with
+RunAtLoad and KeepAlive. Apply on the Mac with
+`home-manager switch --flake .#neo@mac` from this repository. It survives future
+switches and starts again at login. The API binds only to `127.0.0.1:9077`.
+
+The agent runs `hindsight-api==1.1.0` with Python 3.13 through Nix uv. Its PATH
+includes Node, Rust and build tools for dependencies that lack macOS wheels.
+First launch downloads the Python runtime, backend and embedding/reranking
+models and needs internet access. Unlike the Linux host, it does not force
+HuggingFace offline mode before models have been downloaded.
+
+Provider/model defaults come from `main.nix`. Authenticate GitHub Copilot on the
+Mac with `copilot login` if its existing login is unavailable. Credentials are
+read from the user's Copilot authentication, never placed in the Nix store.
+The local database is `~/.pg0/instances/hindsight-embed-coding-agent`.
+Activation creates a local daemon-mode `~/.hindsight/coding-agent.json` only
+when absent; existing configuration is preserved and must point to the local
+backend if it previously selected a different server.
+
+Inspect `launchctl print gui/$(id -u)/org.nix-community.home.hindsight` and
+`~/.local/state/hindsight/stderr.log`. Check
+`curl --fail http://127.0.0.1:9077/health` and run a Hindsight knowledge search
+in Codex after the first startup completes.
