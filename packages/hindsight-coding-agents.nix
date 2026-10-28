@@ -31,10 +31,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
           'throw new Error("Nix-managed Hindsight requires an already-running backend; automatic daemon installation is disabled.");'
       fi
       if grep -qF '    syncCompanionSkill(harness);' "$script"; then
-        # Codex's skill belongs to Home Manager; do not rewrite a shared Copilot skill.
+        # Codex and Claude skills belong to Home Manager.
         substituteInPlace "$script" --replace-fail \
           '    syncCompanionSkill(harness);' \
-          '    if (harness !== "codex") syncCompanionSkill(harness);'
+          '    if (harness !== "codex" && harness !== "claude-code") syncCompanionSkill(harness);'
       fi
     done
   '';
@@ -44,7 +44,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     runtime="$out/lib/hindsight-coding-agents"
     mkdir -p "$runtime" "$out/bin"
     cp -a . "$runtime/"
-    for entry in codex-sessionstart-hook codex-hook codex-stop-hook mcp-server; do
+    for entry in codex-sessionstart-hook codex-hook codex-stop-hook claude-sessionstart-hook claude-hook claude-stop-hook mcp-server; do
       makeWrapper ${nodejs_24}/bin/node "$out/bin/hindsight-$entry" \
         --add-flags "$runtime/dist/$entry.js" \
         --prefix PATH : ${lib.makeBinPath [ nodejs_24 git coreutils ]} \

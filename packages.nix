@@ -60,6 +60,7 @@ in {
       "discord"
       "postman"
       "github-copilot-cli"
+      "claude-code"
       "unrar"
       "antigravity-cli"
       "ngrok"
@@ -124,6 +125,7 @@ in {
       clang-tools
       neocmakelsp
       cmake
+      nil
 
       # Java
       # jdk25_headless
