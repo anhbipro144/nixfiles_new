@@ -1,0 +1,3 @@
+interface:
+  display_name: "End-sprint-preparation"
+  short_description: "Prepare your active sprint Jira tickets"
