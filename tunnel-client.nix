@@ -2,10 +2,7 @@
 let
   yaml = pkgs.formats.yaml { };
   tunnelClient = pkgs.callPackage ./tunnel-client-package.nix { };
-in {
-  home.packages = [ tunnelClient ];
-
-  xdg.configFile."tunnel-client/mcpjungle.yaml".source = yaml.generate "mcpjungle.yaml" {
+  profile = yaml.generate "mcpjungle.yaml" {
     config_version = 1;
     control_plane = {
       base_url = "https://api.openai.com";
@@ -17,4 +14,12 @@ in {
     log = { level = "info"; format = "json"; };
     mcp.server_urls = [{ channel = "main"; url = "http://127.0.0.1:37373/mcp"; }];
   };
+in {
+  home.packages = [ tunnelClient ];
+
+  # tunnel-client rejects Home Manager's config symlink because it resolves paths
+  # within the profile directory. Install the generated file as a regular file.
+  home.activation.tunnelClientProfile = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    $DRY_RUN_CMD ${pkgs.coreutils}/bin/install -Dm600 ${profile} ${lib.escapeShellArg "${config.xdg.configHome}/tunnel-client/mcpjungle.yaml"}
+  '';
 }

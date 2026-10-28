@@ -24,7 +24,7 @@ Use this skill to update a Jira issue's root cause fields from a GitHub PR.
    - For NPRD bugs/sub-bugs, this is usually `customfield_10193`.
    - This field requires ADF in the current Jira tool path; do not send plain markdown/text first.
 8. Build `Root Cause Type` as a Jira option object before editing the issue.
-   - For NPRD bugs/sub-bugs, this is usually `customfield_10192`.
+   - For NPRD bugs/sub-bugs, use `customfield_22948` ("Root Cause Type"). Do not use `customfield_10192`, which is deprecated.
    - This is a select field, not arbitrary text.
    - Set it only using one of the allowed option values returned by issue type metadata.
    - Send the validated option as an object, preferably `{ "id": "<option-id>" }`.
@@ -36,6 +36,7 @@ Use this skill to update a Jira issue's root cause fields from a GitHub PR.
 11. Transition the ticket to `In Retest`.
    - Fetch available transitions using the available Jira transitions tool (for example, `mcp__codex_apps__jira_gettransitionsforjiraissue` or `mcp__jira__getTransitionsForJiraIssue`).
    - Select the available transition whose destination status name is `In Retest` (case-insensitive and ignoring trailing whitespace); do not guess a transition ID.
+   - Set `customfield_22948` (Root Cause Type) and `customfield_10193` (Dev Root Cause Analysis) with an edit call before transitioning. The transition fails with "Please provide both 'Root Cause Type' and 'Dev Root Cause Analysis'" if either is empty. Setting them with `editJiraIssue`, then transitioning with no fields, has worked. Passing `customfield_10192` in the transition call fails because that field is not on the transition screen.
    - If the ticket is already in `In Retest`, do not transition it again.
    - Use the available Jira transition tool with the validated transition id.
    - If no available transition reaches `In Retest`, report that the RCA fields were updated but the workflow does not permit the required transition.
@@ -46,49 +47,29 @@ Use this skill to update a Jira issue's root cause fields from a GitHub PR.
 
 Always retrieve the live allowed values from Jira metadata. Do not invent or send arbitrary strings.
 
-For NPRD `Sub-Bug` issues, known allowed values include:
+Use `customfield_22948` (named "Root Cause Type"). It is the active field and is on the In Retest transition screen.
 
-- `Not following AC/Description`
-- `Absent or incomplete specification`
-- `Ambiguous code`
-- `Automated tests out project standards`
-- `Code not compliant to with technology standards`
-- `Code out of project standards`
-- `Cross-browser / device incompatibility`
-- `Document / comment out standard language`
-- `Duplicate code`
-- `Incomplete impact analysis`
-- `Incomplete impact analysis after merge`
-- `Insufficient or non-descriptive document / comment`
-- `Integration missing or incorrect`
-- `Layout refactor`
-- `Logically incorrect`
-- `Not following SCM or CI policies`
-- `Obsolete code`
-- `Obsolete document / comment`
-- `Out of standards file name`
-- `Out of standards method or variable name`
-- `Requirement not followed`
-- `Third party error`
-- `User Interface not working`
-- `Wrong content or encoding`
-- `Wrong data manipulation`
-- `Wrong layout and element position`
-- `Wrong parameter configuration`
-- `Change requirement/AC update`
-- `Front-end UI not follow Figma`
-- `Incorrect Figma design`
-- `Figma update`
-- `Back-end incorrect data manipulation`
-- `Insufficient testing`
-- `Wrong Parameter configuration (Deployment)`
-- `Missing or incorrect integration`
-- `Git merge/commit`
-- `Incorrect design (UI/UX)`
-- `Option Logically incorrect`
-- `Technical solution was not clear`
+`customfield_10192` ("[Deprecated] Root Cause Type") is no longer valid. The transition screen rejects it with "cannot be set. It is not on the appropriate screen". Do not use it for new RCA updates.
 
-Use the Jira option object/id required by the edit tool. If the edit tool accepts value names, still validate that the value appears in metadata first.
+Allowed values for `customfield_22948` (option ids from the In Retest transition metadata):
+
+- `Requirement problem` (24395)
+- `Design problem` (24396)
+- `System / technical design problem` (24397)
+- `DoD not followed` (24398)
+- `Requirement, design, or system design not followed` (24399)
+- `Requirement, design, or system design changed later` (24400)
+- `Configuration error` (24401)
+- `Integration error` (24402)
+- `Third-party / external error` (24403)
+- `Bad stored data (pre-existing)` (24404)
+- `Production-only data` (24405)
+- `Unmapped scenario / behavior` (24406)
+- `Environment / infrastructure` (24407)
+- `Code quality / standards issue` (24408)
+- `Unknown / not yet determined` (24409)
+
+Use the option object/id required by the edit tool. Validate the value against metadata first. If no option fits the RCA, ask the user to choose.
 
 ## Edit Pattern
 
@@ -101,8 +82,8 @@ Use this pattern first for NPRD RCA updates:
   "contentFormat": "adf",
   "responseContentFormat": "markdown",
   "fields": {
-    "customfield_10192": {
-      "id": "10283"
+    "customfield_22948": {
+      "id": "24397"
     },
     "customfield_10193": {
       "type": "doc",
@@ -132,7 +113,7 @@ Use this pattern first for NPRD RCA updates:
 }
 ```
 
-If using the tool call directly, pass `fields.customfield_10192` and `fields.customfield_10193` as objects, not serialized JSON strings.
+If using the tool call directly, pass `fields.customfield_22948` and `fields.customfield_10193` as objects, not serialized JSON strings.
 
 ## In Retest Transition Pattern
 
@@ -195,13 +176,13 @@ Shape:
 
 ## Select Field Pattern
 
-For `Root Cause Type`, set the selected option using the id from metadata. Preferred shape:
+For `Root Cause Type`, set the selected option by id from metadata. Preferred shape:
 
 ```json
 {
   "fields": {
-    "customfield_10192": {
-      "id": "10283"
+    "customfield_22948": {
+      "id": "24397"
     }
   }
 }
@@ -212,8 +193,8 @@ Some Jira clients also accept `value`, but do not rely on it unless the object i
 ```json
 {
   "fields": {
-    "customfield_10192": {
-      "value": "Logically incorrect"
+    "customfield_22948": {
+      "value": "System / technical design problem"
     }
   }
 }

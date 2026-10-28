@@ -7,14 +7,14 @@
     let
       releases = {
         x86_64-linux = {
-          version = "0.161.0";
+          version = "0.164.0";
           target = "x86_64-unknown-linux-musl";
-          hash = "sha256-BNirnby53w7fPGfcpQcqN0ur/fdiqbxK5kmuFAuOLPA=";
+          hash = "sha256-PsVQUxCWCNUDj35QdQ99Jfdo39dA/vBxqnEOJVm2Oqw=";
         };
         aarch64-darwin = {
-          version = "0.163.0";
+          version = "0.164.0";
           target = "aarch64-apple-darwin";
-          hash = "sha256-sDRPwuQfFeAHEUflhpAIBHuP9L8sSoiXl107rj8QOzQ=";
+          hash = "sha256-3ZnpCSJwaRpnvd574ErCg96p2o6Gy941bCzIUaeSBfo=";
         };
       };
       packages = nixpkgs.lib.genAttrs (builtins.attrNames releases) (system:

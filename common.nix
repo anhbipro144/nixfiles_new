@@ -89,6 +89,21 @@
                       z "$@" && nvim .
                     }
 
+                    # gog Sheets via gcloud ADC (Workspace blocks gog's default OAuth client).
+                    # Only sheets/sheet subcommands use the ADC token; others use the normal gog login.
+                    gog() {
+                      case "$1" in
+                        sheets|sheet)
+                          local tok
+                          tok="$(gcloud auth application-default print-access-token)" || return 1
+                          command gog --access-token "$tok" --quota-project one-global-mtfaber-test "$@"
+                          ;;
+                        *)
+                          command gog "$@"
+                          ;;
+                      esac
+                    }
+
 
         if [ -f "$HOME/.config/home-manager/secrets/secrets.env" ]; then
           set -a

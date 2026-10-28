@@ -5,6 +5,7 @@ let
   mcpjungle = pkgs.callPackage ./mcpjungle.nix { };
   codegraph = pkgs.callPackage ./packages/codegraph.nix { };
   open-code-review = pkgs.callPackage ./packages/open-code-review.nix { };
+  moodle-cli = pkgs.callPackage ./packages/moodle-cli.nix { };
   sonarqube-cli =
     let
       version = "1.8.0.5274";
@@ -40,6 +41,9 @@ let
       };
     };
 in {
+  # Updates are pinned in Nix; upstream's npm self-updater is not authoritative here.
+  home.sessionVariables.MOODLE_NO_UPDATE_CHECK = "1";
+
   # Prefer this runtime over an existing ~/.local/bin/codegraph launcher.
   home.sessionPath = lib.mkBefore [ "${codegraph}/bin" ];
 
@@ -97,6 +101,7 @@ in {
       sonarqube-cli
       jira-cli-go
       open-code-review
+      moodle-cli
       google-alloydb-auth-proxy
       google-cloud-sql-proxy
       grpcurl
